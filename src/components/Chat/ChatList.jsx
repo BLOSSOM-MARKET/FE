@@ -15,19 +15,10 @@ import { SocketContext } from '../../contexts/SocketContext';
 import { UserContext } from '../../contexts/UserContext';
 import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters';
 
-const ChatList = ({chatrooms, moveToChatRoom}) => {
+const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
     console.log(chatrooms)
     const { joinRoom } = useContext(SocketContext);
-    const { userId, roomId, setRoomId, nickname, setIsInChatroom } = useContext(UserContext);
-
-    const onClickChatroom = (roomId) => {
-        setIsInChatroom(true);
-        console.log(roomId);
-        setRoomId(roomId);
-        // joinRoom({roomId, userId, nickname});
-        moveToChatRoom(roomId);
-    }
-
+    const { userId } = useContext(UserContext);
 
     return (
         <Container maxWidth="sm" className={ChatStyle.Chat__wrapper}>
@@ -37,7 +28,7 @@ const ChatList = ({chatrooms, moveToChatRoom}) => {
             <List className={ChatListStyle.Chatroom__list} > <div>
                     {chatrooms.map((rm, idx) => 
                         <div key={`chatroom-${idx}`} className={ChatListStyle.Chatroom}
-                            onClick={() => onClickChatroom(rm.roomId)}>
+                            onClick={() => onClickChatroom(rm.roomId, userId === rm.user1 ? rm.user2 : rm.user1)}>
                             <div className={ChatListStyle.Chatroom__header}>
                                 <div>{userId === rm.user1
                                     && rm.user2}</div>

@@ -10,6 +10,7 @@ export const UserContextProvider = ({children}) => {
     const [roomId, setRoomId] = useState('myRooms');
     const [nickname, setNickname] = useState('defaultNick');
     const [userId, setUserId] = useState('defaultUserId');
+    const [yourNick, setYourNick] = useState(null);
 
     const [isChatOpen, setIsChatOpen] = useState(true);
     const [isInChatroom, setIsInChatroom] = useState(false);
@@ -37,7 +38,7 @@ export const UserContextProvider = ({children}) => {
     console.log(isLogin, roomId, nickname, userId)
     
     return (
-        <UserContext.Provider value={{roomId, setRoomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom}}>
+        <UserContext.Provider value={{roomId, setRoomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, yourNick, setYourNick}}>
             {children}
         </UserContext.Provider>
     );

@@ -9,7 +9,7 @@ import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
     const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
-    const { roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom} = useContext(UserContext);
+    const { roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, yourNick, setYourNick} = useContext(UserContext);
     const [ messages, setMessages ] = useState([]);
     const [ chatrooms, setChatrooms ] = useState([]);
     
@@ -39,6 +39,15 @@ const Chat = () => {
             getRoomList({roomId, userId});
             updateRooms(addRoom);
         }
+    }
+
+    const onClickChatroom = (roomId, yourNick) => {
+        setIsInChatroom(true);
+        console.log(roomId);
+        setRoomId(roomId);
+        setYourNick(yourNick);
+        // joinRoom({roomId, userId, nickname});
+        moveToChatRoom(roomId);
     }
 
         
@@ -71,9 +80,9 @@ const Chat = () => {
         isChatOpen &&
         (
             isInChatroom ?
-            <ChatComp submitMessage={submitMessage} messages={messages} myId={userId}/>
+            <ChatComp submitMessage={submitMessage} messages={messages} myId={userId} yourNick={yourNick} />
             :
-            <ChatList chatrooms={chatrooms} moveToChatRoom={moveToChatRoom} />
+            <ChatList chatrooms={chatrooms} moveToChatRoom={moveToChatRoom} onClickChatroom={onClickChatroom} />
         )
     );
 }
