@@ -1,0 +1,19 @@
+.ChatRoomEntry {
+    width: 20rem;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 0.5rem;
+    padding: 10rem;
+    
+    & > * {
+        width: 100%;
+    }
+    
+    &__title {
+        padding-bottom: 2rem;
+        text-align: center;
+        font-weight: 700;
+        font-size: 2rem;
+        color: #1976d2;
+    }
+}
