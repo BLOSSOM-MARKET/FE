@@ -8,8 +8,7 @@ import Stack from '@mui/material/Stack';
 
 import Message from '../Message';
 import style from './Chat.module.scss';
-
-import moment from 'moment';
+import { chatTimeformatter } from '../../utils/formatters';
 
 const Chat = ({messages, submitMessage, myId}) => {
     const [input, setInput] = useState('');
@@ -47,10 +46,6 @@ const Chat = ({messages, submitMessage, myId}) => {
         if (thisMin !== nextMin) return true;
 
         return false;
-    }
-
-    const chatTimeformatter = (time) => {
-        return moment(time).format('hh:mm')
     }
 
     return (

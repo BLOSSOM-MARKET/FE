@@ -8,8 +8,8 @@ import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
-    const { roomId, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
-    const {nickname, userId, isLogin, isChatOpen, setIsChatOpen} = useContext(UserContext);
+    const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
+    const { roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom} = useContext(UserContext);
     const [ messages, setMessages ] = useState([]);
     const [ chatrooms, setChatrooms ] = useState([]);
     
@@ -19,37 +19,62 @@ const Chat = () => {
     }
 
     const addRoom = (room) => {
+        console.log("room: ", room)
         setChatrooms((prev) => prev.concat(room));
     }
+
+    const moveToChatRoom = (roomId) => {
+        if (isLogin && isChatOpen && userId && roomId && nickname && messages.length <= 0) {
+            joinRoom({roomId, userId, nickname});
+            updateMessage(addMessage);
+        }
+    }
+
+    const moveToChatList = () => {
+        if (isLogin && isChatOpen && userId && nickname && chatrooms.length <= 0) {
+            // joinRoom({roomId, userId, nickname});
+            // updateMessage(addMessage);
+            console.log("roomId: ", roomId)
+            joinRoom({roomId, userId, nickname});
+            getRoomList({roomId, userId});
+            updateRooms(addRoom);
+        }
+    }
+
         
     useEffect(() => {
+        console.log("isChatOpen, isInChatroom: ", isChatOpen, isInChatroom)
         try {
             console.log(userId,nickname);
-            if (isLogin && isChatOpen && userId && nickname && messages.length <= 0) {
-                // joinRoom({roomId, userId, nickname});
-                // updateMessage(addMessage);
-                getRoomList({roomId, userId});
-                updateRooms(addRoom);
+            if (isInChatroom) {
+                moveToChatRoom();
+            } else {
+                moveToChatList();
             }
+
         } catch (err) {
             toast.error("에러가 발생했습니다.");
             console.error(err);
         }
-    }, [isLogin, isChatOpen]);
+    }, [isLogin, isChatOpen, isInChatroom]);
     
-    // const submitMessage = (message) => {
-    //     if(message.trim()) {
-    //         sendMessage({roomId, userId, nickname, message});
-    //     } else {
-    //         toast.error("메세지를 입력해주세요.")
-    //     }
+    const submitMessage = (message) => {
+        if(message.trim()) {
+            sendMessage({roomId, userId, nickname, message});
+        } else {
+            toast.error("메세지를 입력해주세요.")
+        }
         
-    // }
+    }
     
     return (
         isChatOpen &&
-        // <ChatComp submitMessage={submitMessage} messages={messages} myId={userId}/>
-        <ChatList />
+        (
+            isInChatroom ?
+            <ChatComp submitMessage={submitMessage} messages={messages} myId={userId}/>
+            :
+            <ChatList chatrooms={chatrooms} moveToChatRoom={moveToChatRoom} />
+        )
     );
 }
 

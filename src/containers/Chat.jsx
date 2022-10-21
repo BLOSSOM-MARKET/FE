@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import ChatComp from '../components/Chat';
+import ChatList from '../components/Chat/ChatList';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
@@ -37,12 +38,12 @@ const Chat = () => {
         } else {
             toast.error("메세지를 입력해주세요.")
         }
-        
     }
     
     return (
         isChatOpen &&
-        <ChatComp submitMessage={submitMessage} messages={messages} myId={userId}/>
+        <ChatList/>
+        // <ChatComp submitMessage={submitMessage} messages={messages} myId={userId}/>
     );
 }
 

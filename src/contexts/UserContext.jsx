@@ -5,36 +5,39 @@ export const UserContext = createContext();
 
 export const UserContextProvider = ({children}) => {
     let socket;
-    
-    useEffect(()=>{
-        const tmproomId = sessionStorage.getItem('roomId');
-        const tmpNickName = sessionStorage.getItem('nickname');
-        const tmpUserId = sessionStorage.getItem('userId');
-
-        if (tmproomId) {
-            setRoomId(tmproomId);
-        }
-        if (tmpNickName) {
-            setNickname(tmpNickName);
-        }
-        if (tmpUserId) {
-            setUserId(tmpUserId);
-        }
-
-        setIsLogin(true);
-
-    }, []);
-    
+        
     const [isLogin, setIsLogin] = useState(false);
     const [roomId, setRoomId] = useState('myRooms');
     const [nickname, setNickname] = useState('defaultNick');
     const [userId, setUserId] = useState('defaultUserId');
 
     const [isChatOpen, setIsChatOpen] = useState(true);
+    const [isInChatroom, setIsInChatroom] = useState(false);
+    
+    useEffect(()=>{
+        const tmproomId = sessionStorage.getItem('roomId');
+        const tmpNickName = sessionStorage.getItem('nickname');
+        const tmpUserId = sessionStorage.getItem('userId');
+
+        if (tmproomId !== undefined && tmproomId !== null) {
+            console.log("set room Id: ", roomId)
+            setRoomId(tmproomId);
+        }
+        if (tmpNickName !== undefined && tmpNickName !== null) {
+            setNickname(tmpNickName);
+        }
+        if (tmpUserId !== undefined && tmpUserId !== null) {
+            setUserId(tmpUserId);
+        }
+
+        setIsLogin(true);
+
+    }, []);
+
     console.log(isLogin, roomId, nickname, userId)
     
     return (
-        <UserContext.Provider value={{roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen}}>
+        <UserContext.Provider value={{roomId, setRoomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom}}>
             {children}
         </UserContext.Provider>
     );

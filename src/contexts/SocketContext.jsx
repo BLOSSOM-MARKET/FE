@@ -35,6 +35,7 @@ export const SocketContextProvider = ({children}) => {
     }
 
     const updateRooms = (func) => {
+        console.log("UPDATE ROOMS!!")
         socket.on('UPDATE_ROOMS', (room) => func(room));
     }
     
