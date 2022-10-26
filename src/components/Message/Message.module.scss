@@ -1,4 +1,15 @@
 .Message {
+
+    // &__msgbox {
+    //     width: 90%;
+    //     max-width: 90%;
+    //     display:block;
+    //     overflow: hidden;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
+    //     // text-align: right;
+    // }
+
     &__my {
         background-color: #8ba5ff;
         border-radius: 1rem 1rem 0rem 1rem;
@@ -9,6 +20,11 @@
             justify-content: flex-end !important;
             padding: 4px 16px !important;
             width: 100%;
+
+            // display: inline-block;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            // white-space: nowrap;
         }
 
         &__name {
@@ -28,7 +44,6 @@
         font-size: 0.75rem;
         color: grey;
         text-align: right;
-
     }
 
     &__username {

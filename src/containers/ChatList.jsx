@@ -50,6 +50,10 @@ const Chat = () => {
         moveToChatRoom(roomId);
     }
 
+    const onClickBackBtn = () => {
+        setIsInChatroom(false);
+    }
+
         
     useEffect(() => {
         console.log("isChatOpen, isInChatroom: ", isChatOpen, isInChatroom)
@@ -80,7 +84,7 @@ const Chat = () => {
         isChatOpen &&
         (
             isInChatroom ?
-            <ChatComp submitMessage={submitMessage} messages={messages} myId={userId} yourNick={yourNick} />
+            <ChatComp submitMessage={submitMessage} messages={messages} myId={userId} yourNick={yourNick} onClickBackBtn={onClickBackBtn} />
             :
             <ChatList chatrooms={chatrooms} moveToChatRoom={moveToChatRoom} onClickChatroom={onClickChatroom} />
         )

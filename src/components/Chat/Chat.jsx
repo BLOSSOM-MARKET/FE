@@ -10,7 +10,7 @@ import Message from '../Message';
 import style from './Chat.module.scss';
 import { chatTimeformatter } from '../../utils/formatters';
 
-const Chat = ({messages, submitMessage, myId, yourNick}) => {
+const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
     const [input, setInput] = useState('');
     const messagesEndRef = useRef(null);
 
@@ -51,8 +51,14 @@ const Chat = ({messages, submitMessage, myId, yourNick}) => {
     return (
         <Container maxWidth="sm" className={style.Chat__wrapper}>
             <div className={style.Chat__header}>
-                <div>{yourNick}</div>
-                <div>상품정보</div>
+                <button className={style.Chat__header__backBtn}
+                    onClick={onClickBackBtn}
+                >{"<"}
+                </button>
+                <div>
+                    <div>{yourNick}</div>
+                    <div>상품정보</div>
+                </div>
             </div>
             <List className={style.Chat__list} >
                 {messages.map(({userId, nickname, message, sendTime}, index) => 

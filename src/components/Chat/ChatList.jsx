@@ -36,8 +36,8 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                                     && rm.user1}</div>
                             </div>
                             <div className={ChatListStyle.Chatroom__body}>
-                                <div>{rm.lastMsg}</div>
-                                <div>{chatroomTimeformatter(rm.lastSendTime)}</div>
+                                <div className={ChatStyle.Chat__msgbox}>{rm.lastMsg}</div>
+                                <div className={ChatStyle.Chat__time}>{chatroomTimeformatter(rm.lastSendTime)}</div>
                             </div>
                             
                         </div>)}
