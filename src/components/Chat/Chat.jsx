@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Message from '../Message';
 import style from './Chat.module.scss';
@@ -51,9 +52,10 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
     return (
         <Container maxWidth="sm" className={style.Chat__wrapper}>
             <div className={style.Chat__header}>
-                <button className={style.Chat__header__backBtn}
+                <button className={`btn btn-light ${style.Chat__header__backBtn}`}
                     onClick={onClickBackBtn}
-                >{"<"}
+                >
+                    {"<"}
                 </button>
                 <div>
                     <div>{yourNick}</div>

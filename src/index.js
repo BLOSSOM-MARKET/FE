@@ -5,19 +5,26 @@ import ChatMain from './pages/chatmain';
 import Chat from './pages/chat';
 import { SocketContextProvider } from './contexts/SocketContext';
 import { UserContextProvider } from './contexts/UserContext';
+import Main from './pages/main';
+import Header from './components/Header/Header';
+import Login from './pages/login';
 
 const App = () => {
     return (
-        <BrowserRouter>
-          <SocketContextProvider>
-            <UserContextProvider>
-              <Routes>
-                <Route path="/" element={<ChatMain />} />
-                {/* <Route path="/chatroom/:roomId/:userId" element={<Chat />} /> */}
-              </Routes>
-            </UserContextProvider>
-          </SocketContextProvider>
-        </BrowserRouter>
+      <BrowserRouter>
+        <SocketContextProvider>
+          <UserContextProvider>
+            <Header />  {/* header & nav */}
+
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+
+            <ChatMain /> {/* chatMain */} 
+          </UserContextProvider>
+        </SocketContextProvider>
+      </BrowserRouter>
     )
 }
 
