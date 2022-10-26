@@ -8,6 +8,7 @@ import { UserContextProvider } from './contexts/UserContext';
 import Main from './pages/main';
 import Header from './components/Header/Header';
 import Login from './pages/login';
+import Settings from './pages/settings';
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
 
             <ChatMain /> {/* chatMain */} 
