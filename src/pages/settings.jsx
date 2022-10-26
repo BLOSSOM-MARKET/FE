@@ -1,10 +1,39 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsBox from "../components/Box/SettingsBox";
 import ChangePassword from "../components/ChangePassword/ChangePassword";
+import { UserContext } from "../contexts/UserContext";
 import style from "./page.module.scss";
 
 const MyProfile = () => {
-  return <div>내 프로필</div>;
+    const { userId, nickname } = useContext(UserContext);
+
+    return (
+        <div>
+            <div className={style.Settings__profile}>
+                <div className={style.Settings__profile__icon}>
+                <i class="bi bi-info-circle"></i>
+                </div>
+                <div className={style.Settings__profile__title}>
+                    아이디
+                </div>
+                <div className={style.Settings__profile__content}>
+                    {userId}
+                </div>
+            </div>
+            <div className={style.Settings__profile}>
+                <div className={style.Settings__profile__icon}>
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div className={style.Settings__profile__title}>
+                    닉네임
+                </div>
+                <div className={style.Settings__profile__content}>
+                    {nickname}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 const Withdrawal = () => {
@@ -35,7 +64,7 @@ const Settings = () => {
   return (
     <div className={style.Page}>
       <div className={style.Page__SettingsPage}>
-        <SettingsBox title={"내 프로필"}>
+        <SettingsBox title={"내 프로 필"}>
           <MyProfile />
         </SettingsBox>
         <SettingsBox title={"비밀번호 수정"}>
