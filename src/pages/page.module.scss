@@ -45,6 +45,15 @@
         &__content {
             flex-grow: 1;
         }
+
+        &__row {
+            display: flex;
+        }
+
+        &__changeBtn {
+            width: 5rem;
+            height: 2.5rem;
+        }
     }
 
     &__Withdrawal {
@@ -56,5 +65,7 @@
             margin: 0 auto;
         }
     }
+
+    
 
 }

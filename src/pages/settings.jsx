@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsBox from "../components/Box/SettingsBox";
@@ -5,35 +6,103 @@ import ChangePassword from "../components/ChangePassword/ChangePassword";
 import { UserContext } from "../contexts/UserContext";
 import style from "./page.module.scss";
 
-const MyProfile = () => {
-    const { userId, nickname } = useContext(UserContext);
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
-    return (
-        <div>
-            <div className={style.Settings__profile}>
-                <div className={style.Settings__profile__icon}>
-                <i class="bi bi-info-circle"></i>
-                </div>
-                <div className={style.Settings__profile__title}>
-                    아이디
-                </div>
-                <div className={style.Settings__profile__content}>
-                    {userId}
-                </div>
-            </div>
-            <div className={style.Settings__profile}>
-                <div className={style.Settings__profile__icon}>
-                    <i class="bi bi-person-fill"></i>
-                </div>
-                <div className={style.Settings__profile__title}>
-                    닉네임
-                </div>
-                <div className={style.Settings__profile__content}>
-                    {nickname}
-                </div>
-            </div>
+import { Formik } from "formik";
+import * as yup from 'yup';
+
+const MyProfile = ({ userId, nickname }) => {
+
+    const checkDoubleNick = () => {
+        // axios 
+        // 닉네임 중복 판별
+        // function(value){return new Promise((resolve, reject) => {
+        //     axios.post('http://localhost:5000/users/register/validEmail', {'email': value})
+        //     .then(res => {if(res.data.msg === 'Username already been taken'){resolve(false)} resolve(true)})
+        // })
+    
+        return false;
+    }
+
+    const schema = yup.object().shape({
+        nickname: yup.string()
+                    .required("닉네임을 입력해주세요.")
+                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", checkDoubleNick),
+      });
+
+    const onSubmit = ({nickname}) => {
+        console.log(nickname)
+        // axios
+        // 닉네임 변경
+    }
+      
+  return (
+    <div>
+      <div className={style.Settings__profile}>
+        <div className={style.Settings__profile__icon}>
+          <i className="bi bi-info-circle"></i>
         </div>
-    );
+        <div className={style.Settings__profile__title}>아이디</div>
+        <div className={style.Settings__profile__content}>{userId}</div>
+      </div>
+      <div className={style.Settings__profile}>
+        <div className={style.Settings__profile__icon}>
+          <i className="bi bi-person-fill"></i>
+        </div>
+        <div className={style.Settings__profile__title}>닉네임</div>
+        <div className={style.Settings__profile__content}>
+          <Formik
+            validateOnChange
+            enableReinitialize
+            validationSchema={schema}
+            onSubmit={onSubmit}
+            initialValues={{
+              nickname: nickname
+            }}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              values,
+              touched,
+              errors,
+              isValid,
+              dirty,
+            }) => (
+              <Form noValidate onSubmit={handleSubmit}>
+                <Row className={`mb-3 ${style.Settings__profile__row}`}>
+                  <Form.Group as={Col} md="8" controlId="validationFormik07">
+                    <Form.Control
+                      type="text"
+                      placeholder="닉네임"
+                      name="nickname"
+                      value={values.nickname}
+                      onChange={handleChange}
+                      isValid={touched.nickname && !errors.nickname}
+                      isInvalid={!!errors.nickname}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.nickname}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Button
+                    className={`btn btn-dark ${style.Settings__profile__changeBtn}`}
+                    type="submit"
+                    disabled={!(dirty && isValid)}
+                  >
+                    변경
+                  </Button>
+                </Row>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const Withdrawal = () => {
@@ -54,24 +123,42 @@ const Withdrawal = () => {
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { Logout, isLogin, userId, nickname } = useContext(UserContext);
 
   const onWithdraw = () => {
     console.log("회원탈퇴!");
-    sessionStorage.clear();
+    Logout();
     navigate("/");
   };
 
   return (
-    <div className={style.Page}>
-      <div className={style.Page__SettingsPage}>
-        <SettingsBox title={"내 프로 필"}>
-          <MyProfile />
-        </SettingsBox>
-        <SettingsBox title={"비밀번호 수정"}>
-          <ChangePassword />
-        </SettingsBox>
+    <>
+      <div className={style.Page}>
+        <div className={style.Page__SettingsPage}>
+          {isLogin ? (
+            <>
+              <SettingsBox title={"내 프로필"}>
+                <MyProfile userId={userId} nickname={nickname} />
+              </SettingsBox>
+              <SettingsBox title={"비밀번호 변경"}>
+                <ChangePassword />
+              </SettingsBox>
 
-        <Withdrawal />
+              <Withdrawal />
+            </>
+          ) : (
+            <div>
+              로그인해주세요
+              <button
+                className={`btn btn-outline-dark `}
+                type="button"
+                onClick={() => navigate("/login")}
+              >
+                회원탈퇴
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <div
         className="modal fade"
@@ -108,7 +195,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

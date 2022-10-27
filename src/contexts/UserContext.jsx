@@ -31,14 +31,27 @@ export const UserContextProvider = ({children}) => {
             setUserId(tmpUserId);
         }
 
+        console.log("isLogin:", isLogin);
         setIsLogin(true);
 
     }, []);
 
+    const Logout = () => {
+        console.log("usercontext logout")
+        setIsLogin(false);
+        setNickname('defaultNick');
+        setUserId('defaultUserId');
+        setYourNick(null);
+        setRoomId('myRooms');
+        setIsChatOpen(false);
+        setIsInChatroom(false);
+        sessionStorage.clear();
+    }
+
     console.log(isLogin, roomId, nickname, userId)
     
     return (
-        <UserContext.Provider value={{roomId, setRoomId, nickname, setNickname, userId, setUserId, isLogin, setIsLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, yourNick, setYourNick}}>
+        <UserContext.Provider value={{Logout, roomId, setRoomId, nickname, setNickname, userId, setUserId, isLogin, setIsLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, yourNick, setYourNick}}>
             {children}
         </UserContext.Provider>
     );
