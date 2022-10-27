@@ -10,12 +10,13 @@ import Header from './components/Header/Header';
 import Login from './pages/login';
 import Settings from './pages/settings';
 import ItemDetail from './pages/itemDetail';
+import Search from './pages/search';
 
 const App = () => {
     return (
       <BrowserRouter>
-        <SocketContextProvider>
           <UserContextProvider>
+        <SocketContextProvider>
             <Header />  {/* header & nav */}
 
             <Routes>
@@ -23,11 +24,12 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/item/:itemId" element={<ItemDetail />} />
+              <Route path="/search" element={<Search />} />
             </Routes>
 
             <ChatMain /> {/* chatMain */} 
-          </UserContextProvider>
         </SocketContextProvider>
+          </UserContextProvider>
       </BrowserRouter>
     )
 }

@@ -1,20 +1,30 @@
-import { useEffect, createContext } from "react";
+import { useEffect, createContext, useContext } from "react";
 import io from "socket.io-client";
+import { UserContext } from "./UserContext";
 
 export const SocketContext = createContext();
 
 export const SocketContextProvider = ({children}) => {
     let socket;
+    const { isChatOpen } = useContext(UserContext);
     
     useEffect(()=>{
         // socket = io(process.env.REACT_APP_SERVER_URL);
-        socket = io("localhost:3001");
-        console.log("socket connected");
+        if (isChatOpen) {
+            socket = io("localhost:3001");
+            console.log("socket connected");
+        }
         return () => {
+            disconnectSocket();
+        }
+    }, [isChatOpen])
+
+    const disconnectSocket = () => {
+        if (socket) {
             socket.disconnect();
             console.log("socket disconnected");
         }
-    }, [])
+    }
 
     const getRoomList = ({roomId, userId}) => {
         console.log(socket);
@@ -40,7 +50,7 @@ export const SocketContextProvider = ({children}) => {
     }
     
     return (
-        <SocketContext.Provider value={{joinRoom, sendMessage, updateMessage, getRoomList, updateRooms}}>
+        <SocketContext.Provider value={{disconnectSocket, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms}}>
             {children}
         </SocketContext.Provider>
     );

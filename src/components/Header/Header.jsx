@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 // import Logout from "../../utils/logout";
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../SearchBar/SearchBar";
 import style from "./Header.module.scss";
 
 const Header = () => {

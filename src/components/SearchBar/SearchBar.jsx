@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import style from "./NavBar.module.scss";
+import { createSearchParams, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { createQueryObj } from "../../utils/searchutils";
+import style from "./SearchBar.module.scss";
 
-const NavBar = () => {
+const SearchBar = () => {
     const [checkedCategories, setCheckedCategories] = useState(['search_cat_all']);
     const [checkedRegions, setCheckedRegions] = useState(['search_region_all']);
 
@@ -14,6 +15,55 @@ const NavBar = () => {
     const [inputVal, setInputVal] = useState("");
 
     const navigate = useNavigate();
+    const loc = useLocation();
+
+    const [searchParams] = useSearchParams();
+    const queryList = [...searchParams];
+
+    const searchInput = useRef();
+
+    // const setDefaultCategories = () => {
+    //     setCheckedCategories
+    // }
+
+    useEffect(() => {
+        console.log(loc.pathname)
+        if (loc.pathname === '/search') {
+            const q = createQueryObj(queryList);
+
+            const { key } = q;
+            if (key) {
+
+                setInputVal(key);
+                searchInput.current.value = key;
+            }
+            
+            if ('cat' in q && 'reg' in q) {
+                const {cat, reg} = q;
+
+                setCheckedCategories(cat);
+                setCheckedRegions(reg);
+
+                setIsCatAllDisabled('search_cat_all' in cat);
+                setIsRegionAllDisabled('search_region_all' in reg);
+            }
+        } else if (loc.pathname === '/') {
+            // main오면 리셋
+            setInputVal("");
+            searchInput.current.value = '';
+
+            if (!('search_cat_all' in checkedCategories)) {
+                setCheckedCategories(['search_cat_all']);
+                setIsCatAllDisabled(true);
+            }
+
+            if(!('search_region_all' in checkedRegions)) {
+                setCheckedRegions(['search_region_all']);
+                setIsRegionAllDisabled(true);
+            }
+        }
+
+    }, [loc.pathname]);
 
     const allBtns = {
         catAll: useRef(),
@@ -141,9 +191,20 @@ const NavBar = () => {
     // 검색!
     const onSearchClick = (e) => {
         e.preventDefault();
+                
+        if (!inputVal || inputVal.length <= 0) {
+            return
+        }
+
         console.log("검색어: ", inputVal)
         console.log("카테고리: ", checkedCategories);
         console.log("지역: ", checkedRegions);
+
+        const params = {key: inputVal, cat: checkedCategories, reg: checkedRegions}
+        navigate({
+            pathname: '/search',
+            search: `?${createSearchParams(params)}`
+        });
     }
 
   return (
@@ -158,6 +219,7 @@ const NavBar = () => {
             placeholder="Search"
             aria-label="Search"
             onChange={(e) => setInputVal(e.target.value)}
+            ref={searchInput}
           />
           <button
             className={`btn btn-outline-dark ${style.Nav__SearchBtn}`}
@@ -184,7 +246,7 @@ const NavBar = () => {
               aria-expanded="false"
               aria-controls="flush-collapseOne"
             >
-              상세검색
+              상세조건
             </button>
           </h2>
           <div
@@ -265,4 +327,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default SearchBar;
