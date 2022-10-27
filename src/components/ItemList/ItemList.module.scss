@@ -1,0 +1,18 @@
+.ItemList {
+    display: grid;
+    
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.ItemList.lg {
+    grid-template-columns: repeat(4, minmax(auto, 17rem));
+}
+.ItemList.md {
+    grid-template-columns: repeat(5, minmax(auto, 13rem));
+}
+.ItemList.sm {
+    grid-template-columns: repeat(7, minmax(auto, 9.5rem));
+}

@@ -11,4 +11,20 @@ const chatroomTimeformatter = (time) => {
     } else return moment(time).format('YY-mm-DD HH:mm')
 }
 
-export {chatTimeformatter, chatroomTimeformatter};
+const itemTimeFormatter = (time) => {
+    // 완성
+    return time;
+}
+
+// 세자리마다 콤마찍어주기
+const priceFormatter = (price) => {
+    if (typeof price === 'number') {
+        price = price.toString();
+    }
+
+    const result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    return result + "원";
+}
+
+export {chatTimeformatter, chatroomTimeformatter, itemTimeFormatter, priceFormatter};

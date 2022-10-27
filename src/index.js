@@ -9,6 +9,7 @@ import Main from './pages/main';
 import Header from './components/Header/Header';
 import Login from './pages/login';
 import Settings from './pages/settings';
+import ItemDetail from './pages/itemDetail';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/item/:itemId" element={<ItemDetail />} />
             </Routes>
 
             <ChatMain /> {/* chatMain */} 

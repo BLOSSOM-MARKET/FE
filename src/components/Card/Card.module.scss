@@ -1,0 +1,44 @@
+.Card {
+    cursor: pointer;
+    margin: 0.5rem;
+    justify-self: center;
+
+    &__price {
+        font-weight: bold;
+    }
+
+    &__time {
+        color: grey;
+    }
+}
+
+.Card.lg {
+    width: 16rem;
+    min-width: 16rem;
+}
+
+.Card.md {
+    width: 12rem;
+    min-width: 12rem;
+    
+    .Card__time {
+        font-size: 0.75rem;
+    }
+}
+
+.Card.sm {
+    width: 9rem;
+    min-width: 9rem;
+
+    .Card__body {
+        padding: 0.75rem;
+    }
+
+    .Card__title {
+        font-size: 0.875rem;
+    }
+
+    .Card__price {
+        font-size: 0.875rem;
+    }
+}

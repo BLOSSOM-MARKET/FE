@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import style from "./NavBar.module.scss";
 
 const NavBar = () => {
@@ -11,6 +12,8 @@ const NavBar = () => {
     const [isRegionAllDisabled, setIsRegionAllDisabled] = useState(true);
 
     const [inputVal, setInputVal] = useState("");
+
+    const navigate = useNavigate();
 
     const allBtns = {
         catAll: useRef(),
@@ -146,7 +149,8 @@ const NavBar = () => {
   return (
     <nav className={`navbar ${style.Nav}`}>
       <div className={`container-fluid ${style.Nav__InputBar}`}>
-        <img className={style.Nav__InputBar__Logo} src="/bm_logo.png" alt="logo" />
+        <img className={style.Nav__InputBar__Logo} src="/bm_logo.png" alt="logo"
+            onClick={() => navigate("/")} />
         <form className={`d-flex`} role="search">
           <input
             className={`form-control me-2 ${style.Nav__InputBar__Input}`}
