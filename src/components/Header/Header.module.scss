@@ -1,16 +1,24 @@
 .Header {
     max-width: 1200px;
     margin: 0 auto;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
+    margin-top: 16px;
 }
 
 .WelcomeBar {
     padding: 0 1rem;
     text-align: right;
+    font-size: 0.875rem;
 
     &__WelcomeMsg::after {
         content: "|";
         padding: 0 1rem;
+    }
+
+    &__nickname {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
     }
 
     &__logInBtn {

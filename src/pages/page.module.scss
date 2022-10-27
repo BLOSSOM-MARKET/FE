@@ -79,3 +79,30 @@
         }
     }
 }
+
+.My {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &__right {
+            &__button {
+                background-color: transparent;
+                border: none;
+                margin: 1rem;
+            }
+
+            &__icon {
+                font-size: 2rem;
+            }
+
+            &__desc {
+                font-size: 0.75rem;
+            }
+        }
+    }
+
+    &__MyItems {
+        
+    }
+}

@@ -10,7 +10,9 @@ import Header from './components/Header/Header';
 import Login from './pages/login';
 import Settings from './pages/settings';
 import ItemDetail from './pages/itemDetail';
+import PostItem from './pages/postItem';
 import Search from './pages/search';
+import MyPage from './pages/mypage';
 
 const App = () => {
     return (
@@ -23,8 +25,10 @@ const App = () => {
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/item/new" element={<PostItem/>} />
               <Route path="/item/:itemId" element={<ItemDetail />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/mypage" element={<MyPage />} />
             </Routes>
 
             <ChatMain /> {/* chatMain */} 

@@ -31,7 +31,13 @@ const Header = () => {
                         {
                             isLogin &&
                             <span className={style.WelcomeBar__WelcomeMsg}>
-                                {`${nickname}님, 환영합니다!`}
+                                <span 
+                                    onClick={() => navigate("/mypage")}
+                                    className={style.WelcomeBar__nickname}
+                                >
+                                    {nickname}
+                                </span>
+                                {`님, 환영합니다!`}
                             </span>
                         }
                         <span className={style.WelcomeBar__logInBtn}
