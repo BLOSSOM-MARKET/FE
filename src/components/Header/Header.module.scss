@@ -10,18 +10,20 @@
     text-align: right;
     font-size: 0.875rem;
 
-    &__WelcomeMsg::after {
+    
+
+    &__WelcomeMsg::after, &__signUpBtn::after {
         content: "|";
         padding: 0 1rem;
     }
 
-    &__nickname {
+     &__nickname {
         font-weight: bold;
         text-decoration: underline;
         cursor: pointer;
     }
 
-    &__logInBtn {
+    &__signUpBtn, &__logInBtn {
         cursor: pointer;
     }
 }

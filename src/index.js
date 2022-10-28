@@ -13,6 +13,8 @@ import ItemDetail from './pages/itemDetail';
 import PostItem from './pages/postItem';
 import Search from './pages/search';
 import MyPage from './pages/mypage';
+import MyPageItems from './pages/myPageItems';
+import SignUp from './pages/signUp';
 
 const App = () => {
     return (
@@ -29,6 +31,8 @@ const App = () => {
               <Route path="/item/:itemId" element={<ItemDetail />} />
               <Route path="/search" element={<Search />} />
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage/:itemPage" element={<MyPageItems />} />
+              <Route path="/signup" element={<SignUp />} />
             </Routes>
 
             <ChatMain /> {/* chatMain */} 

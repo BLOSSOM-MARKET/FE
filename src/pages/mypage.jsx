@@ -50,42 +50,32 @@ const MyPageHeader = () => {
   );
 };
 
-const MyCarousel = ({ icon, title, items }) => {
+const MyItemContainer = ({ icon, title, items, linkTo }) => {
+  const navigate = useNavigate();
+
+  if (items.length > 5) {
+    items = items.slice(0, 5);
+  }
+
   return (
-    <div
-      id="carouselExampleControls"
-      className="carousel slide"
-      data-bs-ride="carousel"
-    >
-      <div className="carousel-inner">
-        <div className="carousel-item active">
-          <div className="d-block w-100">
-              {
-                items.map((item, idx) => (
-                  <Card item={item} size={"sm"} key={`item-${idx}`} />
-                ))
-              }
-          </div>
+    <div className={style.My__MyItemContainer}>
+      <div className={style.My__MyItemContainer__header}>
+        <div>
+          <span>{icon}</span>
+          <span>{title}</span>
+        </div>
+        <div className={style.My__MyItemContainer__header__moreBtn}
+              onClick={() => navigate(linkTo)}>
+          more {">"}
         </div>
       </div>
-      <button
-        className="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleControls"
-        data-bs-slide="prev"
-      >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Previous</span>
-      </button>
-      <button
-        className="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleControls"
-        data-bs-slide="next"
-      >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Next</span>
-      </button>
+      <div className={style.My__MyItemContainer__body}>
+        {
+          items.map((item, idx) => (
+            <Card item={item} size={'sm'} key={`item-${idx}`} />
+          ))
+        }
+      </div>
     </div>
   );
 };
@@ -95,7 +85,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const [soldItems, setSoldItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
-  const [favItems, setFavItems] = useState([]);
+  const [wishItems, setWishItems] = useState([]);
 
   useEffect(() => {
     // axios
@@ -128,36 +118,48 @@ const MyPage = () => {
       },
     ];
 
-    const soldTemp = [...dummy, ...dummy, ...dummy];
-    const boughtTemp = [...dummy, ...dummy, ...dummy];
-    const favTemp = [...dummy, ...dummy, ...dummy];
+    const soldTemp = [...dummy, ...dummy];
+    const boughtTemp = [...dummy, ...dummy];
+    const wishTemp = [...dummy, ...dummy];
 
     setSoldItems(soldTemp);
     setBoughtItems(boughtTemp);
-    setFavItems(favTemp);
+    setWishItems(wishTemp);
   }, []);
 
   return (
     <div className={style.Page}>
-      <MyPageHeader />
-      <section className={style.My__MyItems}>
-        <MyCarousel
-          icon={<i className="bi bi-gear"></i>}
-          title={"판매 상품"}
-          items={soldItems}
-        />
-        <MyCarousel
-          icon={<i className="bi bi-gear"></i>}
-          title={"구매 상품"}
-          items={boughtItems}
-        />
-        <MyCarousel
-          icon={<i className="bi bi-gear"></i>}
-          title={"찜한 상품"}
-          items={favItems}
-        />
-      </section>
-    </div>
+      {
+        isLogin
+        ?
+            <div className={style.My}>
+              <MyPageHeader />
+              <section className={style.My__MyItems}>
+                <MyItemContainer
+                  icon={<i className="bi bi-cash-coin"></i>}
+                  title={"판매 상품"}
+                  items={soldItems}
+                  linkTo={"/mypage/soldItems"}
+                />
+                <MyItemContainer
+                  icon={<i className="bi bi-cart"></i>}
+                  title={"구매 상품"}
+                  items={boughtItems}
+                  linkTo={"/mypage/boughtItems"}
+                />
+                <MyItemContainer
+                  icon={<i className="bi bi-heart"></i>}
+                  title={"찜한 상품"}
+                  items={wishItems}
+                  linkTo={"/mypage/wishItems"}
+                />
+              </section>
+            </div>
+        :
+        <div>로그인해주세요</div>
+        
+      }
+      </div>
   );
 };
 

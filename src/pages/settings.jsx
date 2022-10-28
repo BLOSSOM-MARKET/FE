@@ -13,19 +13,9 @@ import Row from 'react-bootstrap/Row';
 
 import { Formik } from "formik";
 import * as yup from 'yup';
+import { checkDoubleNick } from "../utils/userInfoUtils";
 
 const MyProfile = ({ userId, nickname }) => {
-
-    const checkDoubleNick = () => {
-        // axios 
-        // 닉네임 중복 판별
-        // function(value){return new Promise((resolve, reject) => {
-        //     axios.post('http://localhost:5000/users/register/validEmail', {'email': value})
-        //     .then(res => {if(res.data.msg === 'Username already been taken'){resolve(false)} resolve(true)})
-        // })
-    
-        return false;
-    }
 
     const schema = yup.object().shape({
         nickname: yup.string()
@@ -149,13 +139,6 @@ const Settings = () => {
           ) : (
             <div>
               로그인해주세요
-              <button
-                className={`btn btn-outline-dark `}
-                type="button"
-                onClick={() => navigate("/login")}
-              >
-                회원탈퇴
-              </button>
             </div>
           )}
         </div>

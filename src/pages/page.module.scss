@@ -81,7 +81,12 @@
 }
 
 .My {
+    width: 80%;
+    margin: 0 auto;
+
     &__header {
+        width: 85%;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
 
@@ -103,6 +108,150 @@
     }
 
     &__MyItems {
-        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-top: 2rem;
+    }
+
+    &__MyItemContainer {
+        margin-bottom: 2rem;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+
+            &__moreBtn {
+                cursor: pointer;
+            }
+
+            i {
+                margin-right: 0.5rem;
+            }
+        }
+
+        &__body {
+            display: flex;
+        }
+    }
+}
+
+.MyPageItems {
+    &__header {
+        width: 20rem;
+        height: 3rem;
+        line-height: 3rem;
+        border-radius: 8px;
+        margin: 0 auto;
+        margin-bottom: 2rem;
+        text-align: center;
+        background-color: black;
+        color: white;
+    }
+}
+
+.Login {
+    &__logo {
+        width: 18rem;
+        cursor: pointer;
+    }
+
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    input {
+        width: 18rem;
+    }
+
+    &__LoginBtn {
+        width: 18rem;
+    }
+
+    &__signUpBtn {
+        &__wrapper {
+            width: 18rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        border: none;
+        border-bottom: 1px solid grey;
+        background-color: transparent;
+        color: grey;
+        display: inline-block;
+        font-size: 0.875rem;
+    }
+}
+
+.SignUp {
+    &__Form {
+        &__rowWrapper {
+            display: flex;
+        }
+
+        &__mailInput {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            width: 18rem !important;
+        }
+
+        &__mailTag {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+            width: 10rem;
+        }
+    }
+
+    &__logo {
+        width: 18rem;
+        cursor: pointer;
+
+        &__wrapper {
+            width: 35rem;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    
+    &__shortInput {
+        width: 28rem;
+    }
+
+    &__longInput {
+        width: 35rem;
+    }
+
+    &__SignUpBtn {
+        width: 35rem;
+        margin-top: 2rem;
+    }
+
+    &__Desc {
+        font-size: 0.75rem;
+        color: grey;
+        padding-left: 1rem;
+    }
+
+    &__btn {
+        margin-left: 1rem;
+        width: 6rem;
     }
 }
