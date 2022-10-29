@@ -34,9 +34,11 @@
     }
 
     &__body__section {
+        margin-bottom: 1.5rem;
 
         &__wrapper {
             display: flex;
+            padding: 1rem 0.5rem;
         }
 
         &__title {

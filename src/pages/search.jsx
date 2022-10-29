@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import ItemList from "../components/ItemList/ItemList";
 import { createQueryObj } from "../utils/searchutils";
 import style from "./page.module.scss";
@@ -9,9 +9,11 @@ const Search = () => {
     const [searchItems, setSearchItems] = useState([]);
     const [searchParams] = useSearchParams();
     const queryList = [...searchParams];
+    const q = createQueryObj(queryList);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const q = createQueryObj(queryList);
         console.log("queryObj: ", q);
         
         // axios
@@ -47,15 +49,22 @@ const Search = () => {
         ]
 
         setSearchItems(data);
-    }, []);
+    }, [searchParams]);
 
     const onChangeSort = (e) => {
         console.log(e.target.value)
+        const s = e.target.value;
+        const params = q;
+        params['sort'] = s;
+        navigate({
+            pathname: '/search',
+            search: `?${createSearchParams(params)}`
+        });
 
-        //axios
-        // 정렬기준에 따른 검색 결과 재요청
-        const data = [];
-        setSearchItems(data);
+        // //axios
+        // // 정렬기준에 따른 검색 결과 재요청
+        // const data = [];
+        // setSearchItems(data);
     }
 
     return (
@@ -68,6 +77,7 @@ const Search = () => {
                     <option value="2">조회순</option>
                     <option value="3">최신순</option>
                     <option value="4">낮은 가격순</option>
+                    <option value="5">좋아요순</option>
                 </select>
             </div>
             {
