@@ -15,6 +15,7 @@ import Search from './pages/search';
 import MyPage from './pages/mypage';
 import MyPageItems from './pages/myPageItems';
 import SignUp from './pages/signUp';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
     return (
@@ -36,6 +37,7 @@ const App = () => {
             </Routes>
 
             <ChatMain /> {/* chatMain */} 
+            <Footer />
         </SocketContextProvider>
           </UserContextProvider>
       </BrowserRouter>

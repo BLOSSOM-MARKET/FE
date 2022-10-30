@@ -1,0 +1,14 @@
+.Footer {
+    height: 10rem;
+    margin-top: 5rem;
+    padding: 2rem;
+
+    background-color: rgb(236, 236, 236);
+    color: rgb(108, 108, 108);
+
+    &__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 80%;
+    }
+}

@@ -10,11 +10,27 @@
     &__time {
         color: grey;
     }
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        &__wrapper {
+            overflow: hidden;
+        }
+
+    }
 }
 
 .Card.lg {
     width: 16rem;
     min-width: 16rem;
+
+    .Card__img__wrapper {
+        width: 16rem;
+        height: 16rem;
+    }
 }
 
 .Card.md {
@@ -23,6 +39,11 @@
     
     .Card__time {
         font-size: 0.75rem;
+    }
+
+    .Card__img__wrapper {
+        width: 12rem;
+        height: 12rem;
     }
 }
 
@@ -40,5 +61,10 @@
 
     .Card__price {
         font-size: 0.875rem;
+    }
+
+    .Card__img__wrapper {
+        width: 9rem;
+        height: 9rem;
     }
 }

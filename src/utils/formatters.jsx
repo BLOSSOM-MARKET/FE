@@ -16,7 +16,7 @@ const itemTimeFormatter = (time) => {
     return time;
 }
 
-// 세자리마다 콤마찍어주기
+// 세자리마다 콤마찍어주기 + 원
 const priceFormatter = (price) => {
     if (typeof price === 'number') {
         price = price.toString();

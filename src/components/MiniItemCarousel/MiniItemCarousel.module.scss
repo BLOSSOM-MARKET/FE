@@ -1,0 +1,48 @@
+.MiniItemCarousel {
+    display: flex;
+    margin-top: 2rem;
+
+    &__inner {
+        &__itemWrapper {
+            display: flex;
+
+        }
+    }
+
+
+    &__header {
+        margin-right: 1rem;
+    }
+
+    &__btn {
+        left: auto;
+        right: auto;
+        position: relative;
+        display: block;
+
+        &__wrapper {
+            position: relative;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        &__icon {
+            background-image: none;
+            color: black;
+            font-size: 1.5rem;
+
+            width: auto;
+            height: auto;
+        }
+    }
+
+    &__title {
+        width: 10rem;
+        text-align: right;
+        color: grey;
+        // font-weight: bold;
+        // font-size: 1.125rem;
+    }
+}
