@@ -8,7 +8,7 @@ import style from "./ChangePassword.module.scss";
 import { Formik } from "formik";
 import * as yup from 'yup';
 import yupPassword from 'yup-password';
-import { presentPWCheck, userDataValidation } from '../../utils/userInfoUtils';
+import { userDataValidation } from '../../utils/userInfoUtils';
 
 const ChangePassword =() => {
 
@@ -21,8 +21,7 @@ const ChangePassword =() => {
 
     
     const schema = yup.object().shape({
-        presentPW: pwField("현재")
-        .test("presentPWCheck", "현재 비밀번호와 일치하지 않습니다.", presentPWCheck),
+        presentPW: pwField("현재"),
         newPW: pwField("새로운")
                 .minLowercase(1, '1개 이상의 소문자 알파벳을 포함해야 합니다.')
                 .minNumbers(1, '1개 이상의 숫자를 포함해야 합니다.')
@@ -36,6 +35,7 @@ const ChangePassword =() => {
         console.log(newPW)
         // axios
         // 비밀번호 변경
+        // 현재 비밀번호 일치하지 않을 때 에러처리
 
         resetForm();
     }

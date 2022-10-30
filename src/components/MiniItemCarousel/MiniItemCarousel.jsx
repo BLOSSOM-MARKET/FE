@@ -8,7 +8,7 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
     const navigate = useNavigate();
     console.log(itemList)
     // onClick={() => navigate(`/item/${item.itemId}`)}
-    // d-block w-100 
+    
 
     const onPageBtnClick = (d) => {
         if ((d === -1 && currentPage === 1) || (d === 1 && currentPage === itemList.length)) return;
@@ -28,7 +28,7 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                 <div className={style.MiniItemCarousel__btn__wrapper}>
                     <button className={`carousel-control-prev ${style.MiniItemCarousel__btn}`} type="button" 
                         data-bs-target={`#carouselExampleIndicators${code}`} data-bs-slide="prev"
-                        // onClick={() => onPageBtnClick(-1)}
+                        onClick={() => onPageBtnClick(-1)}
                     >
                         <span className={`carousel-control-prev-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
                             <i className="bi bi-caret-left"></i>
@@ -40,7 +40,7 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                     </div>
                     <button className={`carousel-control-next ${style.MiniItemCarousel__btn}`} type="button" 
                         data-bs-target={`#carouselExampleIndicators${code}`} data-bs-slide="next"
-                        // onClick={() => onPageBtnClick(1)}
+                        onClick={() => onPageBtnClick(1)}
                     >
                         <span className={`carousel-control-next-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
                         <i className="bi bi-caret-right"></i>
@@ -59,9 +59,9 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                                     <div className={`${style.MiniItemCarousel__inner__itemWrapper}`}>
                                         {
                                             itemInnerList.map((item, idx2) => {
-                                                console.log(item)
+                                                // console.log(item)
                                                 return (
-                                                    <div key = { idx2 } >
+                                                    <div key = { idx2 } onClick={() => navigate(`/item/${item.itemId}`)}>
                                                         <Card item={item} size={"sm"} />
                                                     </div>
                                                 )
