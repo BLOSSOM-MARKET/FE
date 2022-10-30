@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { itemTimeFormatter, priceFormatter } from "../../utils/formatters";
+import { itemTimeFormatterShort, priceFormatter } from "../../utils/formatters";
 import style from "./Card.module.scss";
 
 const Card = ({item, size}) => {
@@ -18,7 +18,7 @@ const Card = ({item, size}) => {
                         &&
                         <>
                             <div className={style.Card__price}>{priceFormatter(item.price)}</div>
-                            <div className={style.Card__time}>{itemTimeFormatter(item.time)}</div>
+                            <div className={style.Card__time}>{itemTimeFormatterShort(item.time)}</div>
                         </>
                     }
                 </div>

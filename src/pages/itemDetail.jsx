@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import style from "./page.module.scss";
 
 import { UserContext } from "../contexts/UserContext";
-import { itemTimeFormatter, priceFormatter } from "../utils/formatters";
+import { itemTimeFormatterLong, priceFormatter } from "../utils/formatters";
 import { getCateName } from "../utils/categories";
 import MiniItemCarousel from "../components/MiniItemCarousel/MiniItemCarousel";
 
@@ -46,6 +46,7 @@ const ItemPicCarousel = ({ pics }) => {
 const ItemDetail = () => {
     const { itemId } = useParams();
     const [item, setItem] = useState(null);
+    const [isInWishlist, setIsInWishlist] = useState(false);
     const { userId, nickname, isLogin } = useContext(UserContext);
     const myId = userId;
 
@@ -150,10 +151,21 @@ const ItemDetail = () => {
 
         setItem(itemData);
 
+        if (itemData.myLike) {
+            setIsInWishlist(true);
+        }
+
     }, [itemId]);
 
     const onEditItem = () => {
         // 수정 페이지로 이동
+    }
+
+    const onClickWishBtn = () => {
+        setIsInWishlist(prev => !prev);
+
+        // axios
+        // 좋아요 변경
     }
 
 
@@ -173,8 +185,14 @@ const ItemDetail = () => {
                             </span>
                         </div>
                         <div className={style.Detail__sellerInfo__inner}>
-                            <div>
-                                <i className={`bi bi-heart ${style.Detail__sellerInfo__wishBtn}`}></i>
+                            <div onClick={onClickWishBtn}>
+                                {
+                                    isInWishlist
+                                    ?
+                                    <i className={`bi bi-heart-fill ${style.Detail__sellerInfo__wishBtn} ${style.Detail__sellerInfo__wishBtn__active}`}></i>
+                                    :
+                                    <i className={`bi bi-heart ${style.Detail__sellerInfo__wishBtn}`}></i>
+                                }
                             </div>
                             <button className="btn btn-dark" disabled={item.user.userId === myId}>
                                 채팅하기
@@ -187,7 +205,7 @@ const ItemDetail = () => {
                                 {item.title}
                             </div>
                             <div className={style.Detail__header__desc}>
-                                {getCateName(item.category)} · {itemTimeFormatter(item.uploadTime)}
+                                {getCateName(item.category)} · {itemTimeFormatterLong(item.uploadTime)}
                             </div>
                         </div>
                         <div className={style.Detail__header__price}>
