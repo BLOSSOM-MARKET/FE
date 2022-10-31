@@ -18,7 +18,7 @@ export const UserContextProvider = ({ children }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isInChatroom, setIsInChatroom] = useState(false);
 
-  const [ messages, setMessages ] = useState([]);
+  const [ messages, setMessages ] = useState({});
   const [ chatrooms, setChatrooms ] = useState([]);
 
   useEffect(() => {
@@ -35,11 +35,9 @@ export const UserContextProvider = ({ children }) => {
       setRoomId(tmproomId);
     }
     if (tmpNickName !== undefined && tmpNickName !== null) {
-      console.log("********set NickName: ", tmpNickName);
       setNickname(tmpNickName);
     }
     if (tmpUserId !== undefined && tmpUserId !== null) {
-      console.log("********set userId: ", tmpUserId);
       setUserId(tmpUserId);
     }
 

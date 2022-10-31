@@ -50,7 +50,7 @@ const ItemDetail = () => {
     const [isInWishlist, setIsInWishlist] = useState(false);
     const { userId, nickname, isLogin, setIsChatOpen, setIsInChatroom, 
         setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(UserContext);
-    const { joinRoom, updateMessage } = useContext(SocketContext);
+    const { joinRoom, updateMessage, addMessage } = useContext(SocketContext);
     const myId = userId;
 
     const navigate = useNavigate();
@@ -177,20 +177,21 @@ const ItemDetail = () => {
         // 좋아요 변경
     }
 
-    const addMessage = (message) => {
-        console.log(message);
-        setMessages((prev) => prev.concat(message));
-    }
+    // const addMessage = (message) => {
+    //     console.log(message);
+    //     setMessages((prev) => prev.concat(message));
+    // }
 
     const onClickChatting = () => {
         const ownerId = item.user.userId;
         const roomId = ownerId + myId + itemId;
+        const yourNick = item.user.nickname;
         setIsChatOpen(true);
         setIsInChatroom(true);
         setRoomId(roomId);
-        setYourNick(item.user.nickname);
-        joinRoom({roomId, yourId, myId, productId, nickname});
-        updateMessage(addMessage);
+        setYourNick(yourNick);
+        joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
+        updateMessage(addMessage, roomId);
         // moveToChatRoom(roomId);
     }
 

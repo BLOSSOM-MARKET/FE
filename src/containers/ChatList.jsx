@@ -8,30 +8,34 @@ import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
-    const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
+    const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms, addMessage } = useContext(SocketContext);
     const { roomId, nickname, userId, isLogin, isChatOpen,
         setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, 
-        yourNick, setYourNick, messages, setMessages, chatrooms, 
-        setChatrooms, yourId, productId } = useContext(UserContext);
+        yourNick, setYourNick, setYourId, messages, setMessages, chatrooms, 
+        setChatrooms, yourId, productId, setProductId } = useContext(UserContext);
 
     const myId = userId;
     // const [ messages, setMessages ] = useState([]);
     // const [ chatrooms, setChatrooms ] = useState([]);
     
-    const addMessage = (message) => {
-        console.log(message);
-        setMessages((prev) => prev.concat(message));
-    }
+    // const addMessage = (message) => {
+    //     console.log(message);
+    //     setMessages((prev) => prev.concat(message));
+    // }
 
     const addRoom = (room) => {
         console.log("room: ", room)
         setChatrooms((prev) => prev.concat(room));
     }
 
-    const moveToChatRoom = (roomId) => {
-        if (isLogin && isChatOpen && userId && roomId && nickname && messages.length <= 0) {
-            joinRoom({roomId, yourId, myId, productId, nickname});
-            updateMessage(addMessage);
+    const moveToChatRoom = (prop) => {
+        console.log("roomInfo", prop)
+        const {roomId, yourId, myId, productId, myNick, yourNick} = prop;
+        // const nextRoomId = prop.roomId;
+        // console.log("nextRooMID::::::", nextRoomId, roomId)
+        if (isLogin && isChatOpen && yourId && myId && roomId && nickname) {
+            joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
+            updateMessage(addMessage, roomId);
         }
     }
 
@@ -40,19 +44,29 @@ const Chat = () => {
             // joinRoom({roomId, userId, nickname});
             // updateMessage(addMessage);
             console.log("roomId: ", roomId)
-            joinRoom({roomId, yourId, myId, productId, nickname});
+            joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
             getRoomList({roomId, userId});
             updateRooms(addRoom);
         }
     }
 
-    const onClickChatroom = (roomId, yourNick) => {
+    // roomId: rm.roomId,
+    //                                 yourId: userId === rm.user1 ? rm.user2 : rm.user1,
+    //                                 myId: userId === rm.user1 ? rm.user1 : rm.user2,
+    //                                 productId: rm.productId,
+    //                                 myNick: nickname,
+    //                                 yourNick: yourNick
+
+    const onClickChatroom = (prop) => {
+        const {roomId, yourId, myId, productId, myNick, yourNick} = prop;
         setIsInChatroom(true);
-        console.log(roomId);
+        console.log("containers Chatlist - roomInfo: ", prop);
         setRoomId(roomId);
+        setYourId(yourId);
         setYourNick(yourNick);
-        // joinRoom({roomId, userId, nickname});
-        moveToChatRoom(roomId);
+        setProductId(productId);
+        // joinRoom({roomId, yourId, myId, productId, nickname});
+        // moveToChatRoom({roomId, yourId, myId, productId, myNick, yourNick});
     }
 
     const onClickBackBtn = () => {
@@ -65,7 +79,8 @@ const Chat = () => {
         try {
             console.log(userId,nickname);
             if (isInChatroom) {
-                moveToChatRoom();
+                const myNick = nickname;
+                moveToChatRoom({roomId, yourId, myId, productId, myNick, yourNick});
             } else {
                 moveToChatList();
             }

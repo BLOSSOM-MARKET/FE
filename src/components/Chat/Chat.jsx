@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -10,10 +10,14 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Message from '../Message';
 import style from './Chat.module.scss';
 import { chatTimeformatter } from '../../utils/formatters';
+import { UserContext } from '../../contexts/UserContext';
 
 const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
     const [input, setInput] = useState('');
     const messagesEndRef = useRef(null);
+    const {roomId} = useContext(UserContext);
+
+    console.log("!!!!!!!Chat messages:", messages)
 
     const onChange = (e) => {
         setInput(e.currentTarget.value);
@@ -63,12 +67,14 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
                 </div>
             </div>
             <List className={style.Chat__list} >
-                {messages.map(({userId, nickname, message, sendTime}, index) => 
+                {
+                    (messages !== undefined && roomId in messages) &&
+                messages[roomId].map(({userId, targetNick, message, sendTime}, index) => 
                               <Message 
                                   key={`${userId}_${index}`}
                                   userId={userId}
                                   myId={myId}
-                                  nickname={nickname}
+                                  nickname={targetNick}
                                   text={message}
                                   showName={!index || messages[index - 1].userId !== userId}
                                   showTime={showTime(messages[index-1], messages[index], messages[index+1])}

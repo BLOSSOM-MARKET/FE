@@ -16,9 +16,9 @@ import { UserContext } from '../../contexts/UserContext';
 import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters';
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
-    console.log(chatrooms)
+    console.log("~~~~~~~~~~chatrooms: ", chatrooms)
     // const { joinRoom } = useContext(SocketContext);
-    const { userId } = useContext(UserContext);
+    const { userId, yourNick, nickname } = useContext(UserContext);
 
     return (
         <Container maxWidth="sm" className={ChatStyle.Chat__wrapper}>
@@ -28,12 +28,19 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
             <List className={ChatListStyle.Chatroom__list} > <div>
                     {chatrooms.map((rm, idx) => 
                         <div key={`chatroom-${idx}`} className={ChatListStyle.Chatroom}
-                            onClick={() => onClickChatroom(rm.roomId, userId === rm.user1 ? rm.user2 : rm.user1)}>
+                            onClick={() => onClickChatroom(
+                                       { roomId : rm.roomId,
+                                        yourId : userId === rm.user1 ? rm.user2 : rm.user1,
+                                        myId : userId === rm.user1 ? rm.user1 : rm.user2,
+                                        productId : rm.productId,
+                                        myNick : nickname,
+                                        yourNick : nickname === rm.name1 ? rm.name2 : rm.name1}
+                                )}>
                             <div className={ChatListStyle.Chatroom__header}>
                                 <div>{userId === rm.user1
-                                    && rm.user2}</div>
+                                    && rm.name2}</div>
                                 <div>{userId === rm.user2
-                                    && rm.user1}</div>
+                                    && rm.name1}</div>
                             </div>
                             <div className={ChatListStyle.Chatroom__body}>
                                 <div className={ChatStyle.Chat__msgbox}>{rm.lastMsg}</div>
