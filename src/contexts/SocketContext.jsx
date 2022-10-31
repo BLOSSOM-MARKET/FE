@@ -5,15 +5,16 @@ import { UserContext } from "./UserContext";
 export const SocketContext = createContext();
 
 export const SocketContextProvider = ({children}) => {
-    let socket;
+    let socket = io("localhost:3001");;
     const { isChatOpen } = useContext(UserContext);
+
+    // if (isChatOpen) {
+    //     socket = io("localhost:3001");
+    //     console.log("socket connected");
+    // }
     
     useEffect(()=>{
         // socket = io(process.env.REACT_APP_SERVER_URL);
-        if (isChatOpen) {
-            socket = io("localhost:3001");
-            console.log("socket connected");
-        }
         return () => {
             disconnectSocket();
         }
@@ -31,9 +32,9 @@ export const SocketContextProvider = ({children}) => {
         socket.emit('GET_ROOMS', {roomId, userId}); 
     }
     
-    const joinRoom = ({roomId, userId, nickname}) => {
+    const joinRoom = ({roomId, yourId, myId, productId, nickname}) => {
         console.log(socket);
-        socket.emit('JOIN_ROOM', {roomId, userId, nickname}); 
+        socket.emit('JOIN_ROOM', {roomId, yourId, myId, productId, nickname}); 
     }
     
     const sendMessage = ({roomId, userId, nickname, message}) => {

@@ -19,18 +19,18 @@ const Chat = () => {
         setMessages((prev) => prev.concat(message));
     }
         
-    useEffect(() => {
-        try {
-            console.log(userId, roomId, nickname);
-            if (isLogin && isChatOpen && userId && roomId && nickname && messages.length <= 0) {
-                joinRoom({roomId, userId, nickname});
-                updateMessage(addMessage);
-            }
-        } catch (err) {
-            toast.error("에러가 발생했습니다.");
-            console.error(err);
-        }
-    }, [isLogin, isChatOpen]);
+    // useEffect(() => {
+    //     try {
+    //         console.log(userId, roomId, nickname);
+    //         if (isLogin && isChatOpen && userId && roomId && nickname && messages.length <= 0) {
+    //             joinRoom({roomId, userId, nickname});
+    //             updateMessage(addMessage);
+    //         }
+    //     } catch (err) {
+    //         toast.error("에러가 발생했습니다.");
+    //         console.error(err);
+    //     }
+    // }, [isLogin, isChatOpen]);
     
     const submitMessage = (message) => {
         if(message.trim()) {

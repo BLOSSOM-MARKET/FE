@@ -10,10 +10,16 @@ export const UserContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState("myRooms");
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("defaultUserId");
+
+  const [yourId, setYourId] = useState(null);
   const [yourNick, setYourNick] = useState(null);
+  const [productId, setProductId] = useState(null);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isInChatroom, setIsInChatroom] = useState(false);
+
+  const [ messages, setMessages ] = useState([]);
+  const [ chatrooms, setChatrooms ] = useState([]);
 
   useEffect(() => {
     const tmproomId = sessionStorage.getItem("roomId");
@@ -73,6 +79,14 @@ export const UserContextProvider = ({ children }) => {
         setIsInChatroom,
         yourNick,
         setYourNick,
+        messages, 
+        setMessages,
+        chatrooms, 
+        setChatrooms,
+        yourId, 
+        setYourId, 
+        productId,
+        setProductId, 
       }}
     >
       {children}

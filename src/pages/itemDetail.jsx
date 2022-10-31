@@ -8,6 +8,7 @@ import { UserContext } from "../contexts/UserContext";
 import { itemTimeFormatterLong, priceFormatter } from "../utils/formatters";
 import { getCateName } from "../utils/categories";
 import MiniItemCarousel from "../components/MiniItemCarousel/MiniItemCarousel";
+import { SocketContext } from "../contexts/SocketContext";
 
 const ItemPicCarousel = ({ pics }) => {
     return (
@@ -47,7 +48,9 @@ const ItemDetail = () => {
     const { itemId } = useParams();
     const [item, setItem] = useState(null);
     const [isInWishlist, setIsInWishlist] = useState(false);
-    const { userId, nickname, isLogin } = useContext(UserContext);
+    const { userId, nickname, isLogin, setIsChatOpen, setIsInChatroom, 
+        setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(UserContext);
+    const { joinRoom, updateMessage } = useContext(SocketContext);
     const myId = userId;
 
     const navigate = useNavigate();
@@ -150,6 +153,12 @@ const ItemDetail = () => {
         }
 
         setItem(itemData);
+    
+        // UserContext에 저장
+        setYourId(itemData.user.userId);
+        setYourNick(itemData.user.nickname);
+        setProductId(itemId);
+
 
         if (itemData.myLike) {
             setIsInWishlist(true);
@@ -168,6 +177,31 @@ const ItemDetail = () => {
         // 좋아요 변경
     }
 
+    const addMessage = (message) => {
+        console.log(message);
+        setMessages((prev) => prev.concat(message));
+    }
+
+    const onClickChatting = () => {
+        const ownerId = item.user.userId;
+        const roomId = ownerId + myId + itemId;
+        setIsChatOpen(true);
+        setIsInChatroom(true);
+        setRoomId(roomId);
+        setYourNick(item.user.nickname);
+        joinRoom({roomId, yourId, myId, productId, nickname});
+        updateMessage(addMessage);
+        // moveToChatRoom(roomId);
+    }
+
+    // const onClickChatroom = (roomId, yourNick) => {
+    //     setIsInChatroom(true);
+    //     console.log(roomId);
+    //     setRoomId(roomId);
+    //     setYourNick(yourNick);
+    //     // joinRoom({roomId, userId, nickname});
+    //     moveToChatRoom(roomId);
+    // }
 
     return (
         <div className={style.Page}>
@@ -194,7 +228,8 @@ const ItemDetail = () => {
                                     <i className={`bi bi-heart ${style.Detail__sellerInfo__wishBtn}`}></i>
                                 }
                             </div>
-                            <button className="btn btn-dark" disabled={item.user.userId === myId}>
+                            <button className="btn btn-dark" onClick={onClickChatting}
+                                disabled={item.user.userId === myId}>
                                 채팅하기
                             </button>
                         </div>

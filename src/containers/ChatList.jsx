@@ -9,9 +9,14 @@ import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
     const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
-    const { roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, yourNick, setYourNick} = useContext(UserContext);
-    const [ messages, setMessages ] = useState([]);
-    const [ chatrooms, setChatrooms ] = useState([]);
+    const { roomId, nickname, userId, isLogin, isChatOpen,
+        setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, 
+        yourNick, setYourNick, messages, setMessages, chatrooms, 
+        setChatrooms, yourId, productId } = useContext(UserContext);
+
+    const myId = userId;
+    // const [ messages, setMessages ] = useState([]);
+    // const [ chatrooms, setChatrooms ] = useState([]);
     
     const addMessage = (message) => {
         console.log(message);
@@ -25,7 +30,7 @@ const Chat = () => {
 
     const moveToChatRoom = (roomId) => {
         if (isLogin && isChatOpen && userId && roomId && nickname && messages.length <= 0) {
-            joinRoom({roomId, userId, nickname});
+            joinRoom({roomId, yourId, myId, productId, nickname});
             updateMessage(addMessage);
         }
     }
@@ -35,7 +40,7 @@ const Chat = () => {
             // joinRoom({roomId, userId, nickname});
             // updateMessage(addMessage);
             console.log("roomId: ", roomId)
-            joinRoom({roomId, userId, nickname});
+            joinRoom({roomId, yourId, myId, productId, nickname});
             getRoomList({roomId, userId});
             updateRooms(addRoom);
         }

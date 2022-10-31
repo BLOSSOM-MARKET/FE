@@ -14,7 +14,7 @@ const Message = ({userId, text, showName, showTime, myId, time, nickname}) => {
                     `${isMyMessage? style.Message__my__name : style.Message__other__name}
                     ${style.Message__username}`
                     }>
-                    {userId}
+                    {nickname}
                 </div>}
                 <div className={`${style.Message__msgbox}  ${isMyMessage? style.Message__my : style.Message__other}`}>
                     {text}

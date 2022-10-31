@@ -17,7 +17,7 @@ import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
     console.log(chatrooms)
-    const { joinRoom } = useContext(SocketContext);
+    // const { joinRoom } = useContext(SocketContext);
     const { userId } = useContext(UserContext);
 
     return (
@@ -43,7 +43,7 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                         </div>)}
                 </div>
             </List>
-            : <div>대화를 시작해보세요!</div>
+            : <div className={ChatStyle.Chat__info}>대화를 시작해보세요!</div>
             }
         </Container>
     )
