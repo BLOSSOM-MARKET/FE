@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Button, Carousel, CarouselItem, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Card from "../Card/Card";
 import style from "./MiniItemCarousel.module.scss";
 
-const MiniItemCarousel = ({ code, title, itemList }) => {
+const MiniItemCarousel = ({ title, itemList }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
-    console.log(itemList)
-    // onClick={() => navigate(`/item/${item.itemId}`)}
-    
+
+    let targetRef = useRef();
+
 
     const onPageBtnClick = (d) => {
         if ((d === -1 && currentPage === 1) || (d === 1 && currentPage === itemList.length)) return;
         setCurrentPage(prev => prev + d);
+        if (d === -1) {
+            targetRef.current.prev();
+        } else {
+            targetRef.current.next();
+        }
     }
 
     return (
@@ -26,55 +32,47 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                     }
                 </div>
                 <div className={style.MiniItemCarousel__btn__wrapper}>
-                    <button className={`carousel-control-prev ${style.MiniItemCarousel__btn}`} type="button" 
-                        data-bs-target={`#carouselExampleControls${code}`} data-bs-slide="prev"
+                    <button className={`carousel-control-prev ${style.MiniItemCarousel__btn}`}
                         onClick={() => onPageBtnClick(-1)}
                     >
-                        <span className={`carousel-control-prev-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
+                        <span className={style.MiniItemCarousel__btn__icon}>
                             <i className="bi bi-caret-left"></i>
                         </span>
-                        <span className="visually-hidden">Previous</span>
                     </button>
                     <label className={style.MiniItemCarousel__btn__label}>
                         {currentPage} / {itemList.length}
                     </label>
-                    <button className={`carousel-control-next ${style.MiniItemCarousel__btn}`} type="button" 
-                        data-bs-target={`#carouselExampleControls${code}`} data-bs-slide="next"
+                    <button className={`carousel-control-next ${style.MiniItemCarousel__btn}`}
                         onClick={() => onPageBtnClick(1)}
                     >
-                        <span className={`carousel-control-next-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
-                        <i className="bi bi-caret-right"></i>
+                        <span className={style.MiniItemCarousel__btn__icon}>
+                            <i className="bi bi-caret-right"></i>
                         </span>
-                        <span className="visually-hidden">Next</span>
                     </button>
                 </div>
-
             </div>
-            <div className={style.MiniItemCarousel__carousel}>
-                <div id={`#carouselExampleControls${code}`} className={`carousel slide ${style.MiniItemCarousel__inner__wrapper}`} data-bs-ride="carousel">
-                    <div className={`carousel-inner ${style.MiniItemCarousel__inner}`}>
-                        {
-                            itemList.map((itemInnerList, idx) => (
-                                <div className={`carousel-item ${idx === 0 ? 'active' : undefined}`} key={`item-pic-${idx}`}>
-                                    <div className={`${style.MiniItemCarousel__inner__itemWrapper}`}>
-                                        {
-                                            itemInnerList.map((item, idx2) => {
-                                                // console.log(item)
-                                                return (
-                                                    <div key = { idx2 } onClick={() => navigate(`/item/${item.itemId}`)}>
-                                                        <Card item={item} size={"sm"} />
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    
+            <Carousel className={style.MiniItemCarousel__carousel} controls={false} indicators={false} ref={targetRef}>
+                {
+                    itemList.map((itemInnerList, idx) => (
+                        <Carousel.Item key={`carousel_item_${idx}`}>
+                            <div key={`item-pic-${idx}`}>
+                                <div className={`${style.MiniItemCarousel__inner__itemWrapper}`}>
+                                    {
+                                        itemInnerList.map((item, idx2) => {
+                                            // console.log(item)
+                                            return (
+                                                <div key={idx2} onClick={() => navigate(`/item/${item.itemId}`)}>
+                                                    <Card item={item} size={"sm"} />
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
+                            </div>
+                        </Carousel.Item>
                     ))
-                        }
-                </div>
-            </div>
-        </div>
+                }
+            </Carousel>
 
         </div >
     )

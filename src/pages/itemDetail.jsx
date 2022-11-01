@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./page.module.scss";
+import styleC from "../components/MiniItemCarousel/MiniItemCarousel.module.scss";
 
 import { UserContext } from "../contexts/UserContext";
 import { itemTimeFormatterLong, priceFormatter } from "../utils/formatters";
@@ -10,6 +11,8 @@ import { getCateName } from "../utils/categories";
 import MiniItemCarousel from "../components/MiniItemCarousel/MiniItemCarousel";
 import { SocketContext } from "../contexts/SocketContext";
 import { ChattingContext } from "../contexts/ChattingContext";
+import Card from "../components/Card/Card";
+import { Button, Carousel, Container, Row } from "react-bootstrap";
 
 const ItemPicCarousel = ({ pics }) => {
     const { isChatOpen } = useContext(ChattingContext);
@@ -18,10 +21,10 @@ const ItemPicCarousel = ({ pics }) => {
         <div id="carouselExampleIndicators" className={`carousel slide ${style.Detail__carousel__inner}`} data-bs-ride="true">
             <div className="carousel-indicators">
                 {
-                    pics.map((pic, idx) =>(
-                        <button type="button" data-bs-target="#carouselExampleIndicators" 
-                            data-bs-slide-to={idx} className={idx===0 ? `active` : undefined} 
-                            aria-current={idx===0 ? "true" : "false"} aria-label={`Slide ${idx}`} key={`indeicator-${idx}`}>
+                    pics.map((pic, idx) => (
+                        <button type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide-to={idx} className={idx === 0 ? `active` : undefined}
+                            aria-current={idx === 0 ? "true" : "false"} aria-label={`Slide ${idx}`} key={`indeicator-${idx}`}>
                         </button>
                     ))
                 }
@@ -52,7 +55,7 @@ const ItemDetail = () => {
     const [item, setItem] = useState(null);
     const [isInWishlist, setIsInWishlist] = useState(false);
     const { userId, nickname, isLogin } = useContext(UserContext);
-    const { setIsChatOpen, setIsInChatroom, 
+    const { setIsChatOpen, setIsInChatroom,
         setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(ChattingContext);
     const { joinRoom, updateMessage, addMessage } = useContext(SocketContext);
     const myId = userId;
@@ -157,7 +160,7 @@ const ItemDetail = () => {
         }
 
         setItem(itemData);
-    
+
         // UserContext에 저장
         setYourId(itemData.user.userId);
         setYourNick(itemData.user.nickname);
@@ -194,9 +197,25 @@ const ItemDetail = () => {
         setIsInChatroom(true);
         setRoomId(roomId);
         setYourNick(yourNick);
-        joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
+        joinRoom({ roomId, yourId, myId, productId, nickname, yourNick });
         // updateMessage();
         // moveToChatRoom(roomId);
+    }
+
+    const [curPage1, setCurPage1] = useState(1);
+    const [curPage2, setCurPage2] = useState(1);
+
+    const carousel1 = useRef();
+    const onPrevClick = (targetC) => {
+        targetC.current.prev();
+      };
+      const onNextClick = (targetC) => {
+        targetC.current.next();
+      };
+
+    const onPageBtnClick = (d, currentPage, setCurrentPage, itemList) => {
+        if ((d === -1 && currentPage === 1) || (d === 1 && currentPage === itemList.length)) return;
+        setCurrentPage(prev => prev + d);
     }
 
     return (
@@ -218,10 +237,10 @@ const ItemDetail = () => {
                             <div onClick={onClickWishBtn}>
                                 {
                                     isInWishlist
-                                    ?
-                                    <i className={`bi bi-heart-fill ${style.Detail__sellerInfo__wishBtn} ${style.Detail__sellerInfo__wishBtn__active}`}></i>
-                                    :
-                                    <i className={`bi bi-heart ${style.Detail__sellerInfo__wishBtn}`}></i>
+                                        ?
+                                        <i className={`bi bi-heart-fill ${style.Detail__sellerInfo__wishBtn} ${style.Detail__sellerInfo__wishBtn__active}`}></i>
+                                        :
+                                        <i className={`bi bi-heart ${style.Detail__sellerInfo__wishBtn}`}></i>
                                 }
                             </div>
                             <button className="btn btn-dark" onClick={onClickChatting}
@@ -246,7 +265,7 @@ const ItemDetail = () => {
                     <section className={style.Detail__body}>
                         {
                             item.user.userId === myId
-                            && 
+                            &&
                             <button className="btn btn-dark" onClick={onEditItem}>
                                 수정하기
                             </button>
@@ -258,9 +277,10 @@ const ItemDetail = () => {
                             조회 {item.viewNum} · 찜 {item.likeNum}
                         </div>
                     </section>
+                    {/*  */}
                     <section className={style.Detail__recommend}>
                         <MiniItemCarousel code={"00"} title={["다른 고객이 많이 본", "연관 상품"]} itemList={item.relatedItems} />
-                        <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname+"님" : "당신" }이 찾고 계신`, `바로 그 상품`]} itemList={item.findingItems} />
+                        <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname + "님" : "당신"}이 찾고 계신`, `바로 그 상품`]} itemList={item.findingItems} />
                     </section>
                 </div>
             }
