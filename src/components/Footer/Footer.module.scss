@@ -1,5 +1,5 @@
 .Footer {
-    height: 10rem;
+    height: 15rem;
     margin-top: 5rem;
     padding: 2rem;
 
@@ -7,8 +7,24 @@
     color: rgb(108, 108, 108);
 
     &__inner {
-        max-width: 1200px;
+        max-width: 1080px;
         margin: 0 auto;
-        width: 80%;
+
+        &__text {
+            font-weight: 100;
+            font-size: 0.875rem;
+            color: grey;
+        }
+
+        p {
+            margin: 0.125rem;
+        }
+    }
+
+    &__logo {
+        width: 150px;
+        opacity: 0.75;
+        margin-bottom: 0.5rem;
+        margin-left: -10px;
     }
 }
