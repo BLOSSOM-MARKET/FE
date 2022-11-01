@@ -63,16 +63,17 @@ export const SocketContextProvider = ({children}) => {
     // }, [messages])
     
     const updateMessage = (func) => {
-        console.log("UPDATE MESSAGE OUTER_____________")
-        socket.on('UPDATE_MESSAGE', (msg) => {
-            console.log("update message-----------------")
-            setMessages((prev) => {
-                console.log(">>>>>>prev: ", msg.msgIdx, prev)
-                // return prev.concat(msg)
-                return [...prev, msg]
-            })
-            // setMessages([msg])
-        });
+        console.log("UPDATE Message!!")
+        socket.on('UPDATE_MESSAGE', (msgs) => func(msgs));
+    }
+
+    const updateNewMessage = () => {
+        console.log("UPDATE NEW Message!!------------")
+        socket.on('UPDATE_NEW_MESSAGE', (msg) => setMessages(prev => {
+            if (prev.some(item => item.sendTime === msg.sendTime)) {
+                return prev
+            } else return [...prev, msg]
+        }));
     }
 
     const updateRooms = (func) => {
@@ -81,7 +82,7 @@ export const SocketContextProvider = ({children}) => {
     }
     
     return (
-        <SocketContext.Provider value={{disconnectSocket, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms }}>
+        <SocketContext.Provider value={{disconnectSocket, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms, updateNewMessage }}>
             {children}
         </SocketContext.Provider>
     );

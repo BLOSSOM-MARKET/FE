@@ -34,13 +34,13 @@ const Chat = () => {
     //     }
     // }, [isLogin, isChatOpen]);
     
-    const submitMessage = (message) => {
-        if(message.trim()) {
-            sendMessage({roomId, userId, nickname, message});
-        } else {
-            toast.error("메세지를 입력해주세요.")
-        }
-    }
+    // const submitMessage = (message) => {
+    //     if(message.trim()) {
+    //         sendMessage({roomId, userId, nickname, message});
+    //     } else {
+    //         toast.error("메세지를 입력해주세요.")
+    //     }
+    // }
     
     return (
         isChatOpen &&
