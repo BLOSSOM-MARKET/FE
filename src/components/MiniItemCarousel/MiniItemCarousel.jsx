@@ -27,7 +27,7 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                 </div>
                 <div className={style.MiniItemCarousel__btn__wrapper}>
                     <button className={`carousel-control-prev ${style.MiniItemCarousel__btn}`} type="button" 
-                        data-bs-target={`#carouselExampleIndicators${code}`} data-bs-slide="prev"
+                        data-bs-target={`#carouselExampleControls${code}`} data-bs-slide="prev"
                         onClick={() => onPageBtnClick(-1)}
                     >
                         <span className={`carousel-control-prev-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
@@ -35,11 +35,11 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                         </span>
                         <span className="visually-hidden">Previous</span>
                     </button>
-                    <div>
+                    <label className={style.MiniItemCarousel__btn__label}>
                         {currentPage} / {itemList.length}
-                    </div>
+                    </label>
                     <button className={`carousel-control-next ${style.MiniItemCarousel__btn}`} type="button" 
-                        data-bs-target={`#carouselExampleIndicators${code}`} data-bs-slide="next"
+                        data-bs-target={`#carouselExampleControls${code}`} data-bs-slide="next"
                         onClick={() => onPageBtnClick(1)}
                     >
                         <span className={`carousel-control-next-icon ${style.MiniItemCarousel__btn__icon}`} aria-hidden="true">
@@ -51,7 +51,7 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
 
             </div>
             <div className={style.MiniItemCarousel__carousel}>
-                <div id={`#carouselExampleIndicators${code}`} className={`carousel slide ${style.MiniItemCarousel__inner__wrapper}`} data-bs-ride="true">
+                <div id={`#carouselExampleControls${code}`} className={`carousel slide ${style.MiniItemCarousel__inner__wrapper}`} data-bs-ride="carousel">
                     <div className={`carousel-inner ${style.MiniItemCarousel__inner}`}>
                         {
                             itemList.map((itemInnerList, idx) => (
@@ -67,8 +67,9 @@ const MiniItemCarousel = ({ code, title, itemList }) => {
                                                 )
                                             })
                                         }
+                                    </div>
+                                    
                                 </div>
-                            </div>
                     ))
                         }
                 </div>
