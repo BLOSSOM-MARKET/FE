@@ -94,7 +94,24 @@
         position: fixed;
         right: 3rem;
         bottom: 9rem;
+
+        z-index: 10;
+
+        // box-shadow: 0 0 100vw rgb(80, 80, 80);
+
+        // &__backdrop {
+        //     width: 100vw;
+        //     height: 100vh;
+        //     background-color: black;
+        // }
     }
+
+    // &__wrapper::after {
+    //     content: "";
+    //     width: 100vw;
+    //     height: 100vh;
+    //     background-color: black;
+    // }
 
     &__info {
         padding-top: 24px;
