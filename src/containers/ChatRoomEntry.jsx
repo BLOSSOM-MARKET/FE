@@ -1,34 +1,23 @@
-import { useNavigate } from "react-router-dom";
-
-import ChatRoomEntryComp from '../components/ChatRoomEntry';
-
-import Button from '@mui/material/Button';
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import style from "./ChatRoomEntry.module.scss";
 import Chat from "../pages/chat";
 import { SocketContext } from "../contexts/SocketContext";
+import { ChattingContext } from "../contexts/ChattingContext";
 
 const ChatRoomEntry = () => {
-    // const navigate = useNavigate();
-    const {chatRoomId, nickname, userId, isChatOpen, setIsChatOpen} = useContext(UserContext);
+    const { nickname, userId } = useContext(UserContext);
+    const { roomId, isChatOpen, setIsChatOpen} = useContext(ChattingContext);
     const {disconnectSocket} = useContext(SocketContext);
 
-    // const enterChatRoom = () => {
-    //     console.log("enter ChatRoom: ", nickname, chatRoomId);
-    //     // navigate(`/chatroom/${chatRoomId}/${nickname}`)
-    //     toggleChatPop();
-    // }
-
     useEffect(() => {
-        console.log("채팅닫혀있음: ",isChatOpen)
+        console.log("채팅열려있음: ",isChatOpen, roomId);
         if (!isChatOpen) {
             disconnectSocket();
         }
     }, [isChatOpen])
 
     const toggleChatPop = () => {
-        console.log("enter ChatRoom: ", nickname, chatRoomId);
         setIsChatOpen(prev => !prev);
     }
     

@@ -4,13 +4,15 @@ import { toast } from "react-toastify";
 
 import ChatComp from '../components/Chat';
 import ChatList from '../components/Chat/ChatList';
+import { ChattingContext } from '../contexts/ChattingContext';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
     // const { roomId, userId } = useParams();
     const { joinRoom, sendMessage, updateMessage, addMessage } = useContext(SocketContext);
-    const {roomId, nickname, userId, isLogin, isChatOpen, setIsChatOpen} = useContext(UserContext);
+    const { nickname, userId, isLogin } = useContext(UserContext);
+    const { roomId, isChatOpen, setIsChatOpen } = useContext(ChattingContext);
     const [ messages, setMessages ] = useState([]);
     // const navigate = useNavigate();
     

@@ -7,6 +7,24 @@
     //     border: 1px solid rgba(0, 0, 0, 0.23);
     // }
 
+    &__daySplitter {
+        background-color: rgb(72, 72, 72);
+        opacity: 0.8;
+        color: white;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        text-align: center;
+        display: inline-block;
+        padding: 0.25rem 0.875rem;
+        margin: 2.5rem 0;
+
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
     &__msgbox {
         width: 80%;
         max-width: 80%;
@@ -33,6 +51,36 @@
             cursor: pointer;
             padding: 0 0.25rem;
         }
+
+        &__inner {
+            display: flex;
+            align-items: center;
+        }
+
+        &__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            &__wrapper {
+                width: 46px;
+                height: 46px;
+                overflow: hidden;
+
+                border-radius: 8px;
+                margin-right: 0.5rem;
+            }
+        }
+
+        &__nickname {
+            font-weight: bold;
+        }
+
+        &__productName {
+            color: grey;
+            font-size: 0.75rem;
+        }
+
     }
 
     &__wrapper {

@@ -19,7 +19,7 @@ const Message = ({userId, text, showName, showTime, myId, time, nickname}) => {
                 <div className={`${style.Message__msgbox}  ${isMyMessage? style.Message__my : style.Message__other}`}>
                     {text}
                 </div>
-                <div className={style.Message__time}>
+                <div className={`${isMyMessage? style.Message__my__time : style.Message__other__time} ${style.Message__time}`}>
                     {showTime && time}
                 </div>
             </Stack>

@@ -9,13 +9,14 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Message from '../Message';
 import style from './Chat.module.scss';
-import { chatTimeformatter } from '../../utils/formatters';
-import { UserContext } from '../../contexts/UserContext';
+import { chatDateFormatter, chatTimeformatter } from '../../utils/formatters';
+import moment from 'moment/moment';
+import { ChattingContext } from '../../contexts/ChattingContext';
 
 const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
     const [input, setInput] = useState('');
     const messagesEndRef = useRef(null);
-    const {roomId} = useContext(UserContext);
+    const { roomId, productId, productName, productImg } = useContext(ChattingContext);
 
     console.log("!!!!!!!Chat messages:", messages)
 
@@ -36,6 +37,12 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
         scrollToBottom();
     }, [messages]);
 
+    // 상품정보 가져오기
+    useEffect(() => {
+        
+
+    }, []);
+
     const showTime = (prevMsg, thisMsg, nextMsg) => {
         if (!nextMsg) return true;
 
@@ -53,6 +60,10 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
         return false;
     }
 
+    const isSameDay = (time1, time2) => {
+        return moment(time1).isSame(time2, "day");
+    }
+
     return (
         <Container maxWidth="sm" className={style.Chat__wrapper}>
             <div className={style.Chat__header}>
@@ -61,25 +72,41 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
                 >
                     {"<"}
                 </button>
-                <div>
-                    <div>{yourNick}</div>
-                    <div>상품정보</div>
+                <div className={style.Chat__header__inner}>
+                    <div className={style.Chat__header__img__wrapper}>
+                        <img src={productImg} alt="product_img" className={style.Chat__header__img}/>
+                    </div>
+                    <div>
+                        <div className={style.Chat__header__nickname}>{yourNick}</div>
+                        <div className={style.Chat__header__productName}>{productName}</div>
+                    </div>
                 </div>
             </div>
             <List className={style.Chat__list} >
                 {
-                    (messages !== undefined && roomId in messages) &&
-                messages[roomId].map(({userId, targetNick, message, sendTime}, index) => 
-                              <Message 
-                                  key={`${userId}_${index}`}
-                                  userId={userId}
-                                  myId={myId}
-                                  nickname={targetNick}
-                                  text={message}
-                                  showName={!index || messages[index - 1].userId !== userId}
-                                  showTime={showTime(messages[index-1], messages[index], messages[index+1])}
-                                  time={chatTimeformatter(sendTime)}
-                              />
+                messages.map(({userId, targetNick, message, sendTime}, index) => (
+                    <div key={`time_${userId}_${index}`}>
+                        {
+                            (messages[index-1] && !isSameDay(messages[index-1].sendTime, sendTime)) 
+                            &&
+                            <div className={style.Chat__daySplitter__wrapper}>
+                                <div className={style.Chat__daySplitter}>
+                                    {chatDateFormatter(sendTime)}
+                                </div>
+                            </div>
+                        }
+                        <Message 
+                            userId={userId}
+                            myId={myId}
+                            nickname={targetNick}
+                            text={message}
+                            showName={!index || messages[index - 1].userId !== userId}
+                            showTime={showTime(messages[index-1], messages[index], messages[index+1])}
+                            time={chatTimeformatter(sendTime)}
+                        />
+                    </div>
+                )
+                              
                              )}
             <div ref={messagesEndRef} />
             </List>

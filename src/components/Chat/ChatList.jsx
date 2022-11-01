@@ -14,11 +14,12 @@ import moment from 'moment';
 import { SocketContext } from '../../contexts/SocketContext';
 import { UserContext } from '../../contexts/UserContext';
 import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters';
+import { ChattingContext } from '../../contexts/ChattingContext';
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
     console.log("~~~~~~~~~~chatrooms: ", chatrooms)
-    // const { joinRoom } = useContext(SocketContext);
-    const { userId, yourNick, nickname } = useContext(UserContext);
+    const { userId, nickname } = useContext(UserContext);
+    const { yourNick} = useContext(ChattingContext);
 
     return (
         <Container maxWidth="sm" className={ChatStyle.Chat__wrapper}>
@@ -33,17 +34,32 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                                         yourId : userId === rm.user1 ? rm.user2 : rm.user1,
                                         myId : userId === rm.user1 ? rm.user1 : rm.user2,
                                         productId : rm.productId,
+                                        productName: rm.productName,
+                                        productImg: rm.productImg,
                                         myNick : nickname,
                                         yourNick : nickname === rm.name1 ? rm.name2 : rm.name1}
                                 )}>
-                            <div className={ChatListStyle.Chatroom__header}>
-                                <div>{userId === rm.user1
-                                    && rm.name2}</div>
-                                <div>{userId === rm.user2
-                                    && rm.name1}</div>
+                            <div className={ChatListStyle.Chatroom__left}>
+                                <div className={ChatListStyle.Chatroom__productImg__wrapper}>
+                                    <img src={rm.productImg} alt="product_img" 
+                                        className={ChatListStyle.Chatroom__productImg} />
+                                </div>
+                                <div>
+                                    <div className={ChatListStyle.Chatroom__header}>
+                                        <div className={ChatListStyle.Chatroom__nickname}>
+                                            <div>{userId === rm.user1
+                                                && rm.name2}</div>
+                                            <div>{userId === rm.user2
+                                                && rm.name1}</div>
+                                        </div>
+                                        <div className={ChatListStyle.Chatroom__productName}>
+                                                {rm.productName}
+                                        </div>
+                                    </div>
+                                    <div className={`${ChatStyle.Chat__msgbox} ${ChatListStyle.Chatroom__msgbox}`}>{rm.lastMsg}</div>
+                                </div>
                             </div>
-                            <div className={ChatListStyle.Chatroom__body}>
-                                <div className={ChatStyle.Chat__msgbox}>{rm.lastMsg}</div>
+                            <div className={ChatListStyle.Chatroom__right}>
                                 <div className={ChatStyle.Chat__time}>{chatroomTimeformatter(rm.lastSendTime)}</div>
                             </div>
                             

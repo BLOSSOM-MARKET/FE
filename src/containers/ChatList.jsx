@@ -4,15 +4,16 @@ import { toast } from "react-toastify";
 
 import ChatComp from '../components/Chat';
 import ChatList from '../components/Chat/ChatList';
+import { ChattingContext } from '../contexts/ChattingContext';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
-    const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms, addMessage } = useContext(SocketContext);
-    const { roomId, nickname, userId, isLogin, isChatOpen,
-        setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, 
-        yourNick, setYourNick, setYourId, messages, setMessages, chatrooms, 
-        setChatrooms, yourId, productId, setProductId } = useContext(UserContext);
+    const { joinRoom, sendMessage, updateMessage, getRoomList, updateRooms } = useContext(SocketContext);
+    const { nickname, userId, isLogin } = useContext(UserContext);
+    const { roomId, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, 
+            yourNick, setYourNick, setYourId, messages, setMessages, chatrooms, 
+            setChatrooms, yourId, productId, setProductId, setProductName, setProductImg } = useContext(ChattingContext);
 
     const myId = userId;
     // const [ messages, setMessages ] = useState([]);
@@ -29,13 +30,13 @@ const Chat = () => {
     }
 
     const moveToChatRoom = (prop) => {
-        console.log("roomInfo", prop)
+        console.log("MovE TO CHATROOM ----- OOOOOOOOOOOOOOOOOOOOOOOOOO")
         const {roomId, yourId, myId, productId, myNick, yourNick} = prop;
         // const nextRoomId = prop.roomId;
         // console.log("nextRooMID::::::", nextRoomId, roomId)
         if (isLogin && isChatOpen && yourId && myId && roomId && nickname) {
             joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
-            updateMessage(addMessage, roomId);
+            updateMessage();
         }
     }
 
@@ -44,32 +45,29 @@ const Chat = () => {
             // joinRoom({roomId, userId, nickname});
             // updateMessage(addMessage);
             console.log("roomId: ", roomId)
+            setMessages([]);
             joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
             getRoomList({roomId, userId});
             updateRooms(addRoom);
         }
     }
 
-    // roomId: rm.roomId,
-    //                                 yourId: userId === rm.user1 ? rm.user2 : rm.user1,
-    //                                 myId: userId === rm.user1 ? rm.user1 : rm.user2,
-    //                                 productId: rm.productId,
-    //                                 myNick: nickname,
-    //                                 yourNick: yourNick
 
     const onClickChatroom = (prop) => {
-        const {roomId, yourId, myId, productId, myNick, yourNick} = prop;
+        const {roomId, yourId, myId, productId, myNick, yourNick, productName, productImg} = prop;
         setIsInChatroom(true);
         console.log("containers Chatlist - roomInfo: ", prop);
         setRoomId(roomId);
         setYourId(yourId);
         setYourNick(yourNick);
         setProductId(productId);
+        setProductName(productName);
+        setProductImg(productImg);
         // joinRoom({roomId, yourId, myId, productId, nickname});
         // moveToChatRoom({roomId, yourId, myId, productId, myNick, yourNick});
     }
 
-    const onClickBackBtn = () => {
+    const onClickBackBtn = (e) => {
         setIsInChatroom(false);
     }
 

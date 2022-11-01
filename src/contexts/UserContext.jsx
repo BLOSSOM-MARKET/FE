@@ -1,38 +1,24 @@
-import { useEffect, createContext, useState } from "react";
+import { useEffect, createContext, useState, useContext } from "react";
 import io from "socket.io-client";
+import { ChattingContext } from "./ChattingContext";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   let socket;
 
+  const { setYourNick, setRoomId, setIsInChatroom, setIsChatOpen } = useContext(ChattingContext);
+
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem("isLogin"));
-  const [roomId, setRoomId] = useState("myRooms");
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("defaultUserId");
 
-  const [yourId, setYourId] = useState(null);
-  const [yourNick, setYourNick] = useState(null);
-  const [productId, setProductId] = useState(null);
-
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isInChatroom, setIsInChatroom] = useState(false);
-
-  const [ messages, setMessages ] = useState({});
-  const [ chatrooms, setChatrooms ] = useState([]);
-
   useEffect(() => {
-    const tmproomId = sessionStorage.getItem("roomId");
     const tmpNickName = sessionStorage.getItem("nickname");
     const tmpUserId = sessionStorage.getItem("userId");
 
-    if (!isLogin && (tmproomId || tmpNickName || tmpUserId)) {
+    if (!isLogin && (tmpNickName || tmpUserId)) {
       sessionStorage.clear();
-    }
-
-    if (tmproomId !== undefined && tmproomId !== null) {
-      console.log("set room Id: ", roomId);
-      setRoomId(tmproomId);
     }
     if (tmpNickName !== undefined && tmpNickName !== null) {
       setNickname(tmpNickName);
@@ -57,34 +43,18 @@ export const UserContextProvider = ({ children }) => {
     sessionStorage.clear();
   };
 
-  console.log(isLogin, roomId, nickname, userId);
+  console.log(isLogin, nickname, userId);
 
   return (
     <UserContext.Provider
       value={{
         Logout,
-        roomId,
-        setRoomId,
         nickname,
         setNickname,
         userId,
         setUserId,
         isLogin,
-        setIsLogin,
-        isChatOpen,
-        setIsChatOpen,
-        isInChatroom,
-        setIsInChatroom,
-        yourNick,
-        setYourNick,
-        messages, 
-        setMessages,
-        chatrooms, 
-        setChatrooms,
-        yourId, 
-        setYourId, 
-        productId,
-        setProductId, 
+        setIsLogin
       }}
     >
       {children}

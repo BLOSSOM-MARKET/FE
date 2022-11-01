@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { ChattingContext } from "../contexts/ChattingContext";
 
 const LoginForm = ({ onSubmit }) => {
   const schema = yup.object().shape({
@@ -86,7 +87,8 @@ const LoginForm = ({ onSubmit }) => {
 const Login = () => {
   const navigate = useNavigate();
 
-  const { setIsLogin, setUserId, setYourNick } = useContext(UserContext);
+  const { setIsLogin, setUserId } = useContext(UserContext);
+  const { setYourNick } = useContext(ChattingContext);
 
   const isReady = (id, pw) => {
     return id && pw && id.length > 0 && pw.length > 0;

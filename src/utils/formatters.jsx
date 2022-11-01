@@ -4,6 +4,10 @@ const chatTimeformatter = (time) => {
     return moment(time).format('HH:mm')
 }
 
+const chatDateFormatter = (time) => {
+    return moment(time).format("YYYY년 M월 D일")
+}
+
 const chatroomTimeformatter = (time) => {
     const isToday = moment(time).isSame(new Date(), "day")
     if (isToday) {
@@ -65,4 +69,4 @@ const priceFormatter = (price) => {
     return result + "원";
 }
 
-export {chatTimeformatter, chatroomTimeformatter, itemTimeFormatterShort, itemTimeFormatterLong, priceFormatter};
+export {chatTimeformatter, chatroomTimeformatter, itemTimeFormatterShort, itemTimeFormatterLong, priceFormatter, chatDateFormatter};

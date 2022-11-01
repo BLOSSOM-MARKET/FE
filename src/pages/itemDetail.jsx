@@ -9,8 +9,11 @@ import { itemTimeFormatterLong, priceFormatter } from "../utils/formatters";
 import { getCateName } from "../utils/categories";
 import MiniItemCarousel from "../components/MiniItemCarousel/MiniItemCarousel";
 import { SocketContext } from "../contexts/SocketContext";
+import { ChattingContext } from "../contexts/ChattingContext";
 
 const ItemPicCarousel = ({ pics }) => {
+    const { isChatOpen } = useContext(ChattingContext);
+
     return (
         <div id="carouselExampleIndicators" className={`carousel slide ${style.Detail__carousel__inner}`} data-bs-ride="true">
             <div className="carousel-indicators">
@@ -48,8 +51,9 @@ const ItemDetail = () => {
     const { itemId } = useParams();
     const [item, setItem] = useState(null);
     const [isInWishlist, setIsInWishlist] = useState(false);
-    const { userId, nickname, isLogin, setIsChatOpen, setIsInChatroom, 
-        setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(UserContext);
+    const { userId, nickname, isLogin } = useContext(UserContext);
+    const { setIsChatOpen, setIsInChatroom, 
+        setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(ChattingContext);
     const { joinRoom, updateMessage, addMessage } = useContext(SocketContext);
     const myId = userId;
 
@@ -191,18 +195,9 @@ const ItemDetail = () => {
         setRoomId(roomId);
         setYourNick(yourNick);
         joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
-        updateMessage(addMessage, roomId);
+        // updateMessage();
         // moveToChatRoom(roomId);
     }
-
-    // const onClickChatroom = (roomId, yourNick) => {
-    //     setIsInChatroom(true);
-    //     console.log(roomId);
-    //     setRoomId(roomId);
-    //     setYourNick(yourNick);
-    //     // joinRoom({roomId, userId, nickname});
-    //     moveToChatRoom(roomId);
-    // }
 
     return (
         <div className={style.Page}>
@@ -210,7 +205,7 @@ const ItemDetail = () => {
                 item &&
                 <div className={style.Detail}>
                     <section className={style.Detail__carousel}>
-                        < ItemPicCarousel pics={item.pictures} />
+                        <ItemPicCarousel pics={item.pictures} />
                     </section>
                     <section className={style.Detail__sellerInfo}>
                         <div className={style.Detail__sellerInfo__inner}>

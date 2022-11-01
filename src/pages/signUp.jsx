@@ -200,7 +200,7 @@ const SignUpForm = () => {
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const { setIsSignUp, setUserId, setYourNick } = useContext(UserContext);
+  const { setUserId, setYourNick } = useContext(UserContext);
 
   const isReady = (id, pw) => {
     return id && pw && id.length > 0 && pw.length > 0;

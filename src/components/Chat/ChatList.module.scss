@@ -1,16 +1,60 @@
 .Chatroom {
+    border-bottom: 1px solid rgb(196, 196, 196);
+    padding: 0.5rem 0.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     &__list {
-        border-bottom: 1px solid rgb(196, 196, 196);
         cursor: pointer;
         width: 100%;
     }
 
-    &__header {
-
+    &__left {
+        display: flex;
     }
 
-    &__body {
+    &__nickname {
+        font-weight: bold;
+    }
+
+    &__productImg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        &__wrapper {
+            width: 3rem;
+            height: 3rem;
+            overflow: hidden;
+
+            margin-right: 0.5rem;
+            border-radius: 8px;
+
+            flex-shrink: 0;
+        }
+    }
+
+    &__header {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        float: left;
+    }
+
+    &__productName {
+        font-size: 0.75rem;
+        color: grey;
+    }
+
+    &__productName::before {
+        content: "-";
+        margin: 0.5rem;
+    }
+
+    &__msgbox {
+        font-size: 0.75rem;
+        color: grey;
+
+        // width: 70%;
     }
 }

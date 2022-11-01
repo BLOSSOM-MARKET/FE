@@ -1,15 +1,11 @@
 import { useEffect, createContext, useContext, useMemo } from "react";
 import io from "socket.io-client";
-import { UserContext } from "./UserContext";
+import { ChattingContext } from "./ChattingContext";
 
 export const SocketContext = createContext();
 export const SocketContextProvider = ({children}) => {
     
-    // if (!socket) {
-        
-        //     socket = io("localhost:3001");
-        // }
-        const { isChatOpen, setMessages } = useContext(UserContext);
+        const { isChatOpen, messages, setMessages } = useContext(ChattingContext);
         const socket = useMemo(() => {
             // console.log("memo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return io("localhost:3001");
@@ -32,16 +28,14 @@ export const SocketContextProvider = ({children}) => {
     //     }
     // }, [isChatOpen])
 
-    const addMessage = (message, roomId) => {
-        console.log("addMESSAGEE:::", message);
-        setMessages((prev) => {
-            if (!(roomId in prev)) {
-                prev[roomId] = [];
-            }
-            prev[roomId].concat(message)
-        });
-        // setMessages(message);
-    }
+    // const addMessage = (message) => {
+    //     console.log("addMESSAGEE:::", message.messageId, message);
+    //     setMessages((prev) => prev.concat(message));
+    //     if (!messages.some(m => m.messageId === message.messageId)) {
+    //         // setMessages([message]);
+    //     } else {
+    //     }
+    // }
 
     const disconnectSocket = () => {
         if (socket) {
@@ -63,9 +57,22 @@ export const SocketContextProvider = ({children}) => {
     const sendMessage = ({roomId, userId, nickname, message}) => {
         socket.emit('SEND_MESSAGE', {roomId, userId, nickname, message});
     }
+
+    // useEffect(() => {
+    //     console.log(">>>>>>>>>>>>>>>>>>MESSAGES CHANGE: ", messages)
+    // }, [messages])
     
-    const updateMessage = (func, roomId) => {
-        socket.on('UPDATE_MESSAGE', (msg) => func(msg, roomId));
+    const updateMessage = (func) => {
+        console.log("UPDATE MESSAGE OUTER_____________")
+        socket.on('UPDATE_MESSAGE', (msg) => {
+            console.log("update message-----------------")
+            setMessages((prev) => {
+                console.log(">>>>>>prev: ", msg.msgIdx, prev)
+                // return prev.concat(msg)
+                return [...prev, msg]
+            })
+            // setMessages([msg])
+        });
     }
 
     const updateRooms = (func) => {
@@ -74,7 +81,7 @@ export const SocketContextProvider = ({children}) => {
     }
     
     return (
-        <SocketContext.Provider value={{disconnectSocket, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms, addMessage}}>
+        <SocketContext.Provider value={{disconnectSocket, joinRoom, sendMessage, updateMessage, getRoomList, updateRooms }}>
             {children}
         </SocketContext.Provider>
     );
