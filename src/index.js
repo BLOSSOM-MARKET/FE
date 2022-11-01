@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import "./index.css";
+
 import ChatMain from "./pages/chatmain";
 import Chat from "./pages/chat";
 import { SocketContextProvider } from "./contexts/SocketContext";

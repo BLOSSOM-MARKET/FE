@@ -125,7 +125,7 @@ const ItemDetail = () => {
                 [
                     {
                         imgSrc: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-                        title: "화난토끼고앵",
+                        title: "화난토끼고앵크앙",
                         itemId: "332"
                     },
                     {
@@ -142,7 +142,7 @@ const ItemDetail = () => {
                 [
                     {
                         imgSrc: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-                        title: "기여운 고양이",
+                        title: "기여운 고양이기여운고양이기여운",
                         itemId: "123"
                     },
                     {

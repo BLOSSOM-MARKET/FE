@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Button, Carousel, CarouselItem, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { shortenTitle } from "../../utils/formatters";
 import Card from "../Card/Card";
 import style from "./MiniItemCarousel.module.scss";
 
@@ -59,10 +60,13 @@ const MiniItemCarousel = ({ title, itemList }) => {
                                 <div className={`${style.MiniItemCarousel__inner__itemWrapper}`}>
                                     {
                                         itemInnerList.map((item, idx2) => {
-                                            // console.log(item)
+                                            console.log(item)
                                             return (
                                                 <div key={idx2} onClick={() => navigate(`/item/${item.itemId}`)}>
-                                                    <Card item={item} size={"sm"} />
+                                                    <Card item={{
+                                                        ...item,
+                                                        title: shortenTitle(item.title)
+                                                    }} size={"sm"} />
                                                 </div>
                                             )
                                         })
