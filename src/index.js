@@ -16,6 +16,8 @@ import PostItem from "./pages/postItem";
 import Search from "./pages/search";
 import MyPage from "./pages/mypage";
 import MyPageItems from "./pages/myPageItems";
+import Uploadpage from './pages/upload';
+import ModifyPage from './pages/modify'
 import SignUp from "./pages/signUp";
 import Footer from "./components/Footer/Footer2";
 import { ChattingContextProvider } from "./contexts/ChattingContext";
@@ -31,7 +33,8 @@ const App = () => {
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/item/new" element={<PostItem />} />
+              <Route path="/item/new" element={<Uploadpage />} />
+              <Route path="/item/modify" element={<ModifyPage />} />
               <Route path="/item/:itemId" element={<ItemDetail />} />
               <Route path="/search" element={<Search />} />
               <Route path="/mypage" element={<MyPage />} />
