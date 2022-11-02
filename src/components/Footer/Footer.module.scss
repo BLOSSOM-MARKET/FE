@@ -1,5 +1,5 @@
 .Footer {
-    height: 15rem;
+    height: 22rem;
     margin-top: 5rem;
     padding: 2rem;
 
@@ -18,6 +18,27 @@
 
         p {
             margin: 0.125rem;
+        }
+
+        &__inc {
+            margin-top: 2rem;
+            span {
+                margin-right: 1rem;
+            }
+
+            strong {
+                font-weight: bold;
+            }
+
+            &__logo {
+                height: 2.5rem;
+                display: block;
+            }
+        }
+
+        &__bottom {
+            // margin-top: 0.75rem;
+            color: rgb(190, 190, 190);
         }
     }
 
