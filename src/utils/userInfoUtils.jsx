@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import yupPassword from 'yup-password';
 yupPassword(yup);
 
-const checkDoubleNick = () => {
+const isPossibleNickname = () => {
     // axios 
     // 닉네임 중복 판별
     // function(value){return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ const checkDoubleNick = () => {
     //     .then(res => {if(res.data.msg === 'Username already been taken'){resolve(false)} resolve(true)})
     // })
 
-    return false;
+    return true;
 }
 
     
@@ -32,4 +32,4 @@ newPWCheck: yup.string()
 
 
 
-export {checkDoubleNick, userDataValidation};
+export {isPossibleNickname, userDataValidation};

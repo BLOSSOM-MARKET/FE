@@ -6,6 +6,8 @@ import Card from "../components/Card/Card";
 import { UserContext } from "../contexts/UserContext";
 import style from "./page.module.scss";
 
+import axios from 'axios';
+
 const MyPageHeader = () => {
   const { isLogin, userId, nickname } = useContext(UserContext);
   const navigate = useNavigate();
@@ -90,6 +92,19 @@ const MyPage = () => {
   useEffect(() => {
     // axios
     // 실제 데이터 가져오기
+
+    axios
+    .get('/api/mypage/main', {
+        params: {
+          userId: userId
+        }
+      })
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+      
+      // setNickname(nickname);
+    });
 
     const dummy = [
       {

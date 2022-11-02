@@ -12,7 +12,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import yupPassword from "yup-password";
 import { InputGroup } from "react-bootstrap";
-import { checkDoubleNick } from "../utils/userInfoUtils";
+import { isPossibleNickname } from "../utils/userInfoUtils";
 
 const SignUpForm = () => {
   yupPassword(yup);
@@ -29,7 +29,7 @@ const SignUpForm = () => {
     authCode: yup.string().required("이메일을 입력해주세요."),
     nickname: yup.string()
                     .required("닉네임을 입력해주세요.")
-                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", checkDoubleNick),
+                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", isPossibleNickname),
     webPw: pwField()
       .minLowercase(1, "1개 이상의 소문자 알파벳을 포함해야 합니다.")
       .minNumbers(1, "1개 이상의 숫자를 포함해야 합니다.")

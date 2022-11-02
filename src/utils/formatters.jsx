@@ -72,7 +72,6 @@ const priceFormatter = (price) => {
 // 제목 8글자 이하로 줄이기
 const shortenTitle = (title) => {
     if (title.length > 8) {
-        console.log("LENGTH &")
         return title.slice(0,8) + "..."
     }
     return title;

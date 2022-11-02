@@ -13,6 +13,7 @@ import { SocketContext } from "../contexts/SocketContext";
 import { ChattingContext } from "../contexts/ChattingContext";
 import Card from "../components/Card/Card";
 import { Button, Carousel, Container, Row } from "react-bootstrap";
+import axios from "axios";
 
 const ItemPicCarousel = ({ pics }) => {
     const { isChatOpen } = useContext(ChattingContext);
@@ -65,6 +66,20 @@ const ItemDetail = () => {
     useEffect(() => {
         // axios
         //데이터 가져오기 product/detail + query productId
+
+        console.log(itemId)
+        axios
+        .get('/api/product/detail', {
+            params: {
+              productId: itemId
+            }
+          })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          
+          // setNickname(nickname);
+        });
 
         const itemData = {
             user: {

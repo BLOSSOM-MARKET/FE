@@ -13,20 +13,41 @@ import Row from 'react-bootstrap/Row';
 
 import { Formik } from "formik";
 import * as yup from 'yup';
-import { checkDoubleNick } from "../utils/userInfoUtils";
+import { isPossibleNickname } from "../utils/userInfoUtils";
+
+import axios from 'axios';
 
 const MyProfile = ({ userId, nickname }) => {
+  const { setNickname } = useContext(UserContext);
 
     const schema = yup.object().shape({
         nickname: yup.string()
                     .required("닉네임을 입력해주세요.")
-                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", checkDoubleNick),
+                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", isPossibleNickname),
       });
 
-    const onSubmit = ({nickname}) => {
+    const onSubmit = ({ nickname }) => {
         console.log(nickname)
         // axios
         // 닉네임 변경
+        axios
+        .post('/api/mypage/profile/updatenickname', {
+          params: {
+            nickName: nickname,
+            userId: userId
+          }
+        })
+        .then((res) => {
+          console.log(res);
+
+          // client에서도 닉네임 변경
+          sessionStorage.setItem("nickname", nickname);
+          setNickname(nickname);
+        })
+        .catch((e) => {
+          console.error(e);
+          alert(`오류가 발생했습니다. 다시 시도해주세요.(${e.status})`)
+        });
     }
       
   return (
