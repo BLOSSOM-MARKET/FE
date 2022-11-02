@@ -17,7 +17,7 @@ import Search from "./pages/search";
 import MyPage from "./pages/mypage";
 import MyPageItems from "./pages/myPageItems";
 import SignUp from "./pages/signUp";
-import Footer from "./components/Footer/Footer";
+import Footer from "./components/Footer/Footer2";
 import { ChattingContextProvider } from "./contexts/ChattingContext";
 
 const App = () => {
