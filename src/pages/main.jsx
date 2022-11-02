@@ -3,6 +3,10 @@ import { useState } from "react";
 import Card from "../components/Card/Card";
 import ItemList from "../components/ItemList/ItemList";
 import style from "./page.module.scss";
+import React from "react";
+import axios from "axios";
+import UseAsync from "../utils/UseAsync";
+
 
 const Main = () => {
     const [mainItems, setMainItems] = useState([]);

@@ -13,6 +13,9 @@ import ItemDetail from './pages/itemDetail';
 import PostItem from './pages/postItem';
 import Search from './pages/search';
 import MyPage from './pages/mypage';
+import Uploadpage from './pages/upload';
+import ModifyPage from './pages/modify'
+import Footer from './components/Footer/footer'
 
 const App = () => {
     return (
@@ -20,20 +23,21 @@ const App = () => {
           <UserContextProvider>
         <SocketContextProvider>
             <Header />  {/* header & nav */}
-
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/login" element={<Login />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/item/new" element={<PostItem/>} />
+              <Route path="/item/new" element={<Uploadpage />} />
+              <Route path="/item/modify" element={<ModifyPage />} />
               <Route path="/item/:itemId" element={<ItemDetail />} />
               <Route path="/search" element={<Search />} />
               <Route path="/mypage" element={<MyPage />} />
             </Routes>
-
             <ChatMain /> {/* chatMain */} 
+            <Footer/>
         </SocketContextProvider>
           </UserContextProvider>
+
       </BrowserRouter>
     )
 }
