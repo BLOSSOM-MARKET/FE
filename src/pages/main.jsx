@@ -20,7 +20,7 @@ const Main = () => {
           console.log(res);
           let resData = res.data.list;
 
-          if (resData.length > 30) {
+          if (resData && resData.length > 30) {
             resData = resData.slice(0, 30);
           }
 

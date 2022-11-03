@@ -145,9 +145,9 @@ const SearchBar = () => {
     const onSearchClick = (e) => {
         e.preventDefault();
 
-        if (!inputVal || inputVal.length <= 0) {
-            return
-        }
+        // if (!inputVal || inputVal.length <= 0) {
+        //     return
+        // }
 
         console.log("검색어: ", inputVal)
         console.log("카테고리: ", checkedCategories);

@@ -102,6 +102,7 @@ const ItemDetail = () => {
             getPersonalizedItems()
         ])
         .then((res) => {
+          console.log(res);
           console.log(res.data);
           const itemDetail = res[0].data[0];
           const relatedItems = res[1].data;
@@ -110,6 +111,8 @@ const ItemDetail = () => {
           const itemData = {...itemDetail};
           itemData.likeCount = res[0].data[1];   // 좋아요개수
           const myLike = res[0].data[2];
+          const sellerNickname = res[0].data[3];    // 판매자 닉네임
+          itemData.sellerNickname = sellerNickname;
 
           if (myLike == 1) {         // 내 좋아요 여부
               setIsInWishlist(true);

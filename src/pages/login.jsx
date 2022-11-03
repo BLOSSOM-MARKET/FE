@@ -96,11 +96,8 @@ const Login = () => {
   };
 
   const isLoginSuccess = (val) => {
-    if (val === "Login success") {
-      return true;
-    } 
-    return false;
-  }
+    return val === "ACCEPTED";
+  };
 
   const onSubmit = ({ webId, webPw }) => {
     console.log(webId, webPw);
@@ -111,40 +108,35 @@ const Login = () => {
 
     // axios
     // 로그인처리
-    
+
     axios
-    .post('/api/login', {
-      loginId: webId,
-      password: webPw
-    })
-    .then((res) => {
-      console.log(res);
-      const loginResult = res.data;
+      .post("/api/login", {
+        userId: webId,
+        userPwd: webPw,
+      })
+      .then((res) => {
+        console.log(res);
+        const loginResult = res.data.status;
 
-      if (isLoginSuccess(loginResult)) {
-        // 로그인 성공 시
+        if (isLoginSuccess(loginResult)) {
+          // 로그인 성공 시
 
-        const userData = {
-          userId: "une9nine@shinsegae.com",
-          nickname: "hyegu",
-        };
+          const userData = res.data;
 
-        sessionStorage.setItem("userId", userData.userId);
-        sessionStorage.setItem("nickname", userData.nickname);
-        sessionStorage.setItem("isLogin", true);
-        setIsLogin(true);
-        setUserId(userData.userId);
-        setYourNick(userData.nickname);
+          sessionStorage.setItem("userId", userData.userId);
+          sessionStorage.setItem("nickname", userData.nickname);
+          sessionStorage.setItem("isLogin", true);
+          setIsLogin(true);
+          setUserId(userData.userId);
+          setYourNick(userData.nickname);
 
-    // 메인으로 이동
-    window.location.href = "/";
-
-      } else {
-        // 로그인 실패 시
-        alert("로그인 정보를 다시 입력해주세요");
-      }
-
-    })
+          // 메인으로 이동
+          window.location.href = "/";
+        } else {
+          // 로그인 실패 시
+          alert("로그인 정보를 다시 입력해주세요");
+        }
+      });
 
     // // 더미데이터
     // const userData = {

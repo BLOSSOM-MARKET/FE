@@ -23,6 +23,10 @@ const Search = () => {
             page: q.page[0]
         }
 
+        if ("orderByType" in q) {
+            queryConfig.orderByType = q.orderByType[0];
+        }
+
         // 수정!!!
         // 조건 다중선택 가능하게 수정
         if (!(q.cat.length === 1 && q.cat[0] === "00")) {   // 전체선택이 아니면
@@ -34,6 +38,8 @@ const Search = () => {
         if (!(q.status.length === 1 && q.status[0] === "00")) {   // 전체선택이 아니면
             queryConfig.categoryId3 = q.status[0];
         }
+
+        console.log(queryConfig)
         
         // axios
         // 검색결과 받아오기
@@ -43,8 +49,8 @@ const Search = () => {
         })
         .then((res) => {
           console.log(res);
+          setSearchItems(res.data.list);
             setPagination(res.data.pagination);
-          
         })
 
 
@@ -84,7 +90,7 @@ const Search = () => {
         console.log(e.target.value)
         const s = e.target.value;
         const params = q;
-        params['sort'] = s;
+        params['orderByType'] = s;
         navigate({
             pathname: '/search',
             search: `?${createSearchParams(params)}`
@@ -102,11 +108,11 @@ const Search = () => {
                 <select className={`form-select ${style.Search__sort}`} 
                     onChange={onChangeSort}                
                     aria-label="Default select example">
-                    <option defaultValue value="1">인기순</option>
-                    <option value="2">조회순</option>
-                    <option value="3">최신순</option>
-                    <option value="4">낮은 가격순</option>
-                    <option value="5">좋아요순</option>
+                    <option defaultValue value="standard">인기순</option>
+                    <option value="viewcount">조회순</option>
+                    <option value="new">최신순</option>
+                    <option value="price">낮은 가격순</option>
+                    <option value="like">좋아요순</option>
                 </select>
             </div>
             {
