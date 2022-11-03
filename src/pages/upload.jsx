@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 import BootForm from "react-bootstrap/Form";
 import styleBtn from "../components/SearchBar/SearchBar.module.scss";
 import styleLabel from "../components/Upload/Upload.module.scss";
-import { Form, useLocation, useNavigate } from "react-router-dom";
+import { Form, useLocation, useNavigate, useParams } from "react-router-dom";
 import { CATE } from "../utils/categories";
 import { now } from "moment";
 import { UserContext } from "../contexts/UserContext";
@@ -320,6 +320,9 @@ const Uploadpage = (props) => {
   const isModify = loc.pathname === "/item/modify";
 
   const navigate = useNavigate();
+
+  const { itemId } = useParams();
+  console.log(loc.pathname, itemId)
 
   useEffect(() => {
     // axios

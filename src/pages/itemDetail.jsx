@@ -7,7 +7,7 @@ import styleC from "../components/MiniItemCarousel/MiniItemCarousel.module.scss"
 
 import { UserContext } from "../contexts/UserContext";
 import { itemTimeFormatterLong, priceFormatter } from "../utils/formatters";
-import { getCateName } from "../utils/categories";
+import { CATE, getCateName } from "../utils/categories";
 import MiniItemCarousel from "../components/MiniItemCarousel/MiniItemCarousel";
 import { SocketContext } from "../contexts/SocketContext";
 import { ChattingContext } from "../contexts/ChattingContext";
@@ -90,7 +90,7 @@ const ItemDetail = () => {
             return axios
                     .get('/api/recommend/personalization', {
                         params: {
-                            userId: userId
+                            userId: myId
                         }
                     })
         }
@@ -102,110 +102,124 @@ const ItemDetail = () => {
             getPersonalizedItems()
         ])
         .then((res) => {
-          console.log(res);
-          const [itemDetail, relatedItems, personalizedItems] = res;
-        //   const itemData = {...itemDetail};
-        //   itemData.likeCount = itemDetail[1];   // 좋아요개수
+          console.log(res.data);
+          const itemDetail = res[0].data[0];
+          const relatedItems = res[1].data;
+          const personalizedItems = res[2].data;
+          console.log(itemDetail, relatedItems, personalizedItems);
+          const itemData = {...itemDetail};
+          itemData.likeCount = res[0].data[1];   // 좋아요개수
+          const myLike = res[0].data[2];
 
-        //   if (itemData.myLike) {         // 내 좋아요 여부
-        //       setIsInWishlist(true);
-        //   }
+          if (myLike == 1) {         // 내 좋아요 여부
+              setIsInWishlist(true);
+          }
 
-        // itemData.relatedItems = relatedItems;
-        // itemData.personalizedItems = personalizedItems;
+        itemData.relatedItems = relatedItems;
+        itemData.personalizedItems = personalizedItems;
 
-        // const pictures = [itemDetail.image1, itemDetail.image2, itemDetail.image3];
-        // itemData.pictures = pictures;
+        const pictures = [];
+        if (itemDetail.image1) {
+            pictures.push(itemDetail.image1);
+        }
+        if (itemDetail.image2) {
+            pictures.push(itemDetail.image2);
+        }
+        if (itemDetail.image3) {
+            pictures.push(itemDetail.image3);
+        }
+        itemData.pictures = pictures;
 
-        const itemData = {
-            sellerNickname: "최정윤",
-            sellerId: "cjy8529@shinsegae.com",
-            pictures: [
-                "http://www.palnews.co.kr/news/photo/201801/92969_25283_5321.jpg",
-                "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
-                "https://img.etoday.co.kr/pto_db/2018/01/20180118112233_1176969_600_387.jpg",
-            ],
-            productName: "꽃인형 판매 (네고X)",
-            category: "01",
-            uploadTime: new Date().toDateString(),
-            price: 30000,
-            content: "김포 장기동으로 오면 무료나눔",
-            viewCount: 3,
-            likeCount: 1,
-            myLike: true,
-            relatedItems: [
-                [
-                    {
-                        image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-                        productName: "기여운 고양이",
-                        productId: "123"
-                    },
-                    {
-                        image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-                        productName: "[더데일리]고양이",
-                        productId: "341"
-                    },
-                    {
-                        image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-                        productName: "냥냥냐냐냐냐냥",
-                        productId: "753"
-                    },
-                ],
-                [
-                    {
-                        image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-                        productName: "화난토끼고앵",
-                        productId: "332"
-                    },
-                    {
-                        image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-                        productName: "롭이어토끼",
-                        productId: "556"
-                    },
-                    {
-                        image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-                        productName: "토깽펀치",
-                        productId: "980"
-                    },
-                ],
-            ],
-            personalizedItems: [
-                [
-                    {
-                        image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-                        productName: "화난토끼고앵크앙",
-                        productId: "332"
-                    },
-                    {
-                        image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-                        productName: "롭이어토끼",
-                        productId: "556"
-                    },
-                    {
-                        image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-                        productName: "토깽펀치",
-                        productId: "980"
-                    },
-                ],
-                [
-                    {
-                        image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-                        productName: "기여운 고양이기여운고양이기여운",
-                        productId: "123"
-                    },
-                    {
-                        image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-                        productName: "[더데일리]고양이",
-                        productId: "341"
-                    },
-                    {
-                            image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-                            productName: "냥냥냐냐냐냐냥",
-                            productId: "753"
-                        },
-                    ],
-                ],
-            }
+        // const itemData = {
+        //     sellerNickname: "최정윤",
+        //     sellerId: "cjy8529@shinsegae.com",
+        //     pictures: [
+        //         "http://www.palnews.co.kr/news/photo/201801/92969_25283_5321.jpg",
+        //         "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
+        //         "https://img.etoday.co.kr/pto_db/2018/01/20180118112233_1176969_600_387.jpg",
+        //     ],
+        //     productName: "꽃인형 판매 (네고X)",
+        //     category: "01",
+        //     uploadTime: new Date().toDateString(),
+        //     price: 30000,
+        //     content: "김포 장기동으로 오면 무료나눔",
+        //     viewCount: 3,
+        //     likeCount: 1,
+        //     myLike: true,
+        //     relatedItems: [
+        //         [
+        //             {
+        //                 image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
+        //                 productName: "기여운 고양이",
+        //                 productId: "123"
+        //             },
+        //             {
+        //                 image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
+        //                 productName: "[더데일리]고양이",
+        //                 productId: "341"
+        //             },
+        //             {
+        //                 image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
+        //                 productName: "냥냥냐냐냐냐냥",
+        //                 productId: "753"
+        //             },
+        //         ],
+        //         [
+        //             {
+        //                 image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
+        //                 productName: "화난토끼고앵",
+        //                 productId: "332"
+        //             },
+        //             {
+        //                 image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
+        //                 productName: "롭이어토끼",
+        //                 productId: "556"
+        //             },
+        //             {
+        //                 image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
+        //                 productName: "토깽펀치",
+        //                 productId: "980"
+        //             },
+        //         ],
+        //     ],
+        //     personalizedItems: [
+        //         [
+        //             {
+        //                 image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
+        //                 productName: "화난토끼고앵크앙",
+        //                 productId: "332"
+        //             },
+        //             {
+        //                 image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
+        //                 productName: "롭이어토끼",
+        //                 productId: "556"
+        //             },
+        //             {
+        //                 image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
+        //                 productName: "토깽펀치",
+        //                 productId: "980"
+        //             },
+        //         ],
+        //         [
+        //             {
+        //                 image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
+        //                 productName: "기여운 고양이기여운고양이기여운",
+        //                 productId: "123"
+        //             },
+        //             {
+        //                 image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
+        //                 productName: "[더데일리]고양이",
+        //                 productId: "341"
+        //             },
+        //             {
+        //                     image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
+        //                     productName: "냥냥냐냐냐냐냥",
+        //                     productId: "753"
+        //                 },
+        //             ],
+        //         ],
+        //     }
+        // console.log(itemData)
 
         //   // 수정!!!
         //   // 내가 좋아요 눌렀는지 여부값 (myLike) / 판매자 닉네임 (sellerNickname) 필요
@@ -218,21 +232,53 @@ const ItemDetail = () => {
   
           
         });
-
-            
         }, [itemId]);
         
     const onEditItem = () => {
         // 수정 페이지로 이동
+        navigate("/item/modify"+itemId);
     }
 
     const onClickWishBtn = () => {
         if (!isLogin) return;
 
-        setIsInWishlist(prev => !prev);
+        // setIsInWishlist(prev => !prev);
 
         // axios
         // 좋아요 변경
+
+        if (isInWishlist) {
+            // delete
+
+            axios
+                .post('/api/like/delete', {
+                    params: {
+                        productId: itemId
+                    }
+                })
+                .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                
+            });
+
+        } else {
+            // save
+
+            axios
+                .post('/api/like/save', {
+                    params: {
+                        productId: itemId
+                    }
+                })
+                .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                
+            });
+
+        }
+
     }
 
     // const addMessage = (message) => {
@@ -308,7 +354,7 @@ const ItemDetail = () => {
                                 {item.productName}
                             </div>
                             <div className={style.Detail__header__desc}>
-                                {getCateName(item.category)} · {itemTimeFormatterLong(item.uploadTime)}
+                                {getCateName(item.categoryId1.slice(2, 4))} · {itemTimeFormatterLong(item.createDate)}
                             </div>
                         </div>
                         <div className={style.Detail__header__price}>

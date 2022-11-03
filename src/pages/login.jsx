@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { ChattingContext } from "../contexts/ChattingContext";
+import axios from "axios";
 
 const LoginForm = ({ onSubmit }) => {
   const schema = yup.object().shape({
@@ -94,29 +95,72 @@ const Login = () => {
     return id && pw && id.length > 0 && pw.length > 0;
   };
 
+  const isLoginSuccess = (val) => {
+    if (val === "Login success") {
+      return true;
+    } 
+    return false;
+  }
+
   const onSubmit = ({ webId, webPw }) => {
     console.log(webId, webPw);
-    if (!isReady(webId, webPw)) return;
+    if (!isReady(webId, webPw)) {
+      alert("값을 모두 입력해주세요");
+      return;
+    }
 
     // axios
     // 로그인처리
-    // 토큰 저장 필요
+    
+    axios
+    .post('/api/login', {
+      loginId: webId,
+      password: webPw
+    })
+    .then((res) => {
+      console.log(res);
+      const loginResult = res.data;
 
-    // 더미데이터
-    const userData = {
-      userId: "une9nine@shinsegae.com",
-      nickname: "hyegu",
-    };
+      if (isLoginSuccess(loginResult)) {
+        // 로그인 성공 시
 
-    sessionStorage.setItem("userId", userData.userId);
-    sessionStorage.setItem("nickname", userData.nickname);
-    sessionStorage.setItem("isLogin", true);
-    setIsLogin(true);
-    setUserId(userData.userId);
-    setYourNick(userData.nickname);
+        const userData = {
+          userId: "une9nine@shinsegae.com",
+          nickname: "hyegu",
+        };
+
+        sessionStorage.setItem("userId", userData.userId);
+        sessionStorage.setItem("nickname", userData.nickname);
+        sessionStorage.setItem("isLogin", true);
+        setIsLogin(true);
+        setUserId(userData.userId);
+        setYourNick(userData.nickname);
 
     // 메인으로 이동
     window.location.href = "/";
+
+      } else {
+        // 로그인 실패 시
+        alert("로그인 정보를 다시 입력해주세요");
+      }
+
+    })
+
+    // // 더미데이터
+    // const userData = {
+    //   userId: "une9nine@shinsegae.com",
+    //   nickname: "hyegu",
+    // };
+
+    // sessionStorage.setItem("userId", userData.userId);
+    // sessionStorage.setItem("nickname", userData.nickname);
+    // sessionStorage.setItem("isLogin", true);
+    // setIsLogin(true);
+    // setUserId(userData.userId);
+    // setYourNick(userData.nickname);
+
+    // // 메인으로 이동
+    // window.location.href = "/";
   };
 
   return (

@@ -47,6 +47,7 @@ const itemTimeFormatterShort = (time) => {
 
 const itemTimeFormatterLong = (time) => {
     const today = new Date();
+    console.log(time, today)
 
     const isSameYear = moment(today).isSame(time, 'year');
     const isSameDay = moment(today).isSame(time, 'day');
@@ -60,11 +61,13 @@ const itemTimeFormatterLong = (time) => {
 
 // 세자리마다 콤마찍어주기 + 원
 const priceFormatter = (price) => {
+    if (!price) return;
+
     if (typeof price === 'number') {
-        price = price.toString();
+        price = String(price);
     }
 
-    const result = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const result = price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     
     return result + "원";
 }
