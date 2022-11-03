@@ -16,14 +16,14 @@ const Main = () => {
         // dummy data 실제데이터로 변경
         const dummy = [
             {
-                id: 1,
+                id: 28,
                 imgSrc: "https://shopping-phinf.pstatic.net/main_8318544/83185449617.7.jpg?type=f200",
                 title: "곰인형 판매 (네고x)",
                 price: 10000, 
                 time: new Date().toDateString()
             },
             {
-                id: 2,
+                id: 30,
                 imgSrc: "http://image.bom.co.kr/product/detail/AQW/1912262016184445/_600.jpg",
                 title: "곰돌이 귀 강쥐 후드",
                 price: 25000, 

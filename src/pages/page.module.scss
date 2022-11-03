@@ -94,6 +94,11 @@
             display: flex;
             align-items: flex-end;
         }
+
+        &__Alert {
+            padding: 1.5rem;
+            color: rgb(150, 150, 150);
+        }
     }
 
     &__formBody {

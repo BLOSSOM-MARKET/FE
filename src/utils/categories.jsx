@@ -1,6 +1,6 @@
 const CATE = {
     categories: {
-        parentCode: "00",
+        parentCode: "01",
         data: [
             {
                 name: "전체",
@@ -55,7 +55,7 @@ const CATE = {
         ]
     },
     regions: {
-        parentCode: "01", 
+        parentCode: "02", 
         data: [
             {
                 name: "전체",
