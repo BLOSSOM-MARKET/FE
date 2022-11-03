@@ -40,7 +40,7 @@ const Uploadpage = (props) => {
       price: 100000,
       productId: "1",
       productName: "쓰던 물병 팝니다",
-      sellerId: "user1@shinsegae.com",
+      sellerId: "une9nine@shinsegae.com",
       status: "1",
       updateDate: "2022-11-02T08:54:29.912Z",
       viewCount: 0,

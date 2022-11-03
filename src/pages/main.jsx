@@ -18,8 +18,13 @@ const Main = () => {
         .get('/api/recommend/standard')
         .then((res) => {
           console.log(res);
+          let resData = res.data.list;
 
-          setMainItems(res.data.list);
+          if (resData.length > 30) {
+            resData = resData.slice(0, 30);
+          }
+
+          setMainItems(resData);
 
 
         })

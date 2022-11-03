@@ -158,7 +158,8 @@ const SearchBar = () => {
             key: inputVal, 
             cat: checkedCategories.map(item => item.code), 
             reg: checkedRegions.map(item => item.code), 
-            status: checkedStatus.map(item => item.code) 
+            status: checkedStatus.map(item => item.code) ,
+            page: 1
         }
 
         navigate({

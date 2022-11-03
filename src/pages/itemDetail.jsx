@@ -57,7 +57,7 @@ const ItemDetail = () => {
     const [isInWishlist, setIsInWishlist] = useState(false);
     const { userId, nickname, isLogin } = useContext(UserContext);
     const { setIsChatOpen, setIsInChatroom,
-        setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages } = useContext(ChattingContext);
+        setRoomId, setYourNick, yourId, setYourId, productId, setProductId, setMessages, setProductName, setProductImg } = useContext(ChattingContext);
     const { joinRoom, updateMessage, addMessage } = useContext(SocketContext);
     const myId = userId;
 
@@ -95,7 +95,6 @@ const ItemDetail = () => {
                     })
         }
 
-
         axios
         .all([
             getItemDetail(),
@@ -115,21 +114,12 @@ const ItemDetail = () => {
         // itemData.relatedItems = relatedItems;
         // itemData.personalizedItems = personalizedItems;
 
-        //   // 수정!!!
-        //   // 내가 좋아요 눌렀는지 여부값 (myLike) / 판매자 닉네임 (sellerNickname) 필요
-        //   setItem(itemData);
-    
-        //   // UserContext에 저장
-        //   setYourId(itemData.sellerId);
-        //   setYourNick(itemData.sellerNickname);
-        //   setProductId(itemId);
-  
-          
-        });
+        // const pictures = [itemDetail.image1, itemDetail.image2, itemDetail.image3];
+        // itemData.pictures = pictures;
 
         const itemData = {
-            sellerNickname: "용지함",
-            sellerId: "jiyong@shinsegae.com",
+            sellerNickname: "최정윤",
+            sellerId: "cjy8529@shinsegae.com",
             pictures: [
                 "http://www.palnews.co.kr/news/photo/201801/92969_25283_5321.jpg",
                 "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
@@ -146,78 +136,88 @@ const ItemDetail = () => {
             relatedItems: [
                 [
                     {
-                        imgSrc: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-                        title: "기여운 고양이",
-                        itemId: "123"
+                        image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
+                        productName: "기여운 고양이",
+                        productId: "123"
                     },
                     {
-                        imgSrc: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-                        title: "[더데일리]고양이",
-                        itemId: "341"
+                        image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
+                        productName: "[더데일리]고양이",
+                        productId: "341"
                     },
                     {
-                        imgSrc: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-                        title: "냥냥냐냐냐냐냥",
-                        itemId: "753"
+                        image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
+                        productName: "냥냥냐냐냐냐냥",
+                        productId: "753"
                     },
                 ],
                 [
                     {
-                        imgSrc: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-                        title: "화난토끼고앵",
-                        itemId: "332"
+                        image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
+                        productName: "화난토끼고앵",
+                        productId: "332"
                     },
                     {
-                        imgSrc: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-                        title: "롭이어토끼",
-                        itemId: "556"
+                        image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
+                        productName: "롭이어토끼",
+                        productId: "556"
                     },
                     {
-                        imgSrc: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-                        title: "토깽펀치",
-                        itemId: "980"
+                        image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
+                        productName: "토깽펀치",
+                        productId: "980"
                     },
                 ],
             ],
             personalizedItems: [
                 [
                     {
-                        imgSrc: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-                        title: "화난토끼고앵크앙",
-                        itemId: "332"
+                        image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
+                        productName: "화난토끼고앵크앙",
+                        productId: "332"
                     },
                     {
-                        imgSrc: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-                        title: "롭이어토끼",
-                        itemId: "556"
+                        image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
+                        productName: "롭이어토끼",
+                        productId: "556"
                     },
                     {
-                        imgSrc: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-                        title: "토깽펀치",
-                        itemId: "980"
+                        image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
+                        productName: "토깽펀치",
+                        productId: "980"
                     },
                 ],
                 [
                     {
-                        imgSrc: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-                        title: "기여운 고양이기여운고양이기여운",
-                        itemId: "123"
+                        image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
+                        productName: "기여운 고양이기여운고양이기여운",
+                        productId: "123"
                     },
                     {
-                        imgSrc: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-                        title: "[더데일리]고양이",
-                        itemId: "341"
+                        image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
+                        productName: "[더데일리]고양이",
+                        productId: "341"
                     },
                     {
-                            imgSrc: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-                            title: "냥냥냐냐냐냐냥",
-                            itemId: "753"
+                            image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
+                            productName: "냥냥냐냐냐냐냥",
+                            productId: "753"
                         },
                     ],
                 ],
             }
-        
-            setItem(itemData);
+
+        //   // 수정!!!
+        //   // 내가 좋아요 눌렀는지 여부값 (myLike) / 판매자 닉네임 (sellerNickname) 필요
+          setItem(itemData);
+    
+          // UserContext에 저장
+          setYourId(itemData.sellerId);
+          setYourNick(itemData.sellerNickname);
+          setProductId(itemId);
+  
+          
+        });
 
             
         }, [itemId]);
@@ -243,11 +243,13 @@ const ItemDetail = () => {
     const onClickChatting = () => {
         const ownerId = item.sellerId;
         const roomId = ownerId + myId + itemId;
-        const yourNick = item.user.nickname;
+        const yourNick = item.sellerNickname;
         setIsChatOpen(true);
         setIsInChatroom(true);
         setRoomId(roomId);
         setYourNick(yourNick);
+        setProductName(item.productName);
+        setProductImg(item.pictures[0]);
         joinRoom({ roomId, yourId, myId, productId, nickname, yourNick });
         // updateMessage();
         // moveToChatRoom(roomId);
@@ -303,7 +305,7 @@ const ItemDetail = () => {
                     <section className={style.Detail__header}>
                         <div>
                             <div className={style.Detail__header__title}>
-                                {item.title}
+                                {item.productName}
                             </div>
                             <div className={style.Detail__header__desc}>
                                 {getCateName(item.category)} · {itemTimeFormatterLong(item.uploadTime)}
@@ -330,8 +332,16 @@ const ItemDetail = () => {
                     </section>
                     {/*  */}
                     <section className={style.Detail__recommend}>
-                        <MiniItemCarousel code={"00"} title={["다른 고객이 많이 본", "연관 상품"]} itemList={item.relatedItems} />
-                        <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname + "님" : "당신"}이 찾고 계신`, `바로 그 상품`]} itemList={item.personalizedItems} />
+                        {
+                            (item.relatedItems && item.relatedItems.length > 0)
+                            &&
+                            <MiniItemCarousel code={"00"} title={["다른 고객이 많이 본", "연관 상품"]} itemList={item.relatedItems} />
+                        }
+                        {
+                            (item.personalizedItems && item.personalizedItems.length > 0)
+                            &&
+                            <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname + "님" : "당신"}이 찾고 계신`, `바로 그 상품`]} itemList={item.personalizedItems} />
+                        }
                     </section>
                 </div>
             }

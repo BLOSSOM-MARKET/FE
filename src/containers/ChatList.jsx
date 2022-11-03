@@ -13,7 +13,7 @@ const Chat = () => {
     const { nickname, userId, isLogin } = useContext(UserContext);
     const { roomId, isChatOpen, setIsChatOpen, isInChatroom, setIsInChatroom, setRoomId, 
             yourNick, setYourNick, setYourId, messages, setMessages, chatrooms, 
-            setChatrooms, yourId, productId, setProductId, setProductName, setProductImg } = useContext(ChattingContext);
+            setChatrooms, yourId, productId, productName, productImg, setProductId, setProductName, setProductImg } = useContext(ChattingContext);
 
     const myId = userId;
     
@@ -28,6 +28,7 @@ const Chat = () => {
     }
 
     const addRoom = (room) => {
+        console.log("add room:::", room)
         setChatrooms((prev) => prev.concat(room));
     }
 

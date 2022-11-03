@@ -60,10 +60,10 @@ const MiniItemCarousel = ({ title, itemList }) => {
                                 <div className={`${style.MiniItemCarousel__inner__itemWrapper}`}>
                                     {
                                         itemInnerList.map((item, idx2) => (
-                                                <div key={idx2} onClick={() => navigate(`/item/${item.itemId}`)}>
+                                                <div key={idx2} onClick={() => navigate(`/item/${item.productId}`)}>
                                                     <Card item={{
                                                         ...item,
-                                                        title: shortenTitle(item.title)
+                                                        productName: shortenTitle(item.productName)
                                                     }} size={"sm"} />
                                                 </div>
                                             )

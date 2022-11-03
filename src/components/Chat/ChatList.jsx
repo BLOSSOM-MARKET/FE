@@ -18,13 +18,13 @@ import { ChattingContext } from '../../contexts/ChattingContext';
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
     // console.log("~~~~~~~~~~chatrooms: ", chatrooms)
-    const { userId, nickname } = useContext(UserContext);
+    const { isLogin, userId, nickname } = useContext(UserContext);
     const { yourNick} = useContext(ChattingContext);
 
     return (
         <Container maxWidth="sm" className={ChatStyle.Chat__wrapper}>
             {
-            chatrooms.length > 0
+            (isLogin && chatrooms.length > 0)
             ?
             <List className={ChatListStyle.Chatroom__list} > <div>
                     {chatrooms.map((rm, idx) => 
@@ -66,7 +66,8 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                         </div>)}
                 </div>
             </List>
-            : <div className={ChatStyle.Chat__info}>대화를 시작해보세요!</div>
+            : isLogin ? <div className={ChatStyle.Chat__info}>대화를 시작해보세요!</div>
+            : <div className={ChatStyle.Chat__info}>로그인 후 이용해주세요</div>
             }
         </Container>
     )

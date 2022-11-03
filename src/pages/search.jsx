@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
@@ -7,6 +8,7 @@ import style from "./page.module.scss";
 
 const Search = () => {
     const [searchItems, setSearchItems] = useState([]);
+    const [pagination, setPagination] = useState({});
     const [searchParams] = useSearchParams();
     const queryList = [...searchParams];
     const q = createQueryObj(queryList);
@@ -15,9 +17,36 @@ const Search = () => {
 
     useEffect(() => {
         console.log("queryObj: ", q);
+
+        const queryConfig = {
+            keyword: q.key[0],
+            page: q.page[0]
+        }
+
+        // 수정!!!
+        // 조건 다중선택 가능하게 수정
+        if (!(q.cat.length === 1 && q.cat[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId1 = q.cat[0];
+        }
+        if (!(q.reg.length === 1 && q.reg[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId2 = q.reg[0];
+        }
+        if (!(q.status.length === 1 && q.status[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId3 = q.status[0];
+        }
         
         // axios
         // 검색결과 받아오기
+        axios
+        .get('/api/recommend/standard', {
+          params: queryConfig
+        })
+        .then((res) => {
+          console.log(res);
+            setPagination(res.data.pagination);
+          
+        })
+
 
         // dummy data 실제데이터로 변경
         const dummy = [
@@ -81,7 +110,7 @@ const Search = () => {
                 </select>
             </div>
             {
-                <ItemList items={searchItems} size={'md'} />
+                <ItemList items={searchItems} size={'md'} pagination={pagination} />
             }
         </div>
     )

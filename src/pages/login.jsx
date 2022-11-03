@@ -104,7 +104,7 @@ const Login = () => {
 
     // 더미데이터
     const userData = {
-      userId: "user1@shinsegae.com",
+      userId: "une9nine@shinsegae.com",
       nickname: "hyegu",
     };
 
