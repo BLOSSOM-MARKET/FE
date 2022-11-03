@@ -1,52 +1,105 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 //import React from 'react';
 //import '../Upload/Upload.module.scss';
 import style from "./page.module.scss";
 import "antd/dist/antd.css";
-import { Upload } from "antd";
 import BootForm from "react-bootstrap/Form";
 import styleBtn from "../components/SearchBar/SearchBar.module.scss";
 import styleLabel from "../components/Upload/Upload.module.scss";
-import { useLocation } from "react-router-dom";
+import { Form, useLocation, useNavigate } from "react-router-dom";
 import { CATE } from "../utils/categories";
-//import categotyStyle from "../components/SearchBar/SearchBar.module.scss"
+import { now } from "moment";
+import { UserContext } from "../contexts/UserContext";
+import axios from "axios";
 
-const ImgUploader = () => {
-  return (
-    <>
-      <Upload
-        name="image"
-        action="http://localhost:3000/image"
-        listType="picture"
-        showUploadList={false}
-        // onChange={onChangeImage}
-      >
-        <div id="upload-img-placeholder">
-          <div className={style.Settings__CameraIcon}>
-            <div className={style.Settings__CameraIcon__inner}>
-              <i
-                className={`bi bi-camera-fill ${style.Settings__CameraIcon__icon}`}
-              ></i>
-              <div>이미지 등록</div>
+const ImgUploadSection = ({ attachments, setAttachments, attachmentURLs, setAttachmentURLs }) => {
+    
+    const onFileChange = event => {
+        const { target : { files }} = event;
+
+        if (attachments.length >= 3) {
+            alert("사진은 최대 3장까지 등록할 수 있습니다.");
+            return
+        }
+    
+        // 파일 목록에 추가
+        setAttachments(prev => [...prev, ...files]);
+    
+        // 미리보기 이미지 url 생성 후 저장
+        const fileUrls = Array.from(files).map(file => URL.createObjectURL(file));
+        setAttachmentURLs(prev => [...prev, ...fileUrls]);
+    
+        // url 해제 (메모리 누수 방지)
+        Array.from(files).map(file => URL.revokeObjectURL(file));
+        
+      };
+
+      const fileInput = useRef();
+
+        const onDeleteAttachment = (i) => {
+            setAttachments(prev => prev.filter((att, idx) => idx !== i));
+            setAttachmentURLs(prev => prev.filter((att, idx) => idx !== i));
+        };
+
+    return (
+        <section className={style.Settings__CameraIcon__wrapper}>
+        <label className="my-label" htmlFor="attachFile">
+            <div id="upload-img-placeholder">
+                <div className={style.Settings__CameraIcon}>
+                <div className={style.Settings__CameraIcon__inner}>
+                    <i
+                    className={`bi bi-camera-fill ${style.Settings__CameraIcon__icon}`}
+                    ></i>
+                    <div>이미지 등록</div>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </Upload>
-      <span
-        className={`text-primary ${style.Settings__CameraIcon__label__wrapper}`}
-      >
-        <span className={style.Settings__CameraIcon__label__big}>
-          * 이미지 아이콘을 클릭하여 이미지 등록을 할 수 있습니다. <br />
-        </span>
-        <label className={style.Settings__CameraIcon__label__small}>
-          - 상품 이미지는 최대 3개까지 등록 가능합니다.<br></br>- 큰 이미지일
-          경우 이미지가 깨지는 경우가 발생할 수 있습니다.
-          <br></br>- 대표이미지는 처음으로 등록된 사진으로 지정됩니다.
         </label>
-      </span>
-    </>
-  );
-};
+        <div className={style.Settings__CameraIcon__right}>
+                <ul id="ImgPreview" className={styleLabel.preview__image__ul}>
+                {
+                    attachmentURLs.map((url, i) => (
+                    <li className={styleLabel.preview__image__li} key={`attachment-preview-${i}`}>
+                        <div className={styleLabel.preview__image__wrapper}>
+                            <img 
+                            alt={`attachment-preview-${i}`}
+                            src={url}
+                            className={styleLabel.preview__image} />
+                        </div>
+                        <button 
+                        className={styleLabel.preview__image__delBtn}
+                        onClick={() => onDeleteAttachment(i)}>
+                            <i className="bi bi-x-square"></i>
+                        </button>
+                    </li>
+                    ))
+                }
+                </ul>
+                <input 
+                    id="attachFile"
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange}
+                    ref={fileInput} 
+                    multiple 
+                    style={{ display: "none"}} />
+
+                <span
+                className={`text-primary ${style.Settings__CameraIcon__label__wrapper}`}
+            >
+                <span className={style.Settings__CameraIcon__label__big}>
+                * 이미지 아이콘을 클릭하여 이미지를 등록할 수 있습니다. <br />
+                </span>
+                <label className={style.Settings__CameraIcon__label__small}>
+                - 상품 이미지는 최대 3개까지 등록 가능합니다.<br></br>- 큰 이미지일
+                경우 이미지가 깨지는 경우가 발생할 수 있습니다.
+                <br></br>- 대표이미지는 처음으로 등록된 사진으로 지정됩니다.
+                </label>
+            </span>
+        </div>
+      </section>
+    )
+}
 
 const TitleSection = ({
   isModify,
@@ -257,9 +310,16 @@ const Uploadpage = (props) => {
   const [contentLength, setContentLength] = useState(0);
   const [itemInfo, setItemInfo] = useState({});
 
+  const [attachments, setAttachments] = useState([]);   // 이미지파일
+  const [attachmentURLs, setAttachmentURLs] = useState([]);   // 이미지파일 미리보기
+
+  const { userId } = useContext(UserContext);
+
   const loc = useLocation();
   const isNew = loc.pathname === "/item/new";
   const isModify = loc.pathname === "/item/modify";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // axios
@@ -273,8 +333,9 @@ const Uploadpage = (props) => {
       categoryId3: "0301",
       content: "싸게 팔아요",
       createDate: "2022-11-02T08:54:29.912Z",
-      image: "사진 수정 불가",
-      goodId: "string",
+      image1: "사진 수정 불가",
+      image2: "사진 수정 불가",
+      image3: "사진 수정 불가",
       price: 100000,
       productId: "1",
       productName: "쓰던 물병 팝니다",
@@ -325,10 +386,89 @@ const Uploadpage = (props) => {
   //     console.log(itemInfo.productName);
   //   }, [itemInfo.productName]);
 
+  const downloadImgsToLocalFolder = async (file) => {
+    try {
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = URL.createObjectURL(new Blob([file]));
+        a.download = "blossom_market_" + file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
   const onSubmit = (e) => {
-    console.log(e.target.value);
     console.log(itemInfo);
+    console.log("imgs", attachments);
     e.preventDefault();
+
+    if (isNew) {
+        // axios
+        // 신규 등록
+        const bodyData = {
+            ...itemInfo,
+            price: Number(itemInfo.price),
+            categoryId3: "0301",
+            createDate: now(),
+            // image1: attachments[0],
+            // image2: attachments[1],
+            // image3: attachments[2],
+            sellerId: userId,
+            status: "1",
+            updateDate: now(),
+            viewCount: 0,
+          };
+        
+          for (let i=0; i < attachments.length; i++) {
+                const img = attachments[i];
+                downloadImgsToLocalFolder(img);
+                const path = `${process.env.REACT_APP_IMG_FOLDER}/blossom_market_${img.name}`;
+                bodyData[`image${i+1}`] = path;
+
+            //   const path = `../../downloadImgs/${img.name}`
+            //     fs.writeFile(path, img, function(err, data) {
+            //         if (err) {
+            //             throw (err);
+            //         }
+            //         // save filepath to wherever for later.
+            //         bodyData[`image${i+1}`] = path;
+            //     });
+          }
+
+          console.log(bodyData)
+
+          axios
+            .post('/api/product/insert', bodyData)
+            .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            
+            // 수정!!!
+            // 상세페이지로 이동해서 작성 글 확인
+            // const productId = null;
+            // navigate('/item/detail/' + productId);
+            });
+
+    } else if (isModify) {
+        // axios
+        // 기존 글 수정
+
+        axios
+            .post('/api/product/insert', itemInfo)
+            .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            
+            // 수정!!!
+            // 상세페이지로 이동해서 작성 글 확인
+            // const productId = null;
+            // navigate('/item/detail/' + productId);
+            });
+
+    }
   };
 
   return (
@@ -344,7 +484,12 @@ const Uploadpage = (props) => {
                 {
                     isNew
                     ?
-                    <ImgUploader />
+                    <ImgUploadSection
+                        attachments={attachments}
+                        setAttachments={setAttachments}
+                        attachmentURLs={attachmentURLs}
+                        setAttachmentURLs={setAttachmentURLs}
+                    />
                     :
                     <div className="row">
                         <div className={style.Settings__CameraIcon__Alert}>
@@ -376,7 +521,10 @@ const Uploadpage = (props) => {
                <ContentSection 
                 itemInfo={itemInfo}
                 isModify={isModify}
-                onChange={(e) => setContentLength(e.target.value.length)}
+                onChange={(e) => {
+                    setContentLength(e.target.value.length)
+                    onChangeVal(e, "content")
+                }}
                 contentLength={contentLength}
                />
                <ButtonSection 

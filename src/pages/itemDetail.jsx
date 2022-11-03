@@ -68,37 +68,80 @@ const ItemDetail = () => {
         //데이터 가져오기 product/detail + query productId
 
         console.log(itemId)
+        const getItemDetail = () => {
+            return axios
+                    .get('/api/product/detail', {
+                        params: {
+                        productId: itemId
+                        }
+                    })
+        }
+
+        const getRelatedItems = () => {
+            return axios
+                    .get('/api/recommend/relation', {
+                        params: {
+                            productId: itemId
+                        }
+                    })
+        }
+
+        const getPersonalizedItems = () => {
+            return axios
+                    .get('/api/recommend/personalization', {
+                        params: {
+                            userId: userId
+                        }
+                    })
+        }
+
+
         axios
-        .get('/api/product/detail', {
-            params: {
-              productId: itemId
-            }
-          })
+        .all([
+            getItemDetail(),
+            getRelatedItems(),
+            getPersonalizedItems()
+        ])
         .then((res) => {
           console.log(res);
-          console.log(res.data);
+          const [itemDetail, relatedItems, personalizedItems] = res;
+        //   const itemData = {...itemDetail};
+        //   itemData.likeCount = itemDetail[1];   // 좋아요개수
+
+        //   if (itemData.myLike) {         // 내 좋아요 여부
+        //       setIsInWishlist(true);
+        //   }
+
+        // itemData.relatedItems = relatedItems;
+        // itemData.personalizedItems = personalizedItems;
+
+        //   // 수정!!!
+        //   // 내가 좋아요 눌렀는지 여부값 (myLike) / 판매자 닉네임 (sellerNickname) 필요
+        //   setItem(itemData);
+    
+        //   // UserContext에 저장
+        //   setYourId(itemData.sellerId);
+        //   setYourNick(itemData.sellerNickname);
+        //   setProductId(itemId);
+  
           
-          // setNickname(nickname);
         });
 
         const itemData = {
-            user: {
-                nickname: "용지함",
-                userId: "jiyong@shinsegae.com"
-            },
+            sellerNickname: "용지함",
+            sellerId: "jiyong@shinsegae.com",
             pictures: [
                 "http://www.palnews.co.kr/news/photo/201801/92969_25283_5321.jpg",
                 "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
                 "https://img.etoday.co.kr/pto_db/2018/01/20180118112233_1176969_600_387.jpg",
-                "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
             ],
-            title: "꽃인형 판매 (네고X)",
+            productName: "꽃인형 판매 (네고X)",
             category: "01",
             uploadTime: new Date().toDateString(),
             price: 30000,
             content: "김포 장기동으로 오면 무료나눔",
-            viewNum: 3,
-            likeNum: 1,
+            viewCount: 3,
+            likeCount: 1,
             myLike: true,
             relatedItems: [
                 [
@@ -136,7 +179,7 @@ const ItemDetail = () => {
                     },
                 ],
             ],
-            findingItems: [
+            personalizedItems: [
                 [
                     {
                         imgSrc: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
@@ -166,33 +209,26 @@ const ItemDetail = () => {
                         itemId: "341"
                     },
                     {
-                        imgSrc: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-                        title: "냥냥냐냐냐냐냥",
-                        itemId: "753"
-                    },
+                            imgSrc: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
+                            title: "냥냥냐냐냐냐냥",
+                            itemId: "753"
+                        },
+                    ],
                 ],
-            ],
-        }
+            }
+        
+            setItem(itemData);
 
-        setItem(itemData);
-
-        // UserContext에 저장
-        setYourId(itemData.user.userId);
-        setYourNick(itemData.user.nickname);
-        setProductId(itemId);
-
-
-        if (itemData.myLike) {
-            setIsInWishlist(true);
-        }
-
-    }, [itemId]);
-
+            
+        }, [itemId]);
+        
     const onEditItem = () => {
         // 수정 페이지로 이동
     }
 
     const onClickWishBtn = () => {
+        if (!isLogin) return;
+
         setIsInWishlist(prev => !prev);
 
         // axios
@@ -205,7 +241,7 @@ const ItemDetail = () => {
     // }
 
     const onClickChatting = () => {
-        const ownerId = item.user.userId;
+        const ownerId = item.sellerId;
         const roomId = ownerId + myId + itemId;
         const yourNick = item.user.nickname;
         setIsChatOpen(true);
@@ -245,7 +281,7 @@ const ItemDetail = () => {
                         <div className={style.Detail__sellerInfo__inner}>
                             <img src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" alt="profil pic" className={style.Detail__sellerInfo__pic} />
                             <span className={style.Detail__sellerInfo__nick}>
-                                {item.user.nickname}
+                                {item.sellerNickname}
                             </span>
                         </div>
                         <div className={style.Detail__sellerInfo__inner}>
@@ -259,7 +295,7 @@ const ItemDetail = () => {
                                 }
                             </div>
                             <button className="btn btn-dark" onClick={onClickChatting}
-                                disabled={item.user.userId === myId}>
+                                disabled={item.sellerId === myId || !isLogin}>
                                 채팅하기
                             </button>
                         </div>
@@ -279,7 +315,7 @@ const ItemDetail = () => {
                     </section>
                     <section className={style.Detail__body}>
                         {
-                            item.user.userId === myId
+                            item.sellerId === myId
                             &&
                             <button className="btn btn-dark" onClick={onEditItem}>
                                 수정하기
@@ -289,13 +325,13 @@ const ItemDetail = () => {
                             item.content
                         }
                         <div className={style.Detail__body__footer}>
-                            조회 {item.viewNum} · 찜 {item.likeNum}
+                            조회 {item.viewCount} · 찜 {item.likeCount}
                         </div>
                     </section>
                     {/*  */}
                     <section className={style.Detail__recommend}>
                         <MiniItemCarousel code={"00"} title={["다른 고객이 많이 본", "연관 상품"]} itemList={item.relatedItems} />
-                        <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname + "님" : "당신"}이 찾고 계신`, `바로 그 상품`]} itemList={item.findingItems} />
+                        <MiniItemCarousel code={"01"} title={[`${isLogin && nickname ? nickname + "님" : "당신"}이 찾고 계신`, `바로 그 상품`]} itemList={item.personalizedItems} />
                     </section>
                 </div>
             }

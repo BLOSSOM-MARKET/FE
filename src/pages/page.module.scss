@@ -67,6 +67,13 @@
         justify-content: center;
         align-items: center;
 
+        cursor: pointer;
+
+        &__right {
+            margin-left: 1rem;
+            // width: 23rem;
+        }
+
         &__inner {
             color: #DCDBE4;
             display: flex;
@@ -80,14 +87,19 @@
         }
 
         &__label {
+
             &__big {
-                font-size: 1rem;
+                font-size: 0.75rem;
                 font-weight: 900;
             }
 
-            &__wrapper {
-                margin-left: 1rem;
+            &__small {
+                font-size: 0.75rem;
             }
+
+            // &__wrapper {
+            //     margin-left: 1rem;
+            // }
         }
 
         &__wrapper {
