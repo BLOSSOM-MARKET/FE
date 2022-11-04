@@ -2,8 +2,8 @@ import style from "./ItemList.module.scss";
 import Card from "../Card/Card";
 import PaginationItem from "../Pagination/Pagination";
 
-const ItemList = ({items, size, pagination}) => {
-
+const ItemList = ({items, size, pagination, onClickPageBtn}) => {
+    console.log("pagination", pagination)
     return (
         <>
         {
@@ -23,7 +23,7 @@ const ItemList = ({items, size, pagination}) => {
                     {
                         pagination
                         &&
-                        <PaginationItem pagination={pagination} />
+                        <PaginationItem pagination={pagination} onClickPageBtn={onClickPageBtn} />
                     }
                 </div>
             </>

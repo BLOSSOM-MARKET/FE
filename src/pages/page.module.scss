@@ -321,6 +321,12 @@
     width: 60%;
     margin: 0 auto;
 
+    &__editBtn__wrapper {
+        margin-top: 4rem;
+        display: flex;
+        justify-content: center;
+    }
+
     &__carousel {
 
     }

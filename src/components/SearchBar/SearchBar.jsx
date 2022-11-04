@@ -154,13 +154,16 @@ const SearchBar = () => {
         console.log("지역: ", checkedRegions);
         console.log("중고여부: ", checkedStatus);
 
+        // .filter(code => code !== "00") 
         const params = { 
             key: inputVal, 
             cat: checkedCategories.map(item => item.code), 
             reg: checkedRegions.map(item => item.code), 
-            status: checkedStatus.map(item => item.code) ,
+            status: checkedStatus.map(item => item.code),
             page: 1
         }
+
+        console.log("searchparams:", params)
 
         navigate({
             pathname: '/search',

@@ -317,37 +317,29 @@ const Uploadpage = (props) => {
 
   const loc = useLocation();
   const isNew = loc.pathname === "/item/new";
-  const isModify = loc.pathname === "/item/modify";
+  const isModify = new RegExp("/item/modify/").test(loc.pathname);
 
   const navigate = useNavigate();
 
   const { itemId } = useParams();
-  console.log(loc.pathname, itemId)
+  console.log(loc.pathname, itemId, isModify)
 
   useEffect(() => {
     // axios
     // isModify일 때 기존 상품 데이터 가져오기
     if (!isModify) return;
 
-    const tempData = {
-      buyerId: "",
-      categoryId1: "0101",
-      categoryId2: "0201",
-      categoryId3: "0301",
-      content: "싸게 팔아요",
-      createDate: "2022-11-02T08:54:29.912Z",
-      image1: "사진 수정 불가",
-      image2: "사진 수정 불가",
-      image3: "사진 수정 불가",
-      price: 100000,
-      productId: "1",
-      productName: "쓰던 물병 팝니다",
-      sellerId: "une9nine@shinsegae.com",
-      status: "1",
-      updateDate: "2022-11-02T08:54:29.912Z",
-      viewCount: 0,
-    };
-    setItemInfo(tempData);
+    axios
+    .get('/api/product/detail', {
+        params: {
+            productId: itemId
+        }
+    })
+    .then(res => {
+        const tempItemData = res.data[0];
+        console.log(tempItemData)
+        setItemInfo(tempItemData);
+    })
   }, []);
 
   const onLengthChange = (e, targetFunc) => {
@@ -451,24 +443,26 @@ const Uploadpage = (props) => {
             
             // 수정!!!
             // 상세페이지로 이동해서 작성 글 확인
-            // const productId = null;
-            // navigate('/item/detail/' + productId);
+            const productId = res.data;
+            navigate('/item/' + productId);
             });
 
     } else if (isModify) {
         // axios
         // 기존 글 수정
 
+        console.log(itemInfo)
+
         axios
-            .post('/api/product/insert', itemInfo)
+            .patch('/api/product/update', itemInfo)
             .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            
-            // 수정!!!
-            // 상세페이지로 이동해서 작성 글 확인
-            // const productId = null;
-            // navigate('/item/detail/' + productId);
+                console.log(res);
+                console.log(res.data);
+                
+                // 수정!!!
+                // 상세페이지로 이동해서 작성 글 확인
+                console.log(itemId)
+                navigate('/item/' + itemId);
             });
 
     }

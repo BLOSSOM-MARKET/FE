@@ -103,7 +103,6 @@ const ItemDetail = () => {
         ])
         .then((res) => {
           console.log(res);
-          console.log(res.data);
           const itemDetail = res[0].data[0];
           const relatedItems = res[1].data;
           const personalizedItems = res[2].data;
@@ -239,7 +238,7 @@ const ItemDetail = () => {
         
     const onEditItem = () => {
         // 수정 페이지로 이동
-        navigate("/item/modify"+itemId);
+        navigate("/item/modify/"+itemId);
     }
 
     const onClickWishBtn = () => {
@@ -366,14 +365,16 @@ const ItemDetail = () => {
                     </section>
                     <section className={style.Detail__body}>
                         {
-                            item.sellerId === myId
-                            &&
-                            <button className="btn btn-dark" onClick={onEditItem}>
-                                수정하기
-                            </button>
+                            item.content
                         }
                         {
-                            item.content
+                            item.sellerId === myId
+                            &&
+                            <div className={style.Detail__editBtn__wrapper}>
+                                <button className="btn btn-dark" onClick={onEditItem}>
+                                    수정하기
+                                </button>
+                            </div>
                         }
                         <div className={style.Detail__body__footer}>
                             조회 {item.viewCount} · 찜 {item.likeCount}

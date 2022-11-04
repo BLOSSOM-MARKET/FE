@@ -29,17 +29,15 @@ const Search = () => {
 
         // 수정!!!
         // 조건 다중선택 가능하게 수정
-        if (!(q.cat.length === 1 && q.cat[0] === "00")) {   // 전체선택이 아니면
-            queryConfig.categoryId1 = q.cat[0];
+        if (!("cat" in q && q.cat.length === 1 && q.cat[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId1 = q.cat.join(",");
         }
-        if (!(q.reg.length === 1 && q.reg[0] === "00")) {   // 전체선택이 아니면
-            queryConfig.categoryId2 = q.reg[0];
+        if (!("reg" in q && q.reg.length === 1 && q.reg[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId2 = q.reg.join(",");
         }
-        if (!(q.status.length === 1 && q.status[0] === "00")) {   // 전체선택이 아니면
-            queryConfig.categoryId3 = q.status[0];
+        if (!("status" in q && q.status.length === 1 && q.status[0] === "00")) {   // 전체선택이 아니면
+            queryConfig.categoryId3 = q.status.join(",");
         }
-
-        console.log(queryConfig)
         
         // axios
         // 검색결과 받아오기
@@ -53,37 +51,6 @@ const Search = () => {
             setPagination(res.data.pagination);
         })
 
-
-        // // dummy data 실제데이터로 변경
-        // const dummy = [
-        //     {
-        //         id: 1,
-        //         imgSrc: "https://shopping-phinf.pstatic.net/main_8318544/83185449617.7.jpg?type=f200",
-        //         title: "곰인형 판매 (네고x)",
-        //         price: 10000, 
-        //         time: new Date().toDateString()
-        //     },
-        //     {
-        //         id: 2,
-        //         imgSrc: "http://image.bom.co.kr/product/detail/AQW/1912262016184445/_600.jpg",
-        //         title: "곰돌이 귀 강쥐 후드",
-        //         price: 25000, 
-        //         time: new Date().toDateString()
-        //     },
-        //     {
-        //         id: 3,
-        //         imgSrc: "https://image.homeplus.kr/td/d8761252-5c09-4690-9cb0-6fb4e6ca8b6f",
-        //         title: "마동석 곰돌이",
-        //         price: 40000, 
-        //         time: new Date().toDateString()
-        //     },
-        // ]
-
-        // const data = [
-        //     ...dummy, ...dummy, ...dummy
-        // ]
-
-        // setSearchItems(data);
     }, [searchParams]);
 
     const onChangeSort = (e) => {
@@ -91,16 +58,22 @@ const Search = () => {
         const s = e.target.value;
         const params = q;
         params['orderByType'] = s;
+        params['page'] = 1;
         navigate({
             pathname: '/search',
             search: `?${createSearchParams(params)}`
         });
-
-        // //axios
-        // // 정렬기준에 따른 검색 결과 재요청
-        // const data = [];
-        // setSearchItems(data);
     }
+
+    // const onClickPageBtn = (targetPage) => {
+    //     console.log("page:",targetPage);
+    //     const params = q;
+    //     params['page'] = targetPage;
+    //     navigate({
+    //         pathname: '/search',
+    //         search: `?${createSearchParams(params)}`
+    //     });
+    // }   
 
     return (
         <div className={style.Page}>
