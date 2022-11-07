@@ -83,7 +83,11 @@ const MyItemContainer = ({ icon, title, items, linkTo, blankText }) => {
             <Card item={item} size={'sm'} key={`item-${idx}`} />
           ))
           :
-          <div>{blankText}</div>
+          <div className={style.My__MyItemContainer__blankText}>
+            <div>
+              {blankText}
+            </div>
+          </div>
         }
       </div>
     </div>

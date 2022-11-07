@@ -178,6 +178,7 @@
 
     &__MyItemContainer {
         margin-bottom: 2rem;
+        min-width: 100%;
 
         &__header {
             display: flex;
@@ -195,6 +196,14 @@
 
         &__body {
             display: flex;
+        }
+
+        &__blankText {
+            min-width: 100%;
+            margin: 3rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }
@@ -377,6 +386,7 @@
             font-weight: 900;
             font-size: 1.5rem;
             margin-bottom: 0.25rem;
+            max-width: 30rem;
         }
 
         &__desc {

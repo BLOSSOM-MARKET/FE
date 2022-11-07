@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { createQueryObj } from '../../utils/searchutils';
+import "./Pagination.scss";
 
 const PaginationItem = ( {
     pagination : {
