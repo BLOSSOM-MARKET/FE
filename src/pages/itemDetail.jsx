@@ -109,10 +109,10 @@ const ItemDetail = () => {
       });
     };
 
-    const getRelatedItems = () => {
+    const getRelatedItems = (categoryId) => {
       return axios.get("/api/recommend/relation", {
         params: {
-          categoryId: "01",
+          categoryId1: categoryId,
         },
       });
     };
@@ -121,14 +121,20 @@ const ItemDetail = () => {
       return axios.get("/api/recommend/personalization");
     };
 
+    const reqs = [getItemDetail()];
+
+    if (isLogin) {
+      console.log("IS LOgIN?!")
+      reqs.push(getPersonalizedItems());
+    }
+
     axios
-      .all([getItemDetail(), getRelatedItems(), getPersonalizedItems()])
+      .all(reqs)
       .then((res) => {
         console.log(res);
         const itemDetail = res[0].data[0];
-        const relatedItems = res[1].data;
-        const personalizedItems = res[2].data;
-        console.log(itemDetail, relatedItems, personalizedItems);
+        // const relatedItems = res[1].data;
+        // console.log(itemDetail, personalizedItems);
         const itemData = { ...itemDetail };
         itemData.likeCount = res[0].data[1]; // 좋아요개수
         const myLike = res[0].data[2];
@@ -140,8 +146,7 @@ const ItemDetail = () => {
           setIsInWishlist(true);
         }
 
-        itemData.relatedItems = relatedItems;
-        itemData.personalizedItems = personalizedItems;
+        // itemData.relatedItems = relatedItems;
 
         const pictures = [];
         if (itemDetail.image1) {
@@ -155,105 +160,31 @@ const ItemDetail = () => {
         }
         itemData.pictures = pictures;
 
-        // const itemData = {
-        //     sellerNickname: "최정윤",
-        //     sellerId: "cjy8529@shinsegae.com",
-        //     pictures: [
-        //         "http://www.palnews.co.kr/news/photo/201801/92969_25283_5321.jpg",
-        //         "https://cdn.newspenguin.com/news/photo/202101/3899_12249_529.jpg",
-        //         "https://img.etoday.co.kr/pto_db/2018/01/20180118112233_1176969_600_387.jpg",
-        //     ],
-        //     productName: "꽃인형 판매 (네고X)",
-        //     category: "01",
-        //     uploadTime: new Date().toDateString(),
-        //     price: 30000,
-        //     content: "김포 장기동으로 오면 무료나눔",
-        //     viewCount: 3,
-        //     likeCount: 1,
-        //     myLike: true,
-        //     relatedItems: [
-        //         [
-        //             {
-        //                 image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-        //                 productName: "기여운 고양이",
-        //                 productId: "123"
-        //             },
-        //             {
-        //                 image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-        //                 productName: "[더데일리]고양이",
-        //                 productId: "341"
-        //             },
-        //             {
-        //                 image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-        //                 productName: "냥냥냐냐냐냐냥",
-        //                 productId: "753"
-        //             },
-        //         ],
-        //         [
-        //             {
-        //                 image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-        //                 productName: "화난토끼고앵",
-        //                 productId: "332"
-        //             },
-        //             {
-        //                 image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-        //                 productName: "롭이어토끼",
-        //                 productId: "556"
-        //             },
-        //             {
-        //                 image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-        //                 productName: "토깽펀치",
-        //                 productId: "980"
-        //             },
-        //         ],
-        //     ],
-        //     personalizedItems: [
-        //         [
-        //             {
-        //                 image1: "http://image.dongascience.com/Photo/2020/06/e7febac8f9a1c9005c08c93d25997f47.jpg",
-        //                 productName: "화난토끼고앵크앙",
-        //                 productId: "332"
-        //             },
-        //             {
-        //                 image1: "https://steptohealth.co.kr/wp-content/uploads/2021/12/-%ED%86%A0%EB%81%BC-500x375-1-470x353.jpg",
-        //                 productName: "롭이어토끼",
-        //                 productId: "556"
-        //             },
-        //             {
-        //                 image1: "https://img.insight.co.kr/static/2020/12/13/700/img_20201213152823_hh576838.webp",
-        //                 productName: "토깽펀치",
-        //                 productId: "980"
-        //             },
-        //         ],
-        //         [
-        //             {
-        //                 image1: "https://cdn.cashfeed.co.kr/attachments/1eb9b8ff1b.jpg",
-        //                 productName: "기여운 고양이기여운고양이기여운",
-        //                 productId: "123"
-        //             },
-        //             {
-        //                 image1: "http://image.dongascience.com/Photo/2020/10/8a5748b94df480da7df06adcdaa417c9.jpg",
-        //                 productName: "[더데일리]고양이",
-        //                 productId: "341"
-        //             },
-        //             {
-        //                     image1: "https://t1.daumcdn.net/news/202105/25/catlab/20210525060513319cxip.jpg",
-        //                     productName: "냥냥냐냐냐냐냥",
-        //                     productId: "753"
-        //                 },
-        //             ],
-        //         ],
-        //     }
-        // console.log(itemData)
+        // 로그인했을 때, 개인 추천 상품 리스트
+        if (isLogin) {
+          const personalizedItems = res[1].data;
+          itemData.personalizedItems = personalizedItems;
+        }
 
-        //   // 수정!!!
-        //   // 내가 좋아요 눌렀는지 여부값 (myLike) / 판매자 닉네임 (sellerNickname) 필요
-        setItem(itemData);
+        return itemData;
+        
+      })
+      .then((itemData) => {
+        const categoryId = itemData.categoryId1;
+        getRelatedItems(categoryId)
+        .then(res => {
+          console.log(categoryId, res.data);
+          const relatedItems = res.data;
+          itemData.relatedItems = relatedItems;
 
-        // UserContext에 저장
-        setYourId(itemData.sellerId);
-        setYourNick(itemData.sellerNickname);
-        setProductId(itemId);
+          setItem(itemData);
+
+          // UserContext에 저장
+          setYourId(itemData.sellerId);
+          setYourNick(itemData.sellerNickname);
+          setProductId(itemId);
+          
+        })
       });
   }, [itemId]);
 
@@ -265,8 +196,6 @@ const ItemDetail = () => {
   const onClickWishBtn = () => {
     if (!isLogin) return;
     if (myId === yourId) return;
-
-    // setIsInWishlist(prev => !prev);
 
     // axios
     // 좋아요 변경
