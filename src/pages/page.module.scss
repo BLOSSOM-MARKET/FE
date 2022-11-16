@@ -262,8 +262,12 @@
 
 .SignUp {
     &__Form {
-        &__rowWrapper {
-            display: flex;
+        // &__rowWrapper {
+        //     display: flex;
+        // }
+
+        &__float {
+            float: left;
         }
 
         &__mailInput {
@@ -311,7 +315,7 @@
 
     &__SignUpBtn {
         width: 35rem;
-        margin-top: 2rem;
+        margin-top: 1rem;
     }
 
     &__Desc {
@@ -331,13 +335,13 @@
     margin: 0 auto;
 
     &__editBtn__wrapper {
-        margin-top: 4rem;
+        margin-top: 8rem;
         display: flex;
         justify-content: center;
     }
 
-    &__carousel {
-
+    &__Btns {
+        margin: 0.5rem;
     }
 
     &__sellerInfo {

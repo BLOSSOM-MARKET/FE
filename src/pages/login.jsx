@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { ChattingContext } from "../contexts/ChattingContext";
@@ -44,7 +44,7 @@ const LoginForm = ({ onSubmit }) => {
             <Form.Group controlId="validationFormik08">
               <Form.Control
                 type="text"
-                placeholder="아이디"
+                placeholder="아이디 (이메일 형식)"
                 name="webId"
                 value={values.webId}
                 onChange={handleChange}
@@ -87,6 +87,9 @@ const LoginForm = ({ onSubmit }) => {
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const prevPath = searchParams.get("prev");
+  console.log(prevPath);
 
   const { setIsLogin, setUserId } = useContext(UserContext);
   const { setYourNick } = useContext(ChattingContext);
@@ -130,29 +133,16 @@ const Login = () => {
           setUserId(userData.userId);
           setYourNick(userData.nickname);
 
-          // 메인으로 이동
-          window.location.href = "/";
+          // 이전 페이지/메인페이지로 이동
+          const targetPath = prevPath ? prevPath : "/";
+          window.location.href = targetPath;
+          
         } else {
           // 로그인 실패 시
           alert("로그인 정보를 다시 입력해주세요");
         }
       });
 
-    // // 더미데이터
-    // const userData = {
-    //   userId: "une9nine@shinsegae.com",
-    //   nickname: "hyegu",
-    // };
-
-    // sessionStorage.setItem("userId", userData.userId);
-    // sessionStorage.setItem("nickname", userData.nickname);
-    // sessionStorage.setItem("isLogin", true);
-    // setIsLogin(true);
-    // setUserId(userData.userId);
-    // setYourNick(userData.nickname);
-
-    // // 메인으로 이동
-    // window.location.href = "/";
   };
 
   return (

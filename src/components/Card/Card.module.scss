@@ -21,6 +21,10 @@
         }
 
     }
+
+    .Card__img__wrapper {
+        width: 100%;
+    }
 }
 
 .Card.lg {
@@ -28,7 +32,7 @@
     min-width: 16rem;
 
     .Card__img__wrapper {
-        width: 16rem;
+        // width: 16rem;
         height: 16rem;
     }
 }
@@ -42,7 +46,7 @@
     }
 
     .Card__img__wrapper {
-        width: 12rem;
+        // width: 12rem;
         height: 12rem;
     }
 }
@@ -64,7 +68,7 @@
     }
 
     .Card__img__wrapper {
-        width: 9rem;
+        // width: 9rem;
         height: 9rem;
     }
 }

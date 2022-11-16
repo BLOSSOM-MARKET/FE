@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 // import Logout from "../../utils/logout";
 import NavBar from "../SearchBar/SearchBar";
@@ -26,16 +26,17 @@ const Header = () => {
     const onClickLogIn = () => {
         if (isLogin) {
             // 로그인상태면 로그아웃
-            console.log("로그아웃!!!!!");
             Logout();
         } else {
             // 로그아웃상태면 로그인페이지로
-            console.log("로그인!!!!");
-            navigate("/login");
+            navigate({
+                pathname: '/login',
+                search: `?${createSearchParams({
+                    prev: path
+                })}`
+            });
         }
     }
-
-    console.log("Header isLogin:", isLogin)
 
     return (
         <div>

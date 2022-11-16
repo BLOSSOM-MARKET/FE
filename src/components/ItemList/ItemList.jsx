@@ -3,7 +3,6 @@ import Card from "../Card/Card";
 import PaginationItem from "../Pagination/Pagination";
 
 const ItemList = ({items, size, pagination, onClickPageBtn}) => {
-    console.log("pagination", pagination)
     return (
         <>
         {

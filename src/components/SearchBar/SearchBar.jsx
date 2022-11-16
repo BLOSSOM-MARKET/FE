@@ -43,7 +43,6 @@ const SearchBar = () => {
     }
 
     useEffect(() => {
-        console.log(loc.pathname)
         if (loc.pathname === '/search') {
             const q = createQueryObj(queryList);
 
@@ -123,7 +122,6 @@ const SearchBar = () => {
         // 전체선택 X 활성화 상태로 변경
         // 1. 전체선택 상태일 때 다른 박스 체크
         if (checked && targetList.length <= 1 && !item.id.includes('all')) {
-            console.log("전체선택 해제!")
             setTargetList([...targetList.filter((el) => !el.id.includes('all')), item]);
             setDisabled(parentCode, false);
             return
@@ -145,16 +143,11 @@ const SearchBar = () => {
     const onSearchClick = (e) => {
         e.preventDefault();
 
-        // if (!inputVal || inputVal.length <= 0) {
-        //     return
-        // }
-
         console.log("검색어: ", inputVal)
         console.log("카테고리: ", checkedCategories);
         console.log("지역: ", checkedRegions);
         console.log("중고여부: ", checkedStatus);
 
-        // .filter(code => code !== "00") 
         const params = { 
             key: inputVal, 
             cat: checkedCategories.map(item => item.code), 
@@ -162,8 +155,6 @@ const SearchBar = () => {
             status: checkedStatus.map(item => item.code),
             page: 1
         }
-
-        console.log("searchparams:", params)
 
         navigate({
             pathname: '/search',

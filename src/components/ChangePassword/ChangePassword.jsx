@@ -9,6 +9,7 @@ import { Formik } from "formik";
 import * as yup from 'yup';
 import yupPassword from 'yup-password';
 import { userDataValidation } from '../../utils/userInfoUtils';
+import axios from 'axios';
 
 const ChangePassword =() => {
 
@@ -25,19 +26,37 @@ const ChangePassword =() => {
         newPW: pwField("새로운")
                 .minLowercase(1, '1개 이상의 소문자 알파벳을 포함해야 합니다.')
                 .minNumbers(1, '1개 이상의 숫자를 포함해야 합니다.')
-                .minSymbols(1, '1개 이상의 기호를 포함해야 합니다.'),
+                .minSymbols(1, '1개 이상의 기호를 포함해야 합니다.')
+                .notOneOf([yup.ref('presentPW')], "기존 비밀번호와 일치합니다."),
         newPWCheck: yup.string()
                     .required("새로운 비밀번호를 똑같이 입력해주세요.")
                     .oneOf([yup.ref('newPW')], "비밀번호가 일치하지 않습니다."),
       });
 
-    const onSubmit = ({newPW}, resetForm) => {
-        console.log(newPW)
+    const onSubmitPasswordChange = ({presentPW, newPW}, resetForm) => {
+        console.log(presentPW, newPW)
         // axios
         // 비밀번호 변경
         // 현재 비밀번호 일치하지 않을 때 에러처리
+        const data = {
+            presentPassword: presentPW,
+            newPassword: newPW
+        }
 
-        resetForm();
+        axios.post("/api/mypage/profile/updatepassword", data)
+        .then((res) => {
+            if (res.data) {
+                alert("정상적으로 변경되었습니다.");
+                resetForm();
+            } else {
+                alert("현재 비밀번호를 정확하게 입력해주세요.");
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            alert("오류가 발생하였습니다. 다시 시도해주세요.");
+        })
+
     }
 
   return (
@@ -46,7 +65,7 @@ const ChangePassword =() => {
         validateOnChange
         enableReinitialize 
         validationSchema={schema}
-        onSubmit={(values, {resetForm}) => onSubmit(values, resetForm)}
+        onSubmit={(values, {resetForm}) => onSubmitPasswordChange(values, resetForm)}
         initialValues={{
             presentPW: '',
             newPW: '',
@@ -72,7 +91,7 @@ const ChangePassword =() => {
                     name="presentPW"
                     value={values.presentPW}
                     onChange={handleChange}
-                    isValid={touched.presentPW && !errors.presentPW}
+                    // isValid={touched.presentPW && !errors.presentPW}
                     isInvalid={!!errors.presentPW}
                 />
                 {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
@@ -93,7 +112,7 @@ const ChangePassword =() => {
                     name="newPW"
                     value={values.newPW}
                     onChange={handleChange}
-                    isValid={touched.newPW && !errors.newPW}
+                    // isValid={touched.newPW && !errors.newPW}
                     isInvalid={!!errors.newPW}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -110,7 +129,7 @@ const ChangePassword =() => {
                     name="newPWCheck"
                     value={values.newPWCheck}
                     onChange={handleChange}
-                    isValid={touched.newPWCheck && !errors.newPWCheck}
+                    // isValid={touched.newPWCheck && !errors.newPWCheck}
                     isInvalid={!!errors.newPWCheck}
                 />
                 <Form.Control.Feedback type="invalid">

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsBox from "../components/Box/SettingsBox";
@@ -13,17 +13,23 @@ import Row from 'react-bootstrap/Row';
 
 import { Formik } from "formik";
 import * as yup from 'yup';
-import { isPossibleNickname } from "../utils/userInfoUtils";
+import { checkPossibleNickname } from "../utils/userInfoUtils";
 
 import axios from 'axios';
 
 const MyProfile = ({ userId, nickname }) => {
+  const [isPossibleNickname, setIsPossibleNickname] = useState(false);
   const { setNickname } = useContext(UserContext);
 
     const schema = yup.object().shape({
         nickname: yup.string()
                     .required("닉네임을 입력해주세요.")
-                    .test("doubleNick", "다른 회원과 중복되는 닉네임입니다.", isPossibleNickname),
+                    .test( "doubleNick", "다른 회원과 중복되는 닉네임입니다.", 
+                      function(value){return new Promise((resolve, reject) => {
+                        axios.get("/api/user/check/nickname", {params: { nickname: value}})
+                        .then(res => {if (!res.data) {resolve(false)} resolve(true)})
+                    })}
+                    )
       });
 
     const onSubmit = ({ nickname }) => {
@@ -31,12 +37,7 @@ const MyProfile = ({ userId, nickname }) => {
         // axios
         // 닉네임 변경
         axios
-        .post('/api/mypage/profile/updatenickname', {
-          params: {
-            nickName: nickname,
-            userId: userId
-          }
-        })
+        .patch('/api/mypage/profile/updatenickname/' + nickname)
         .then((res) => {
           console.log(res);
 
@@ -137,6 +138,9 @@ const Settings = () => {
   const { Logout, isLogin, userId, nickname } = useContext(UserContext);
 
   const onWithdraw = () => {
+    // axios
+    // 실제로 탈퇴되지 않음
+
     console.log("회원탈퇴!");
     Logout();
     navigate("/");
@@ -155,7 +159,7 @@ const Settings = () => {
                 <ChangePassword />
               </SettingsBox>
 
-              <Withdrawal />
+              {/* <Withdrawal /> */}
             </>
           ) : (
             <div>
@@ -164,7 +168,7 @@ const Settings = () => {
           )}
         </div>
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="staticBackdrop"
         data-bs-backdrop="static"
@@ -198,7 +202,7 @@ const Settings = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

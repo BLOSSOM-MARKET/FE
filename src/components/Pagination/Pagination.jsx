@@ -30,25 +30,19 @@ const PaginationItem = ( {
         for (let i=startPage; i <= endPage; i++) {
             pageList.push(String(i));
         }
-        console.log("pageList", pageList);
     }
 
     
     useEffect(() => {
-        console.log("searchParams: ", q)
         if ("page" in q) {
             setThisPage(q.page[0]);
         }
-    
-        console.log(thisPage);
 
     }, [searchParams, thisPage]);
 
     const onClickPageBtn = (targetPage) => {
-        console.log("page:",targetPage);
         const params = q;
         params['page'] = targetPage;
-        console.log("parentPath: ", parentPath)
         navigate({
             pathname: `/${parentPath ? parentPath : ""}`,
             search: `?${createSearchParams(params)}`

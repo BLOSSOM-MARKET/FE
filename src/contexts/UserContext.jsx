@@ -27,12 +27,9 @@ export const UserContextProvider = ({ children }) => {
       setUserId(tmpUserId);
     }
 
-    console.log("isLogin:", isLogin);
-    // setIsLogin(false);
   }, []);
 
   const Logout = () => {
-    console.log("usercontext logout");
     setIsLogin(false);
     setNickname("");
     setUserId("defaultUserId");
@@ -42,8 +39,6 @@ export const UserContextProvider = ({ children }) => {
     setIsInChatroom(false);
     sessionStorage.clear();
   };
-
-  console.log(isLogin, nickname, userId);
 
   return (
     <UserContext.Provider

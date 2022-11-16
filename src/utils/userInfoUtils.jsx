@@ -1,16 +1,25 @@
+import axios from 'axios';
 import * as yup from 'yup';
 import yupPassword from 'yup-password';
 yupPassword(yup);
 
-const isPossibleNickname = () => {
+
+const checkPossibleNickname = async (nickname) => {
     // axios 
     // 닉네임 중복 판별
-    // function(value){return new Promise((resolve, reject) => {
-    //     axios.post('http://localhost:5000/users/register/validEmail', {'email': value})
-    //     .then(res => {if(res.data.msg === 'Username already been taken'){resolve(false)} resolve(true)})
-    // })
-
-    return true;
+    axios.get("/api/user/check/nickname", {
+        params: {
+            nickname: nickname
+        }
+    })
+    .then((res) => {
+        console.log(res.data)
+        return res.data;
+    })
+    .catch((err) => {
+        console.error(err);
+        return false;
+    })
 }
 
     
@@ -32,4 +41,4 @@ newPWCheck: yup.string()
 
 
 
-export {isPossibleNickname, userDataValidation};
+export {checkPossibleNickname, userDataValidation};

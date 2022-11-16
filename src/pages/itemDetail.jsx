@@ -133,8 +133,6 @@ const ItemDetail = () => {
       .then((res) => {
         console.log(res);
         const itemDetail = res[0].data[0];
-        // const relatedItems = res[1].data;
-        // console.log(itemDetail, personalizedItems);
         const itemData = { ...itemDetail };
         itemData.likeCount = res[0].data[1]; // 좋아요개수
         const myLike = res[0].data[2];
@@ -145,8 +143,6 @@ const ItemDetail = () => {
           // 내 좋아요 여부
           setIsInWishlist(true);
         }
-
-        // itemData.relatedItems = relatedItems;
 
         const pictures = [];
         if (itemDetail.image1) {
@@ -173,9 +169,9 @@ const ItemDetail = () => {
         const categoryId = itemData.categoryId1;
         getRelatedItems(categoryId)
         .then(res => {
-          console.log(categoryId, res.data);
           const relatedItems = res.data;
           itemData.relatedItems = relatedItems;
+          console.log(relatedItems)
 
           setItem(itemData);
 
@@ -192,6 +188,20 @@ const ItemDetail = () => {
     // 수정 페이지로 이동
     navigate("/item/modify/" + itemId);
   };
+
+  // 상품 삭제
+  const onDeleteItem = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios.patch(`/api/product/delete/${itemId}`)
+      .then((res) => {
+        console.log(res);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+    }
+  }
 
   const onClickWishBtn = () => {
     if (!isLogin) return;
@@ -233,10 +243,6 @@ const ItemDetail = () => {
     }
   };
 
-  // const addMessage = (message) => {
-  //     console.log(message);
-  //     setMessages((prev) => prev.concat(message));
-  // }
 
   const onClickChatting = () => {
     const ownerId = item.sellerId;
@@ -332,8 +338,11 @@ const ItemDetail = () => {
             ))}
             {item.sellerId === myId && (
               <div className={style.Detail__editBtn__wrapper}>
-                <button className="btn btn-dark" onClick={onEditItem}>
+                <button className={`btn btn-outline-dark ${style.Detail__Btns}`} onClick={onEditItem}>
                   수정하기
+                </button>
+                <button className={`btn btn-outline-dark ${style.Detail__Btns}`} onClick={onDeleteItem}>
+                  삭제하기
                 </button>
               </div>
             )}
