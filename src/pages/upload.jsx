@@ -19,7 +19,7 @@ const ImgUploadSection = ({ attachments, setAttachments, attachmentURLs, setAtta
     const onFileChange = event => {
         const { target : { files }} = event;
 
-        if (attachments.length >= 3) {
+        if (files.length > 3 || attachments.length >= 3) {
             alert("사진은 최대 3장까지 등록할 수 있습니다.");
             return
         }
@@ -470,23 +470,6 @@ const Uploadpage = (props) => {
             navigate('/item/' + productId);
           });
         })
-        
-        
-
-
-          
-
-          // axios
-          //   .post('/api/product/insert', bodyData)
-          //   .then((res) => {
-          //   console.log(res);
-          //   console.log(res.data);
-            
-          //   // 수정!!!
-          //   // 상세페이지로 이동해서 작성 글 확인
-          //   const productId = res.data;
-          //   navigate('/item/' + productId);
-          //   });
 
     } else if (isModify) {
         // axios

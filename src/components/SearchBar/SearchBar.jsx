@@ -88,7 +88,13 @@ const SearchBar = () => {
     }, [loc.pathname]);
 
     const setDisabled = (parentShortCode, b) => {
-        allBtns[`${parentShortCode}All`].checked = true;
+        allBtns[`${parentShortCode}All`].current.checked = true;
+        // // console.log(parentShortCode, allBtns[`${parentShortCode}All`],  allBtns[`${parentShortCode}All`].current.checked);
+        // const checkbox = allBtns[`${parentShortCode}All`].current;
+        // if (checkbox) {
+        //     checkbox.focus();
+        //     checkbox.select();
+        // }
         if (parentShortCode === 'cat') {
             setIsCatAllDisabled(b);
         } else if (parentShortCode === 'region') {
@@ -112,10 +118,20 @@ const SearchBar = () => {
         // 전체선택 O 비활성화상태로 변경
         // 1. 처음 default
         // 2. 모든 체크박스 해제됐을 때 || 3. 전체선택 박스 체크했을 때
-        if ((targetList.length <= 1 && !item.id.includes('all') && !checked)
+        if ((targetList.length <= 1 && !item.id.includes('all') && !checked) 
             || (checked && item.id.includes('all'))) {
-            console.log("모든 체크박스 해제! 전체선택 on");
-            checkAll(setTargetList, item);
+            console.log("전체선택 체크");
+            let targetAllItem = null;
+
+            if (parentCode === 'cat') {
+                targetAllItem = categories[0];
+            } else if (parentCode === 'region') {
+                targetAllItem = regions[0];
+            } else if (parentCode === 'status') {
+                targetAllItem = status[0];
+            }
+
+            checkAll(setTargetList, targetAllItem);
             return
         }
 
