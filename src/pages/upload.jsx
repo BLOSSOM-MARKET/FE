@@ -11,6 +11,8 @@ import { CATE } from "../utils/categories";
 import { now } from "moment";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { storage } from "../firebase";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage";
 
 const ImgUploadSection = ({ attachments, setAttachments, attachmentURLs, setAttachmentURLs }) => {
     
@@ -366,20 +368,12 @@ const Uploadpage = (props) => {
 
   const onCheckPrice = (e) => {
     const val = e.target.value;
-    if (!isNumeric(val)) {
+    if (val.length > 0 && !isNumeric(val)) {
       alert("숫자만 입력해주세요");
       return false;
     }
     return true;
   };
-
-  //   // debugging
-  // useEffect(() => {
-  //   console.log(itemInfo.categoryId1);
-  // }, [itemInfo.categoryId1]);
-  // useEffect(() => {
-  //     console.log(itemInfo.productName);
-  //   }, [itemInfo.productName]);
 
   const downloadImgsToLocalFolder = async (file) => {
     try {
@@ -395,6 +389,51 @@ const Uploadpage = (props) => {
     }
   }
 
+  const uploadDone = (bodyData, len) => {
+    for (let i=0; i<len; i++) {
+      if (!(`image${i+1}` in bodyData)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const uploadToFirebase = async (bodyData, len) => {
+    if (len === 0) return;
+
+    return new Promise((resolve, reject) => {
+        for (let i=0; i < len; i++) {
+          const img = attachments[i];
+          // downloadImgsToLocalFolder(img);
+          // const path = `${process.env.REACT_APP_IMG_FOLDER}/blossom_market_${img.name}`;
+          console.log("업로드 처리");
+          // const storageRef = ref("images/test/"); //어떤 폴더 아래에 넣을지 설정
+          const imageName = Date.now() + "_" + img.name;
+          const imagesRef = ref(storage, `images/${imageName}`); //루트
+      
+          console.log("파일을 업로드하는 행위");
+          const upLoadTask = uploadBytes(imagesRef, img);
+    
+          upLoadTask
+          .then((snapshot) => {
+            console.log(snapshot)
+            getDownloadURL(snapshot.ref).then((url) => {
+              bodyData[`image${i+1}`] = url;
+              
+              if (uploadDone(bodyData, len)) {
+                resolve(bodyData);
+              }
+              
+            })
+          })
+          .catch(err => {
+            console.error(err);
+          })
+          // resolve(false);         // 아직 완료X 
+        }
+    })
+  }
+
   const onSubmit = (e) => {
     console.log(itemInfo);
     console.log("imgs", attachments);
@@ -404,48 +443,50 @@ const Uploadpage = (props) => {
         // axios
         // 신규 등록
         const bodyData = {
-            ...itemInfo,
-            price: Number(itemInfo.price),
-            categoryId3: "0301",
-            createDate: now(),
-            // image1: attachments[0],
-            // image2: attachments[1],
-            // image3: attachments[2],
-            sellerId: userId,
-            status: "1",
-            updateDate: now(),
-            viewCount: 0,
-          };
-        
-          for (let i=0; i < attachments.length; i++) {
-                const img = attachments[i];
-                downloadImgsToLocalFolder(img);
-                const path = `${process.env.REACT_APP_IMG_FOLDER}/blossom_market_${img.name}`;
-                bodyData[`image${i+1}`] = path;
+          ...itemInfo,
+          price: Number(itemInfo.price),
+          categoryId3: "0301",
+          createDate: now(),
+          sellerId: userId,
+          status: "1",
+          updateDate: now(),
+          viewCount: 0,
+        };
 
-            //   const path = `../../downloadImgs/${img.name}`
-            //     fs.writeFile(path, img, function(err, data) {
-            //         if (err) {
-            //             throw (err);
-            //         }
-            //         // save filepath to wherever for later.
-            //         bodyData[`image${i+1}`] = path;
-            //     });
-          }
+          // let fileUploadCnt = 0;
 
-          console.log(bodyData)
+        uploadToFirebase(bodyData, attachments.length)
+        .then((bodyDataRes) => {
+          console.log("이미지 업로드 완료", bodyDataRes);
 
           axios
-            .post('/api/product/insert', bodyData)
-            .then((res) => {
+          .post('/api/product/insert', bodyDataRes)
+          .then((res) => {
             console.log(res);
             console.log(res.data);
             
-            // 수정!!!
             // 상세페이지로 이동해서 작성 글 확인
             const productId = res.data;
             navigate('/item/' + productId);
-            });
+          });
+        })
+        
+        
+
+
+          
+
+          // axios
+          //   .post('/api/product/insert', bodyData)
+          //   .then((res) => {
+          //   console.log(res);
+          //   console.log(res.data);
+            
+          //   // 수정!!!
+          //   // 상세페이지로 이동해서 작성 글 확인
+          //   const productId = res.data;
+          //   navigate('/item/' + productId);
+          //   });
 
     } else if (isModify) {
         // axios

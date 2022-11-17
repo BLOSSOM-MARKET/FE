@@ -133,6 +133,11 @@ const ItemDetail = () => {
       .then((res) => {
         console.log(res);
         const itemDetail = res[0].data[0];
+
+        if (!itemDetail) {
+          return;
+        }
+
         const itemData = { ...itemDetail };
         itemData.likeCount = res[0].data[1]; // 좋아요개수
         const myLike = res[0].data[2];
@@ -281,7 +286,10 @@ const ItemDetail = () => {
 
   return (
     <div className={style.Page}>
-      {item && (
+      {
+      item 
+      &&
+       (
         <div className={style.Detail}>
           <section className={style.Detail__carousel}>
             <ItemPicCarousel pics={item.pictures} />
@@ -373,7 +381,8 @@ const ItemDetail = () => {
             )}
           </section>
         </div>
-      )}
+      )
+    }
     </div>
   );
 };
