@@ -16,7 +16,6 @@ const Search = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("queryObj: ", q);
 
         const queryConfig = {
             keyword: q.key[0],
@@ -46,7 +45,6 @@ const Search = () => {
           params: queryConfig
         })
         .then((res) => {
-          console.log(res);
           setSearchItems(res.data.list);
             setPagination(res.data.pagination);
         })
@@ -54,7 +52,6 @@ const Search = () => {
     }, [searchParams]);
 
     const onChangeSort = (e) => {
-        console.log(e.target.value)
         const s = e.target.value;
         const params = q;
         params['orderByType'] = s;
@@ -64,16 +61,6 @@ const Search = () => {
             search: `?${createSearchParams(params)}`
         });
     }
-
-    // const onClickPageBtn = (targetPage) => {
-    //     console.log("page:",targetPage);
-    //     const params = q;
-    //     params['page'] = targetPage;
-    //     navigate({
-    //         pathname: '/search',
-    //         search: `?${createSearchParams(params)}`
-    //     });
-    // }   
 
     return (
         <div className={style.Page}>

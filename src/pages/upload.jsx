@@ -325,7 +325,6 @@ const Uploadpage = (props) => {
   const navigate = useNavigate();
 
   const { itemId } = useParams();
-  console.log(loc.pathname, itemId, isModify)
 
   useEffect(() => {
     // axios
@@ -340,19 +339,16 @@ const Uploadpage = (props) => {
     })
     .then(res => {
         const tempItemData = res.data[0];
-        console.log(tempItemData)
         setItemInfo(tempItemData);
     })
   }, []);
 
   const onLengthChange = (e, targetFunc) => {
-    console.log(e);
     const len = e.target.value.length;
     targetFunc(len);
   };
 
   const onChangeVal = (e, target) => {
-    console.log(e.target);
     const newVal = e.target.value;
     const newItemInfo = { ...itemInfo };
     newItemInfo[target] = newVal;
@@ -407,17 +403,13 @@ const Uploadpage = (props) => {
           const img = attachments[i];
           // downloadImgsToLocalFolder(img);
           // const path = `${process.env.REACT_APP_IMG_FOLDER}/blossom_market_${img.name}`;
-          console.log("업로드 처리");
-          // const storageRef = ref("images/test/"); //어떤 폴더 아래에 넣을지 설정
           const imageName = Date.now() + "_" + img.name;
           const imagesRef = ref(storage, `images/${imageName}`); //루트
       
-          console.log("파일을 업로드하는 행위");
           const upLoadTask = uploadBytes(imagesRef, img);
     
           upLoadTask
           .then((snapshot) => {
-            console.log(snapshot)
             getDownloadURL(snapshot.ref).then((url) => {
               bodyData[`image${i+1}`] = url;
               
@@ -430,14 +422,11 @@ const Uploadpage = (props) => {
           .catch(err => {
             console.error(err);
           })
-          // resolve(false);         // 아직 완료X 
         }
     })
   }
 
   const onSubmit = (e) => {
-    console.log(itemInfo);
-    console.log("imgs", attachments);
     e.preventDefault();
 
     if (isNew) {
@@ -458,14 +447,9 @@ const Uploadpage = (props) => {
 
         uploadToFirebase(bodyData, attachments.length)
         .then((bodyDataRes) => {
-          console.log("이미지 업로드 완료", bodyDataRes);
-
           axios
           .post('/api/product/insert', bodyDataRes)
           .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            
             // 상세페이지로 이동해서 작성 글 확인
             const productId = res.data;
             navigate('/item/' + productId);
@@ -476,17 +460,12 @@ const Uploadpage = (props) => {
         // axios
         // 기존 글 수정
 
-        console.log(itemInfo)
-
         axios
             .patch('/api/product/update', itemInfo)
             .then((res) => {
-                console.log(res);
-                console.log(res.data);
                 
                 // 수정!!!
                 // 상세페이지로 이동해서 작성 글 확인
-                console.log(itemId)
                 navigate('/item/' + itemId);
             });
 

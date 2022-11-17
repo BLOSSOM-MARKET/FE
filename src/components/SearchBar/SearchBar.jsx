@@ -55,7 +55,6 @@ const SearchBar = () => {
 
             if ('cat' in q && 'reg' in q && 'status' in q) {
                 const { cat, reg, status } = q;
-                console.log(CATE.categories.data)
                 setCheckedCategories(CATE.categories.data.filter(el => cat.includes(el.code)));
                 setCheckedRegions(CATE.regions.data.filter(el => reg.includes(el.code)));
                 setCheckedStatus(CATE.status.data.filter(el => status.includes(el.code)));
@@ -89,12 +88,6 @@ const SearchBar = () => {
 
     const setDisabled = (parentShortCode, b) => {
         allBtns[`${parentShortCode}All`].current.checked = true;
-        // // console.log(parentShortCode, allBtns[`${parentShortCode}All`],  allBtns[`${parentShortCode}All`].current.checked);
-        // const checkbox = allBtns[`${parentShortCode}All`].current;
-        // if (checkbox) {
-        //     checkbox.focus();
-        //     checkbox.select();
-        // }
         if (parentShortCode === 'cat') {
             setIsCatAllDisabled(b);
         } else if (parentShortCode === 'region') {
@@ -120,7 +113,7 @@ const SearchBar = () => {
         // 2. 모든 체크박스 해제됐을 때 || 3. 전체선택 박스 체크했을 때
         if ((targetList.length <= 1 && !item.id.includes('all') && !checked) 
             || (checked && item.id.includes('all'))) {
-                
+
             let targetAllItem = null;
 
             if (parentCode === 'cat') {
@@ -159,10 +152,10 @@ const SearchBar = () => {
     const onSearchClick = (e) => {
         e.preventDefault();
 
-        console.log("검색어: ", inputVal)
-        console.log("카테고리: ", checkedCategories);
-        console.log("지역: ", checkedRegions);
-        console.log("중고여부: ", checkedStatus);
+        // console.log("검색어: ", inputVal)
+        // console.log("카테고리: ", checkedCategories);
+        // console.log("지역: ", checkedRegions);
+        // console.log("중고여부: ", checkedStatus);
 
         const params = { 
             key: inputVal, 
@@ -243,7 +236,6 @@ const SearchBar = () => {
                                             <div key={`category-${i}`}>
                                                 <input className={`form-check-input`} type="checkbox" value="" id={item.id}
                                                     onChange={(e) => {
-                                                        console.log(checkedCategories)
                                                         changeHandler(e.currentTarget.checked, item, checkedCategories, setCheckedCategories)
                                                     }}
                                                     checked={checkedCategories.some((el) => el.id === item.id)}

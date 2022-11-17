@@ -18,7 +18,6 @@ const Chat = () => {
     const myId = userId;
     
     const addMessage = (messages) => {
-        console.log(messages);
         // setMessages((prev) => prev.concat(message));
         setMessages(messages);
     }
@@ -28,7 +27,6 @@ const Chat = () => {
     }
 
     const addRoom = (room) => {
-        console.log("add room:::", room)
         setChatrooms((prev) => prev.concat(room));
     }
 
@@ -42,7 +40,6 @@ const Chat = () => {
 
     const moveToChatList = () => {
         if (isLogin && isChatOpen && userId && nickname && chatrooms.length <= 0) {
-            console.log("roomId: ", roomId)
             setMessages([]);
             joinRoom({roomId, yourId, myId, productId, nickname, yourNick});
             getRoomList({roomId, userId});
@@ -68,9 +65,7 @@ const Chat = () => {
 
         
     useEffect(() => {
-        console.log("isChatOpen, isInChatroom: ", isChatOpen, isInChatroom)
         try {
-            console.log(userId,nickname);
             setMessages([]);
             if (isInChatroom) {
                 const myNick = nickname;

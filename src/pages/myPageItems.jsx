@@ -23,8 +23,6 @@ const MyPageItems = () => {
       axios
         .get("/api/mypage/sellproductlist")
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           setItems(res.data);
         });
       setTitle("내가 판매한 상품");
@@ -34,8 +32,6 @@ const MyPageItems = () => {
       axios
         .get("/api/mypage/buyproductlist")
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           setItems(res.data);
         });
       setTitle("내가 구매한 상품");
@@ -45,11 +41,8 @@ const MyPageItems = () => {
       axios
         .get("/api/mypage/likeproductlist")
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           setItems(res.data);
         });
-      console.log("wish");
       setTitle("내가 찜한 상품");
     }
 

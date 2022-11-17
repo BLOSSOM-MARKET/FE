@@ -17,7 +17,6 @@ import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters
 import { ChattingContext } from '../../contexts/ChattingContext';
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
-    // console.log("~~~~~~~~~~chatrooms: ", chatrooms)
     const { isLogin, userId, nickname } = useContext(UserContext);
     const { yourNick} = useContext(ChattingContext);
 

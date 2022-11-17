@@ -36,7 +36,6 @@ const ChangePassword =() => {
       });
 
     const onSubmitPasswordChange = ({presentPW, newPW}, resetForm) => {
-        console.log(presentPW, newPW)
         // axios
         // 비밀번호 변경
         // 현재 비밀번호 일치하지 않을 때 에러처리

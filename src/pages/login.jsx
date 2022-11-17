@@ -90,7 +90,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const prevPath = searchParams.get("prev");
-  console.log(prevPath);
 
   const { setIsLogin, setUserId } = useContext(UserContext);
   const { setYourNick } = useContext(ChattingContext);
@@ -104,7 +103,6 @@ const Login = () => {
   };
 
   const onSubmit = ({ webId, webPw }) => {
-    console.log(webId, webPw);
     if (!isReady(webId, webPw)) {
       openAlertModal("값을 모두 입력해주세요");
       return;
@@ -119,7 +117,6 @@ const Login = () => {
         userPwd: webPw,
       })
       .then((res) => {
-        console.log(res);
         const loginResult = res.data.status;
 
         if (isLoginSuccess(loginResult)) {

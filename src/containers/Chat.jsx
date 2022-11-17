@@ -9,17 +9,10 @@ import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
 const Chat = () => {
-    // const { roomId, userId } = useParams();
     const { joinRoom, sendMessage, updateMessage, addMessage } = useContext(SocketContext);
     const { nickname, userId, isLogin } = useContext(UserContext);
     const { roomId, isChatOpen, setIsChatOpen } = useContext(ChattingContext);
     const [ messages, setMessages ] = useState([]);
-    // const navigate = useNavigate();
-    
-    // const addMessage = (message) => {
-    //     console.log(message);
-    //     setMessages((prev) => prev.concat(message));
-    // }
         
     // useEffect(() => {
     //     try {

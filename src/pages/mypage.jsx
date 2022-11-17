@@ -112,8 +112,6 @@ const MyPage = () => {
         }
       })
     .then((res) => {
-      console.log(res);
-      console.log(res.data);
       const myData = res.data;
       
       if ("sell" in myData) {

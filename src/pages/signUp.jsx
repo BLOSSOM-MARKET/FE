@@ -53,7 +53,7 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
   });
 
   const onSubmit = ({ email, authCode, nickname, username, webPw, pWCheck }, resetForm) => {
-    console.log(email, authCode, nickname, webPw, pWCheck);
+    // console.log(email, authCode, nickname, webPw, pWCheck);
 
     // axios
     // 회원가입
@@ -68,7 +68,6 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
 
     axios.post("/api/user/join", data)
     .then((res) => {
-      console.log(res);
 
       // 로그인페이지로 가기
       navigate("/login");
@@ -96,16 +95,12 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
         }
     })
     .then((res) => {
-      console.log(res)
       const result = res.data;
-      console.log(nick, result, !!result)
       
       if (!!result) {
-        console.log("true nickname")
         setIsCheckedNickname(true);    // 중복확인 완료
         setIsPossibleNickname(true);    // 사용 가능한 닉네임
       } else {
-        console.log("false nickname")
         setIsCheckedNickname(true);    // 중복확인 완료
         setIsPossibleNickname(false);   // 사용 불가능한 닉네임
       }
@@ -141,18 +136,13 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
     // 수정 필요...
     
     const { values, errors } = useFormikContext();
-    console.log(values, errors);
 
     // 닉네임 중복
     useEffect(() => {
-      console.log("Hey!!! nickname", isPossibleNickname)
       if (!values.nickname) return;   // 입력 전에는 체크x
-
-      console.log("nick in errors: ", "nickname" in errors)
 
       if (!!isCheckedNickname && !!isPossibleNickname) {  // 정상적으로 확인 완료
         delete errors["nickname"];
-        console.log(errors);
       } else if (!!isCheckedNickname && !isPossibleNickname) {  // 중복확인 했지만 중복 닉네임
         errors.nickname = "이미 사용중인 닉네임입니다.";
       } else {                                          // 중복 확인 안함
@@ -202,7 +192,6 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
       }
     })
     .then((res) => {
-      console.log(res, res.data)
       const result = res.data;
       setIsCheckedAuthCode(true);
       setIsCorrectAuthCode(result);
@@ -417,7 +406,6 @@ const SignUp = () => {
     })
     .then(res => {
       setIsSentAuthMail(true);
-      console.log(res)
     })
     .catch(err => {
       console.error(err);

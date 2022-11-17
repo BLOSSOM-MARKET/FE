@@ -7,50 +7,21 @@ export const SocketContextProvider = ({children}) => {
     
         const { isChatOpen, messages, setMessages } = useContext(ChattingContext);
         const socket = useMemo(() => {
-            // console.log("memo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return io("localhost:3001");
         }, [isChatOpen]);
-
-
-    // if (isChatOpen) {
-    //     socket = io("localhost:3001");
-    //     console.log("socket connected");
-    // }
-    
-    // useEffect(()=>{
-    //     // socket = io(process.env.REACT_APP_SERVER_URL);
-    //     if (!socket) {
-
-    //         socket = io("localhost:3001");
-    //     }
-    //     return () => {
-    //         disconnectSocket();
-    //     }
-    // }, [isChatOpen])
-
-    // const addMessage = (message) => {
-    //     console.log("addMESSAGEE:::", message.messageId, message);
-    //     setMessages((prev) => prev.concat(message));
-    //     if (!messages.some(m => m.messageId === message.messageId)) {
-    //         // setMessages([message]);
-    //     } else {
-    //     }
-    // }
 
     const disconnectSocket = () => {
         if (socket) {
             socket.disconnect();
-            console.log("socket disconnected");
+            // console.log("socket disconnected");
         }
     }
 
     const getRoomList = ({roomId, userId}) => {
-        console.log(socket);
         socket.emit('GET_ROOMS', {roomId, userId}); 
     }
     
     const joinRoom = ({roomId, yourId, myId, productId, nickname, yourNick}) => {
-        console.log(socket);
         socket.emit('JOIN_ROOM', {roomId, yourId, myId, productId, nickname, yourNick}); 
     }
     
@@ -58,17 +29,11 @@ export const SocketContextProvider = ({children}) => {
         socket.emit('SEND_MESSAGE', {roomId, userId, nickname, message});
     }
 
-    // useEffect(() => {
-    //     console.log(">>>>>>>>>>>>>>>>>>MESSAGES CHANGE: ", messages)
-    // }, [messages])
-    
     const updateMessage = (func) => {
-        console.log("UPDATE Message!!")
         socket.on('UPDATE_MESSAGE', (msgs) => func(msgs));
     }
 
     const updateNewMessage = () => {
-        console.log("UPDATE NEW Message!!------------")
         socket.on('UPDATE_NEW_MESSAGE', (msg) => setMessages(prev => {
             if (prev.some(item => item.sendTime === msg.sendTime)) {
                 return prev
@@ -77,7 +42,6 @@ export const SocketContextProvider = ({children}) => {
     }
 
     const updateRooms = (func) => {
-        console.log("UPDATE ROOMS!!")
         socket.on('UPDATE_ROOMS', (room) => func(room));
     }
     

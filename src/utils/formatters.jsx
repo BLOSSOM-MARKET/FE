@@ -15,13 +15,6 @@ const chatroomTimeformatter = (time) => {
     } else return moment(time).format('YY-MM-DD HH:mm')
 }
 
-// const itemTimeFormatter = (time) => {
-//     // 완성
-//     console.log(time)
-//     moment()
-//     return time;
-// }
-
 const itemTimeFormatterShort = (time) => {
     const today = new Date();
     const timeValue = new Date(time);
@@ -47,7 +40,6 @@ const itemTimeFormatterShort = (time) => {
 
 const itemTimeFormatterLong = (time) => {
     const today = new Date();
-    console.log(time, today)
 
     const isSameYear = moment(today).isSame(time, 'year');
     const isSameDay = moment(today).isSame(time, 'day');

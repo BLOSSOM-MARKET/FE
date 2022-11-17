@@ -32,7 +32,6 @@ const Main = () => {
             params: queryConfig
           })
         .then((res) => {
-          console.log(res);
           let resData = res.data.list;
 
           setMainItems(resData);

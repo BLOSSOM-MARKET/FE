@@ -92,15 +92,12 @@ const ItemDetail = () => {
   const { joinRoom, updateMessage, addMessage } = useContext(SocketContext);
   const myId = userId;
 
-  console.log("itemId: ", itemId);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     // axios
     //데이터 가져오기 product/detail + query productId
 
-    console.log(itemId);
     const getItemDetail = () => {
       return axios.get("/api/product/detail", {
         params: {
@@ -124,14 +121,12 @@ const ItemDetail = () => {
     const reqs = [getItemDetail()];
 
     if (isLogin) {
-      console.log("IS LOgIN?!")
       reqs.push(getPersonalizedItems());
     }
 
     axios
       .all(reqs)
       .then((res) => {
-        console.log(res);
         const itemDetail = res[0].data[0];
 
         if (!itemDetail) {
@@ -176,7 +171,6 @@ const ItemDetail = () => {
         .then(res => {
           const relatedItems = res.data;
           itemData.relatedItems = relatedItems;
-          console.log(relatedItems)
 
           setItem(itemData);
 
@@ -199,7 +193,6 @@ const ItemDetail = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       axios.patch(`/api/product/delete/${itemId}`)
       .then((res) => {
-        console.log(res);
         window.location.href = "/";
       })
       .catch((err) => {
@@ -227,23 +220,17 @@ const ItemDetail = () => {
           },
         })
         .then((res) => {
-        //   console.log(res);
-        //   console.log(res.data);
-        //   setIsInWishlist(false);
         });
     } else {
       // save
-      console.log("itemId", itemId);
       setIsInWishlist(true);
       const data2 = {
         productId: itemId,
         ppp: 99,
       };
-      console.log(data2);
       axios.post("/api/like/save", data2).then((res) => {
         // console.log(res);
         // console.log(res.data);
-        // setIsInWishlist(true);
       });
     }
   };

@@ -51,7 +51,6 @@ const Uploadpage = (props) => {
   //이미지 처리 함수
   const onChangeImage = (info) => {
     //파일이 업로드 중일 때
-    console.log(info.file);
     if (info.file.status === "uploading") {
       return;
     }
@@ -67,13 +66,11 @@ const Uploadpage = (props) => {
   };
 
   function lengthCheck(e) {
-    console.log(e);
     const len = e.target.value.length;
     setTitleLength(len);
   }
 
   const onChangeVal = (e, target) => {
-    console.log(e.target);
     const newVal = e.target.value;
     const newItemInfo = { ...itemInfo };
     newItemInfo[target] = newVal;
@@ -96,11 +93,6 @@ const Uploadpage = (props) => {
     }
     return true;
   };
-
-//   // debugging
-//   useEffect(() => {
-//     console.log(itemInfo.categoryId1);
-//   }, [itemInfo.categoryId1]);
 
 const onFinish = (e) => {
     console.log(e)

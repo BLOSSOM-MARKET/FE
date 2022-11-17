@@ -21,16 +21,6 @@ export const ChattingContextProvider = ({ children }) => {
   const [productName, setProductName] = useState(null);
   const [productImg, setProductImg] = useState(null);
 
-//   useEffect(() => {
-//     const tmproomId = sessionStorage.getItem("roomId");
-
-//     if (tmproomId !== undefined && tmproomId !== null) {
-//       console.log("set room Id: ", roomId);
-//       setRoomId(tmproomId);
-//     }
-//   }, []);
-
-
   return (
     <ChattingContext.Provider
       value={{

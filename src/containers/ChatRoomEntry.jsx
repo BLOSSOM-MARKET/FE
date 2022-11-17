@@ -12,7 +12,6 @@ const ChatRoomEntry = () => {
     
 
     useEffect(() => {
-        console.log("채팅열려있음: ",isChatOpen, roomId);
         if (!isChatOpen) {
             disconnectSocket();
         } 

@@ -18,8 +18,6 @@ const Chat = ({messages, submitMessage, myId, yourNick, onClickBackBtn}) => {
     const messagesEndRef = useRef(null);
     const { roomId, productId, productName, productImg } = useContext(ChattingContext);
 
-    console.log("!!!!!!!Chat messages:", messages)
-
     const onChange = (e) => {
         setInput(e.currentTarget.value);
     }

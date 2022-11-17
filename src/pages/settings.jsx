@@ -37,10 +37,8 @@ const MyProfile = ({ userId, nickname }) => {
 
   const checkNicknameFunc = (value) => {
       return new Promise((resolve, reject) => {
-      console.log(value)
       axios.get("/api/user/check/nickname", {params: { nickname: value}})
       .then(res => {
-        console.log(value, res.data)
           if (!res.data) {
             resolve(false)
           } 
@@ -57,14 +55,13 @@ const MyProfile = ({ userId, nickname }) => {
     return new Promise((resolve, reject) => {
       // 디바운싱 - 마지막 호출만 적용 (put api)
       if (timer) {
-        console.log('clear timer');
+        // console.log('clear timer');
         clearTimeout(timer);
       }
       const newTimer = setTimeout(async () => {
         try {
           checkNicknameFunc(val)
           .then(result => {
-            console.log("result: ", result)
             resolve(result);
           });
         } catch (e) {
@@ -80,20 +77,16 @@ const MyProfile = ({ userId, nickname }) => {
                     .required("닉네임을 입력해주세요.")
                     .test( "doubleNick", "중복되는 닉네임입니다.", async (val) => {
                       const res = await debounceCheckNickname(val);
-                      console.log("test result: ", res)
                       return res;
                     })
       });
 
     const onSubmit = ({ nickname }) => {
-        console.log(nickname)
         // axios
         // 닉네임 변경
         axios
         .patch('/api/mypage/profile/updatenickname/' + nickname)
         .then((res) => {
-          console.log(res);
-
           // client에서도 닉네임 변경
           sessionStorage.setItem("nickname", nickname);
           setNickname(nickname);
@@ -213,8 +206,6 @@ const Settings = () => {
   const onWithdraw = () => {
     // axios
     // 실제로 탈퇴되지 않음
-
-    console.log("회원탈퇴!");
     Logout();
     navigate("/");
   };
