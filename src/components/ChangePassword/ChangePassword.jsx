@@ -10,6 +10,8 @@ import * as yup from 'yup';
 import yupPassword from 'yup-password';
 import { userDataValidation } from '../../utils/userInfoUtils';
 import axios from 'axios';
+import AlertModal from '../Modal/AlertModal';
+import { useState } from 'react';
 
 const ChangePassword =() => {
 
@@ -46,17 +48,26 @@ const ChangePassword =() => {
         axios.post("/api/mypage/profile/updatepassword", data)
         .then((res) => {
             if (res.data) {
-                alert("정상적으로 변경되었습니다.");
+                openAlertModal("정상적으로 변경되었습니다.");
                 resetForm();
             } else {
-                alert("현재 비밀번호를 정확하게 입력해주세요.");
+                openAlertModal("현재 비밀번호를 정확하게 입력해주세요.");
             }
         })
         .catch((err) => {
             console.error(err);
-            alert("오류가 발생하였습니다. 다시 시도해주세요.");
+            openAlertModal("오류가 발생하였습니다. 다시 시도해주세요.");
         })
 
+    }
+
+    // alert modal
+    const [errorMsg, setErrorMsg] = useState("");
+    const [modalShow, setModalShow] = useState(false);
+
+    const openAlertModal = (errTxt) => {
+        setErrorMsg(errTxt);
+        setModalShow(true);
     }
 
   return (
@@ -147,6 +158,13 @@ const ChangePassword =() => {
             </Form>
         )}
         </Formik>
+
+        {/* alert modal */}
+        <AlertModal
+        errorMsg={errorMsg}
+        modalShow={modalShow}
+        setModalShow={setModalShow}
+       />
     </div>
   );
 }

@@ -17,6 +17,7 @@ import { checkPossibleNickname } from "../utils/userInfoUtils";
 
 import axios from 'axios';
 import { useMemo } from "react";
+import AlertModal from "../components/Modal/AlertModal";
 
 const debounce = (callback, delay) => {
   let timer;
@@ -99,9 +100,21 @@ const MyProfile = ({ userId, nickname }) => {
         })
         .catch((e) => {
           console.error(e);
-          alert(`오류가 발생했습니다. 다시 시도해주세요.(${e.status})`)
+          openAlertModal(`오류가 발생했습니다. 다시 시도해주세요.(${e.status})`)
         });
     }
+
+
+     // alert modal
+      const [errorMsg, setErrorMsg] = useState("");
+      const [modalShow, setModalShow] = useState(false);
+
+      const openAlertModal = (errTxt) => {
+          setErrorMsg(errTxt);
+          setModalShow(true);
+      }
+
+    
       
   return (
     <div>
@@ -165,6 +178,14 @@ const MyProfile = ({ userId, nickname }) => {
           </Formik>
         </div>
       </div>
+
+      {/* alert modal */}
+      <AlertModal
+        errorMsg={errorMsg}
+        modalShow={modalShow}
+        setModalShow={setModalShow}
+       />
+
     </div>
   );
 };

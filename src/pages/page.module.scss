@@ -328,6 +328,26 @@
         margin-left: 1rem;
         width: 6rem;
     }
+
+    &__mailModal {
+        &__addressBox {
+            display: flex;
+            justify-content: center;
+            margin: 2rem;
+
+            &__inner {
+                padding: 0.5rem 1rem;
+                background-color: #eeeef1;
+                border-radius: 6px;
+                font-size: 1.125rem;
+
+
+                i {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
 }
 
 .Detail {

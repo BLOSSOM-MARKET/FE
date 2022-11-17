@@ -8,20 +8,19 @@ import Row from "react-bootstrap/Row";
 import { ErrorMessage, Formik, useFormikContext } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import yupPassword from "yup-password";
-import { InputGroup } from "react-bootstrap";
+import { InputGroup, Modal } from "react-bootstrap";
 import { checkPossibleNickname } from "../utils/userInfoUtils";
 import { useEffect } from "react";
 import axios from "axios";
+import AlertModal from "../components/Modal/AlertModal";
 
-const SignUpForm = () => {
+const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, openAlertModal }) => {
   yupPassword(yup);
   const [isPossibleNickname, setIsPossibleNickname] = useState(false);
   const [isCheckedNickname, setIsCheckedNickname] = useState(false);
-
-  const [isSentAuthMail, setIsSentAuthMail] = useState(false);
   
   const [isCheckedAuthCode, setIsCheckedAuthCode] = useState(false);
   const [isCorrectAuthCode, setIsCorrectAuthCode] = useState(false);
@@ -76,7 +75,8 @@ const SignUpForm = () => {
     })
     .catch((err) => {
       console.error(err);
-      alert("에러가 발생했습니다. 다시 시도해주세요.");
+      // alert("에러가 발생했습니다. 다시 시도해주세요.");
+      openAlertModal("에러가 발생했습니다. 다시 시도해주세요.");
     })
 
 
@@ -115,27 +115,27 @@ const SignUpForm = () => {
     })
   }
 
-  const onSendAuthMail = (id) => {
-    console.log(id)
-    const emailAddress = `${id}@shinsegae.com`;
-    const confirmString = `입력하신 주소로 인증 메일을 보냅니다. \n정확한 메일 주소가 맞는지 다시 한번 확인해주세요. \n${emailAddress}`;
-    setIsSentAuthMail(false);
+  // const onSendAuthMail = (id) => {
+  //   console.log(id)
+  //   const emailAddress = `${id}@shinsegae.com`;
+  //   const confirmString = `입력하신 주소로 인증 메일을 보냅니다. \n정확한 메일 주소가 맞는지 다시 한번 확인해주세요. \n${emailAddress}`;
+  //   setIsSentAuthMail(false);
     
-    if (window.confirm(confirmString)) {
-      // axios
-      // 메일 발송
-      axios.post("/api/auth/mail", {
-        address: emailAddress
-      })
-      .then(res => {
-        setIsSentAuthMail(true);
-        console.log(res)
-      })
-      .catch(err => {
-        console.error(err);
-      })
-    } 
-  }
+  //   if (window.confirm(confirmString)) {
+  //     // axios
+  //     // 메일 발송
+  //     axios.post("/api/auth/mail", {
+  //       address: emailAddress
+  //     })
+  //     .then(res => {
+  //       setIsSentAuthMail(true);
+  //       console.log(res)
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //     })
+  //   } 
+  // }
 
   const CustomErrorHandler = ({ isPossibleNickname, isCheckedNickname }) => {
     // 수정 필요...
@@ -160,13 +160,10 @@ const SignUpForm = () => {
       } 
     }, [errors, values.nickname, isPossibleNickname, isCheckedNickname]);
 
-    // 인증요청
-    // useEffect(() => {
-    //   if (!values.email) return;
-
-
-
-    // }, [errors.email, values.email, isSentAuthMail])
+    
+    useEffect(() => {
+      setUserMail(values.email);
+    }, [values.email])
 
 
     // 인증확인 X
@@ -195,7 +192,7 @@ const SignUpForm = () => {
 
   const tryCheckAuthCode = (code) => {
     if (!isSentAuthMail) {
-      alert("인증메일을 먼저 요청한 후에 시도해주세요.");
+      openAlertModal("인증메일을 먼저 요청한 후에 시도해주세요.");
       return;
     }
 
@@ -268,7 +265,12 @@ const SignUpForm = () => {
                 </InputGroup.Text>
                 <Button 
                   className={`btn btn-dark ${style.SignUp__btn}`}
-                  onClick={() => onSendAuthMail(values.email)}>
+                  // onClick={() => onSendAuthMail(values.email)}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  >
+                    
                   인증요청
                 </Button>
               <Form.Control.Feedback type="invalid">
@@ -400,26 +402,32 @@ const SignUpForm = () => {
 const SignUp = () => {
   const navigate = useNavigate();
 
-  // const { setUserId, setYourNick } = useContext(UserContext);
+  const [userMail, setUserMail] = useState("");
+  const [isSentAuthMail, setIsSentAuthMail] = useState(false);
 
-  // const isReady = (id, pw) => {
-  //   return id && pw && id.length > 0 && pw.length > 0;
-  // };
+  const [errorMsg, setErrorMsg] = useState("");
+  const [modalShow, setModalShow] = useState(false);
 
-  // const onSubmit = ({ webId, webPw }) => {
-  //   console.log(webId, webPw);
-  //   if (!isReady(webId, webPw)) return;
+  // const alertModal = useRef();
 
-  //   // axios
-  //   // 로그인처리
-  //   // 토큰 저장 필요
+  const sendAuthMail = () => {
+    const emailAddress = `${userMail}@shinsegae.com`;
+    axios.post("/api/auth/mail", {
+      address: emailAddress
+    })
+    .then(res => {
+      setIsSentAuthMail(true);
+      console.log(res)
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
 
-  //   // 더미데이터
-  //   const userData = {
-  //     userId: "user1@shinsegae.com",
-  //     nickname: "hyegu",
-  //   };
-  // };
+  const openAlertModal = (errTxt) => {
+    setErrorMsg(errTxt);
+    setModalShow(true);
+  }
 
   return (
     <div className={style.Page}>
@@ -429,9 +437,68 @@ const SignUp = () => {
                 <img onClick={() => navigate("/")} 
                     className={style.SignUp__logo} src="/bm_logo.png" alt="logo" />
             </div>
-          <SignUpForm />
+          <SignUpForm
+            userMail={userMail}
+            setUserMail={setUserMail}
+            isSentAuthMail={isSentAuthMail}
+            setIsSentAuthMail={setIsSentAuthMail}
+            openAlertModal={openAlertModal}
+          />
         </div>
       </div>
+
+      {/* send mail confirm modal */}
+      <div
+        className="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-body">
+              입력하신 주소로 인증 메일을 보냅니다. <br/>
+              다음 메일 주소가 맞는지 다시 한번 확인해주세요. <br/>
+              <div className={style.SignUp__mailModal__addressBox}>
+                <div className={style.SignUp__mailModal__addressBox__inner}>
+                  <i className="bi bi-envelope"></i>
+                  <strong>{userMail}@shinsegae.com</strong>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                data-bs-dismiss="modal"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                className="btn btn-dark"
+                data-bs-dismiss="modal"
+                onClick={sendAuthMail}
+              >
+                인증 메일 전송
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* alert modal */}
+      <AlertModal
+        errorMsg={errorMsg}
+        modalShow={modalShow}
+        setModalShow={setModalShow}
+       />
+
+
     </div>
   );
 };

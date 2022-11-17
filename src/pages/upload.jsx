@@ -13,14 +13,15 @@ import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { storage } from "../firebase";
 import { getStorage, ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage";
+import AlertModal from "../components/Modal/AlertModal";
 
-const ImgUploadSection = ({ attachments, setAttachments, attachmentURLs, setAttachmentURLs }) => {
+const ImgUploadSection = ({ openAlertModal, attachments, setAttachments, attachmentURLs, setAttachmentURLs }) => {
     
     const onFileChange = event => {
         const { target : { files }} = event;
 
         if (files.length > 3 || attachments.length >= 3) {
-            alert("사진은 최대 3장까지 등록할 수 있습니다.");
+          openAlertModal("사진은 최대 3장까지 등록할 수 있습니다.");
             return
         }
     
@@ -369,7 +370,7 @@ const Uploadpage = (props) => {
   const onCheckPrice = (e) => {
     const val = e.target.value;
     if (val.length > 0 && !isNumeric(val)) {
-      alert("숫자만 입력해주세요");
+      openAlertModal("숫자만 입력해주세요");
       return false;
     }
     return true;
@@ -492,6 +493,15 @@ const Uploadpage = (props) => {
     }
   };
 
+   // alert modal
+   const [errorMsg, setErrorMsg] = useState("");
+   const [modalShow, setModalShow] = useState(false);
+ 
+   const openAlertModal = (errTxt) => {
+       setErrorMsg(errTxt);
+       setModalShow(true);
+   }
+
   return (
     <div className={style.Page}>
       <div name="productUpload">
@@ -506,6 +516,7 @@ const Uploadpage = (props) => {
                     isNew
                     ?
                     <ImgUploadSection
+                        openAlertModal={openAlertModal}
                         attachments={attachments}
                         setAttachments={setAttachments}
                         attachmentURLs={attachmentURLs}
@@ -555,6 +566,14 @@ const Uploadpage = (props) => {
           </div>
         </BootForm.Group>
       </div>
+
+      {/* alert modal */}
+      <AlertModal
+        errorMsg={errorMsg}
+        modalShow={modalShow}
+        setModalShow={setModalShow}
+       />
+
     </div>
   );
 };

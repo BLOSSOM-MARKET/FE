@@ -8,10 +8,11 @@ import Row from "react-bootstrap/Row";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { ChattingContext } from "../contexts/ChattingContext";
 import axios from "axios";
+import AlertModal from "../components/Modal/AlertModal";
 
 const LoginForm = ({ onSubmit }) => {
   const schema = yup.object().shape({
@@ -105,7 +106,7 @@ const Login = () => {
   const onSubmit = ({ webId, webPw }) => {
     console.log(webId, webPw);
     if (!isReady(webId, webPw)) {
-      alert("값을 모두 입력해주세요");
+      openAlertModal("값을 모두 입력해주세요");
       return;
     }
 
@@ -139,11 +140,20 @@ const Login = () => {
           
         } else {
           // 로그인 실패 시
-          alert("로그인 정보를 다시 입력해주세요");
+          openAlertModal("로그인 정보를 정확하게 입력해주세요");
         }
       });
 
   };
+
+  // alert modal
+  const [errorMsg, setErrorMsg] = useState("");
+  const [modalShow, setModalShow] = useState(false);
+
+  const openAlertModal = (errTxt) => {
+      setErrorMsg(errTxt);
+      setModalShow(true);
+  }
 
   return (
     <div className={style.Page}>
@@ -166,6 +176,13 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* alert modal */}
+      <AlertModal
+        errorMsg={errorMsg}
+        modalShow={modalShow}
+        setModalShow={setModalShow}
+       />
     </div>
   );
 };
