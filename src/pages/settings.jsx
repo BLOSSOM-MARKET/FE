@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsBox from "../components/Box/SettingsBox";
@@ -16,20 +16,72 @@ import * as yup from 'yup';
 import { checkPossibleNickname } from "../utils/userInfoUtils";
 
 import axios from 'axios';
+import { useMemo } from "react";
+
+const debounce = (callback, delay) => {
+  let timer;
+  return (...args) => {
+    // 실행한 함수(setTimeout())를 취소
+    clearTimeout(timer);
+    // delay가 지나면 callback 함수를 실행
+    timer = setTimeout(() => callback(...args), delay);
+  };
+};
 
 const MyProfile = ({ userId, nickname }) => {
   const [isPossibleNickname, setIsPossibleNickname] = useState(false);
   const { setNickname } = useContext(UserContext);
 
+  
+
+  const checkNicknameFunc = (value) => {
+      return new Promise((resolve, reject) => {
+      console.log(value)
+      axios.get("/api/user/check/nickname", {params: { nickname: value}})
+      .then(res => {
+        console.log(value, res.data)
+          if (!res.data) {
+            resolve(false)
+          } 
+          resolve(true)
+        })
+      })
+    }
+
+  // const checkNicknameDebounce = useCallback( useMemo((val) => () => debounce(() => checkNicknameFunc(val), 500), []), []);
+
+  const [timer, setTimer] = useState(0); // 디바운싱 타이머
+
+  const debounceCheckNickname = val => {
+    return new Promise((resolve, reject) => {
+      // 디바운싱 - 마지막 호출만 적용 (put api)
+      if (timer) {
+        console.log('clear timer');
+        clearTimeout(timer);
+      }
+      const newTimer = setTimeout(async () => {
+        try {
+          checkNicknameFunc(val)
+          .then(result => {
+            console.log("result: ", result)
+            resolve(result);
+          });
+        } catch (e) {
+          console.error('error', e);
+        }
+      }, 200);
+      setTimer(newTimer);
+    })
+  };
+
     const schema = yup.object().shape({
         nickname: yup.string()
                     .required("닉네임을 입력해주세요.")
-                    .test( "doubleNick", "다른 회원과 중복되는 닉네임입니다.", 
-                      function(value){return new Promise((resolve, reject) => {
-                        axios.get("/api/user/check/nickname", {params: { nickname: value}})
-                        .then(res => {if (!res.data) {resolve(false)} resolve(true)})
-                    })}
-                    )
+                    .test( "doubleNick", "중복되는 닉네임입니다.", async (val) => {
+                      const res = await debounceCheckNickname(val);
+                      console.log("test result: ", res)
+                      return res;
+                    })
       });
 
     const onSubmit = ({ nickname }) => {

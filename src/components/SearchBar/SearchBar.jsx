@@ -120,7 +120,7 @@ const SearchBar = () => {
         // 2. 모든 체크박스 해제됐을 때 || 3. 전체선택 박스 체크했을 때
         if ((targetList.length <= 1 && !item.id.includes('all') && !checked) 
             || (checked && item.id.includes('all'))) {
-            console.log("전체선택 체크");
+                
             let targetAllItem = null;
 
             if (parentCode === 'cat') {
