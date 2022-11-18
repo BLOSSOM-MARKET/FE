@@ -13,7 +13,7 @@ import ChatStyle from './Chat.module.scss';
 import moment from 'moment';
 import { SocketContext } from '../../contexts/SocketContext';
 import { UserContext } from '../../contexts/UserContext';
-import { chatroomTimeformatter, chatTimeformatter } from '../../utils/formatters';
+import { chatroomTimeformatter, chatTimeformatter, shortenTitle } from '../../utils/formatters';
 import { ChattingContext } from '../../contexts/ChattingContext';
 
 const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
@@ -52,7 +52,7 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                                                 && rm.name1}</div>
                                         </div>
                                         <div className={ChatListStyle.Chatroom__productName}>
-                                                {rm.productName}
+                                                {shortenTitle(rm.productName, 20)}
                                         </div>
                                     </div>
                                     <div className={`${ChatStyle.Chat__msgbox} ${ChatListStyle.Chatroom__msgbox}`}>{rm.lastMsg}</div>

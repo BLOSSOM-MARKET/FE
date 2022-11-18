@@ -63,7 +63,7 @@ const MiniItemCarousel = ({ title, itemList }) => {
                                                 <div key={idx2} onClick={() => navigate(`/item/${item.productId}`)}>
                                                     <Card item={{
                                                         ...item,
-                                                        productName: shortenTitle(item.productName)
+                                                        productName: shortenTitle(item.productName, 8)
                                                     }} size={"sm"} />
                                                 </div>
                                             )

@@ -64,10 +64,10 @@ const priceFormatter = (price) => {
     return result + "원";
 }
 
-// 제목 8글자 이하로 줄이기
-const shortenTitle = (title) => {
-    if (title.length > 8) {
-        return title.slice(0,8) + "..."
+// 제목 n글자 이하로 줄이기
+const shortenTitle = (title, n) => {
+    if (title.length > n) {
+        return title.slice(0,n) + "..."
     }
     return title;
 }
