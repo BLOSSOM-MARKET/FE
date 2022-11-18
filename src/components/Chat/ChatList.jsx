@@ -52,7 +52,7 @@ const ChatList = ({chatrooms, moveToChatRoom, onClickChatroom}) => {
                                                 && rm.name1}</div>
                                         </div>
                                         <div className={ChatListStyle.Chatroom__productName}>
-                                                {shortenTitle(rm.productName, 20)}
+                                                {shortenTitle(rm.productName, 10)}
                                         </div>
                                     </div>
                                     <div className={`${ChatStyle.Chat__msgbox} ${ChatListStyle.Chatroom__msgbox}`}>{rm.lastMsg}</div>

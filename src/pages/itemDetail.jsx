@@ -139,10 +139,8 @@ const ItemDetail = () => {
         const sellerNickname = res[0].data[3]; // 판매자 닉네임
         itemData.sellerNickname = sellerNickname;
 
-        if (myLike == 1) {
-          // 내 좋아요 여부
-          setIsInWishlist(true);
-        }
+        // 내 좋아요 여부
+        setIsInWishlist(myLike == 1);
 
         const pictures = [];
         if (itemDetail.image1) {
