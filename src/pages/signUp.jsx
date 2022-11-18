@@ -100,9 +100,11 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
       if (!!result) {
         setIsCheckedNickname(true);    // 중복확인 완료
         setIsPossibleNickname(true);    // 사용 가능한 닉네임
+        openAlertModal("사용 가능한 닉네임입니다");
       } else {
         setIsCheckedNickname(true);    // 중복확인 완료
         setIsPossibleNickname(false);   // 사용 불가능한 닉네임
+        openAlertModal("이미 사용중인 닉네임입니다.");
       }
     })
     .catch((err) => {
@@ -150,10 +152,17 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
       } 
     }, [errors, values.nickname, isPossibleNickname, isCheckedNickname]);
 
-    
+
+    // 이메일
     useEffect(() => {
       setUserMail(values.email);
     }, [values.email])
+
+    useEffect(() => {
+      if (isSentAuthMail) {
+        delete errors["email"];
+      }
+    }, [errors])
 
 
     // 인증확인 X
@@ -168,10 +177,10 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
   }
 
   const handleChangeAuthMail = (errors) => {
-    setIsSentAuthMail(false);
-    setIsCheckedAuthCode(false);
-    setIsCorrectAuthCode(false);
-    errors.email = "이메일을 변경하셨습니다. 메일 인증을 다시 진행해주세요."
+    // setIsSentAuthMail(false);
+    // setIsCheckedAuthCode(false);
+    // setIsCorrectAuthCode(false);
+    // errors.email = "이메일을 변경하셨습니다. 메일 인증을 다시 진행해주세요."
   }
 
   const handleChangeAuthCode = (errors) => {
@@ -195,6 +204,12 @@ const SignUpForm = ({ userMail, setUserMail, isSentAuthMail, setIsSentAuthMail, 
       const result = res.data;
       setIsCheckedAuthCode(true);
       setIsCorrectAuthCode(result);
+
+      if (!!result) {
+        openAlertModal("인증이 완료되었습니다.");
+      } else {
+        openAlertModal("인증 코드를 정확하게 입력해주세요.");
+      }
     })
     .catch((err) => {
       console.error(err);
